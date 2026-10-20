@@ -4,8 +4,7 @@ import { INITIAL_BANKS } from './data/bankData';
 import { BankData, UserPersona } from './types/bank';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { LeaderboardScreen } from './components/LeaderboardScreen';
-import { CalculatorScreen } from './components/CalculatorScreen';
+import { YieldCommandCenter } from './components/YieldCommandCenter';
 import { TenureInspectionScreen } from './components/TenureInspectionScreen';
 import { TaxGuideScreen } from './components/TaxGuideScreen';
 import { DicgcSafetyScreen } from './components/DicgcSafetyScreen';
@@ -14,7 +13,7 @@ import { BookingModal } from './components/BookingModal';
 import { SignInModal } from './components/SignInModal';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<string>('comparisons');
+  const [activeTab, setActiveTab] = useState<string>('command-center');
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [selectedBankForInspection, setSelectedBankForInspection] = useState<BankData>(INITIAL_BANKS[0]);
   const [bookingBank, setBookingBank] = useState<BankData | null>(null);
@@ -25,6 +24,7 @@ export default function App() {
   const [persona, setPersona] = useState<UserPersona>({
     depositType: 'FD',
     principal: 500000,
+    monthlyInstallment: 10000,
     tenureMonths: 36,
     compounding: 'quarterly',
     age: 62,
@@ -83,6 +83,9 @@ export default function App() {
 
   const comparedBanksList = INITIAL_BANKS.filter((b) => comparedBankIds.includes(b.id));
 
+  const isCommandCenterTab =
+    activeTab === 'command-center' || activeTab === 'comparisons' || activeTab === 'calculator';
+
   return (
     <div className="min-h-screen bg-[#f7f9fb] dark:bg-[#0e1217] text-[#191c1e] dark:text-[#f0f3f6] flex flex-col transition-colors selection:bg-emerald-200 dark:selection:bg-emerald-900">
       {/* Top Header */}
@@ -94,49 +97,27 @@ export default function App() {
         onOpenSignIn={() => setSignInOpen(true)}
       />
 
-      {/* Main Content Viewport with smooth page transitions */}
+      {/* Main Content Viewport with smooth transitions */}
       <main className="flex-1 w-full pt-20">
         <AnimatePresence mode="wait">
-          {activeTab === 'comparisons' && (
+          {isCommandCenterTab && (
             <motion.div
-              key="comparisons"
+              key="command-center"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.2 }}
             >
-              <LeaderboardScreen
+              <YieldCommandCenter
                 persona={persona}
+                setPersona={setPersona}
                 banks={INITIAL_BANKS}
-                onEditParameters={() => {
-                  setActiveTab('calculator');
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
                 onInspectBank={handleInspectBank}
                 onInvest={handleInvest}
                 comparedBankIds={comparedBankIds}
                 onToggleCompare={handleToggleCompare}
                 onNavigateTab={(tab) => {
                   setActiveTab(tab);
-                  window.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-              />
-            </motion.div>
-          )}
-
-          {activeTab === 'calculator' && (
-            <motion.div
-              key="calculator"
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -8 }}
-              transition={{ duration: 0.2 }}
-            >
-              <CalculatorScreen
-                persona={persona}
-                setPersona={setPersona}
-                onProceedToLeaderboard={() => {
-                  setActiveTab('comparisons');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
               />
@@ -155,7 +136,7 @@ export default function App() {
                 bank={selectedBankForInspection}
                 persona={persona}
                 onBack={() => {
-                  setActiveTab('comparisons');
+                  setActiveTab('command-center');
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
                 onInvest={handleInvest}
@@ -202,7 +183,7 @@ export default function App() {
         onInvest={handleInvest}
       />
 
-      {/* Digital FD Booking Modal */}
+      {/* Digital FD / RD Booking Modal (DPDP Compliant) */}
       <BookingModal
         bank={bookingBank}
         persona={persona}
@@ -216,10 +197,12 @@ export default function App() {
       />
 
       {/* Footer */}
-      <Footer onNavClick={(tab) => {
-        setActiveTab(tab);
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }} />
+      <Footer
+        onNavClick={(tab) => {
+          setActiveTab(tab === 'comparisons' || tab === 'calculator' ? 'command-center' : tab);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+      />
     </div>
   );
 }

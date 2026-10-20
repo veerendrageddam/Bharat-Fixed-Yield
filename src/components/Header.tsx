@@ -19,10 +19,9 @@ export const Header: React.FC<HeaderProps> = ({
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
   const navItems = [
-    { id: 'calculator', label: 'Rate Finder & Calculator' },
-    { id: 'comparisons', label: 'Live Bank Comparisons' },
-    { id: 'tax-guide', label: 'Tax & TDS Guide (15G/15H)' },
+    { id: 'command-center', label: 'Yield Command Center (FD & RD)' },
     { id: 'dicgc-index', label: 'DICGC Safety Index' },
+    { id: 'tax-guide', label: 'Tax & TDS Guide (15G/15H)' },
   ];
 
   const handleNavClick = (id: string) => {
@@ -35,7 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
       <div className="h-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 flex items-center justify-between gap-4">
         {/* Brand Lockup */}
         <button
-          onClick={() => handleNavClick('comparisons')}
+          onClick={() => handleNavClick('command-center')}
           className="flex items-center gap-3 text-left focus:outline-hidden group"
         >
           <img
@@ -56,7 +55,9 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Desktop Navigation */}
         <nav className="hidden xl:flex items-center gap-1.5" aria-label="Main Navigation">
           {navItems.map((item) => {
-            const isActive = activeTab === item.id;
+            const isActive =
+              activeTab === item.id ||
+              (item.id === 'command-center' && (activeTab === 'comparisons' || activeTab === 'calculator'));
             return (
               <button
                 key={item.id}

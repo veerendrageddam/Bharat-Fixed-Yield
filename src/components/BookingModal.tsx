@@ -5,13 +5,14 @@ import {
   CheckCircle2,
   Lock,
   ArrowRight,
-  ArrowLeft,
-  FileCheck,
-  CreditCard,
-  Building,
-  Smartphone,
+  ExternalLink,
   Copy,
-  Check
+  Check,
+  PhoneCall,
+  Info,
+  Calendar,
+  Building,
+  AlertCircle
 } from 'lucide-react';
 import { BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, getEffectiveRate } from '../utils/calculator';
@@ -25,23 +26,63 @@ interface BookingModalProps {
 export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClose }) => {
   if (!bank) return null;
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [aadhaar, setAadhaar] = useState('8492 1044 9821');
-  const [pan, setPan] = useState('ABCDE1234F');
-  const [nomineeName, setNomineeName] = useState('Sunita Sharma');
-  const [nomineeRelation, setNomineeRelation] = useState('Spouse');
-  const [paymentMethod, setPaymentMethod] = useState<'upi' | 'netbanking' | 'rtgs'>('netbanking');
+  const [activeMode, setActiveMode] = useState<'direct_portal' | 'assisted_callback' | 'success'>('direct_portal');
   const [copiedRef, setCopiedRef] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userPhone, setUserPhone] = useState('');
+  const [dpdpConsent, setDpdpConsent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
-  const rate = getEffectiveRate(bank, persona);
-  const calc = calculateYield(persona.principal, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted);
+  const rate = getEffectiveRate(bank, persona, persona.tenureMonths);
+  const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
+  const calc = calculateYield(
+    depositAmount,
+    rate,
+    persona.tenureMonths,
+    persona.age,
+    persona.form15HSubmitted,
+    persona.depositType,
+    persona.panLinked
+  );
 
   const referenceId = `BFY-${bank.name.substring(0, 3).toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
 
-  const handleCopy = () => {
-    navigator.clipboard?.writeText(referenceId);
+  const handleCopySummary = () => {
+    const summaryText = [
+      `Bharat Fixed Yield - Deposit Summary`,
+      `Bank: ${bank.name}`,
+      `Deposit Type: ${persona.depositType === 'RD' ? 'Recurring Deposit (RD)' : 'Fixed Deposit (FD)'}`,
+      `Investment: ${persona.depositType === 'RD' ? `₹${formatINR(depositAmount)}/month` : `₹${formatINR(depositAmount)} lump sum`}`,
+      `Tenure: ${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`,
+      `Locked Rate: ${rate.toFixed(2)}% p.a.`,
+      `Guaranteed Maturity: ₹${formatINR(calc.maturityAmount)}`,
+      `DICGC Insured: Up to ₹5 Lakhs (100% Protected)`,
+      `Reference ID: ${referenceId}`,
+      `Official Portal: ${bank.portalUrl || 'https://www.rbi.org.in/'}`,
+    ].join('\n');
+
+    navigator.clipboard?.writeText(summaryText);
     setCopiedRef(true);
-    setTimeout(() => setCopiedRef(false), 2000);
+    setTimeout(() => setCopiedRef(false), 2500);
+  };
+
+  const handleRequestCallback = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!userName.trim() || !userPhone.trim()) {
+      setErrorMsg('Please provide your name and valid mobile number.');
+      return;
+    }
+    if (!/^[6-9]\d{9}$/.test(userPhone.replace(/\D/g, ''))) {
+      setErrorMsg('Please enter a valid 10-digit Indian mobile number.');
+      return;
+    }
+    if (!dpdpConsent) {
+      setErrorMsg('Please consent to allow the official bank representative to contact you.');
+      return;
+    }
+
+    setErrorMsg('');
+    setActiveMode('success');
   };
 
   return (
@@ -63,280 +104,239 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
             </div>
             <div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white">
-                {step === 4 ? 'Fixed Deposit Confirmed' : `Open Digital FD with ${bank.name}`}
+                {activeMode === 'success' ? 'Request Confirmed' : `Official Booking Gateway`}
               </h3>
               <span className="text-xs text-slate-500 dark:text-slate-400">
-                100% Paperless V-KYC • RBI Regulated
+                {bank.name} • RBI Regulated Scheduled Commercial Bank
               </span>
             </div>
           </div>
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center transition-colors"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>
         </div>
 
-        {/* Step Progress */}
-        {step < 4 && (
-          <div className="flex items-center justify-between text-xs font-semibold px-2">
-            <span className={step >= 1 ? 'text-[#006c4a] dark:text-[#10b981] font-bold' : 'text-slate-400'}>
-              1. Review Terms
-            </span>
-            <span className="text-slate-300 dark:text-slate-700">→</span>
-            <span className={step >= 2 ? 'text-[#006c4a] dark:text-[#10b981] font-bold' : 'text-slate-400'}>
-              2. Paperless KYC
-            </span>
-            <span className="text-slate-300 dark:text-slate-700">→</span>
-            <span className={step >= 3 ? 'text-[#006c4a] dark:text-[#10b981] font-bold' : 'text-slate-400'}>
-              3. Fund Account
+        {/* DPDP Compliance Notice */}
+        <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/80 border border-slate-200/80 dark:border-slate-700/60 flex items-start gap-2.5 text-xs text-slate-600 dark:text-slate-300">
+          <Info className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+          <span>
+            <strong>DPDP Act 2023 Compliant:</strong> Bharat Fixed Yield does not collect or store your Aadhaar, PAN, or banking credentials. Your deposit is opened directly through {bank.name}&apos;s official 256-bit encrypted banking infrastructure.
+          </span>
+        </div>
+
+        {/* Deposit Summary Card */}
+        <div className="p-4 rounded-xl bg-emerald-50/60 dark:bg-emerald-950/20 border border-emerald-200/70 dark:border-emerald-800/60 flex flex-col gap-2.5 text-xs">
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500 dark:text-slate-400">Selected Product:</span>
+            <span className="font-bold text-slate-900 dark:text-white">
+              {persona.depositType === 'RD' ? 'Recurring Deposit (Monthly)' : 'Fixed Deposit (Lump Sum)'}
             </span>
           </div>
-        )}
 
-        {/* Step 1: Review Terms */}
-        {step === 1 && (
-          <div className="flex flex-col gap-5">
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 flex flex-col gap-2.5 text-xs">
-              <div className="flex justify-between">
-                <span className="text-slate-500">Selected Institution:</span>
-                <span className="font-bold text-slate-900 dark:text-white">{bank.name}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Principal Deposit:</span>
-                <span className="font-bold text-slate-900 dark:text-white tabular-nums">
-                  ₹{formatINR(persona.principal)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Tenure Horizon:</span>
-                <span className="font-bold text-slate-900 dark:text-white">
-                  {persona.tenureMonths} Months ({persona.tenureMonths / 12} Years)
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Locked Applied Rate:</span>
-                <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
-                  {rate.toFixed(2)}% p.a.
-                </span>
-              </div>
-              <div className="flex justify-between pt-2 border-t border-slate-200 dark:border-slate-800">
-                <span className="font-bold text-slate-900 dark:text-white">Guaranteed Maturity Amount:</span>
-                <span className="text-base font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
-                  ₹{formatINR(calc.maturityAmount)}
-                </span>
-              </div>
-            </div>
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500 dark:text-slate-400">
+              {persona.depositType === 'RD' ? 'Monthly Installment:' : 'Principal Investment:'}
+            </span>
+            <span className="font-extrabold text-slate-900 dark:text-white tabular-nums text-sm">
+              ₹{formatINR(depositAmount)}
+            </span>
+          </div>
 
-            <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 flex items-center gap-2.5 text-xs text-[#00714e] dark:text-[#a7f3d0]">
-              <Lock className="w-4 h-4 shrink-0" />
-              <span>
-                Rate locked for 48 hours. Deposit covered by ₹5,00,000 DICGC insurance guarantee.
+          {persona.depositType === 'RD' && (
+            <div className="flex justify-between items-center">
+              <span className="text-slate-500 dark:text-slate-400">Total Capital Deposited:</span>
+              <span className="font-semibold text-slate-700 dark:text-slate-300 tabular-nums">
+                ₹{formatINR(calc.totalInvested)} ({persona.tenureMonths} Months)
               </span>
             </div>
+          )}
 
-            <button
-              onClick={() => setStep(2)}
-              className="w-full py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm"
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500 dark:text-slate-400">Horizon / Tenure:</span>
+            <span className="font-bold text-slate-900 dark:text-white">
+              {persona.tenureMonths} Months ({(persona.tenureMonths / 12).toFixed(1)} Years)
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center">
+            <span className="text-slate-500 dark:text-slate-400">Applicable Yield Rate:</span>
+            <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums text-sm">
+              {rate.toFixed(2)}% p.a. {persona.age >= 60 ? '(Senior Citizen Bonus Included)' : ''}
+            </span>
+          </div>
+
+          <div className="flex justify-between items-center pt-2 border-t border-emerald-200/80 dark:border-emerald-800/80">
+            <span className="font-bold text-slate-900 dark:text-white">Guaranteed Net Maturity Value:</span>
+            <span className="text-base font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
+              ₹{formatINR(calc.maturityAmount)}
+            </span>
+          </div>
+        </div>
+
+        {/* DICGC Statutory Insurance Stamp */}
+        <div className="flex items-center gap-2 p-2.5 rounded-lg bg-emerald-100/70 dark:bg-emerald-950/40 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">
+          <ShieldCheck className="w-4 h-4 shrink-0 text-[#00714e] dark:text-[#10b981]" />
+          <span>Statutory Protection: Insured up to ₹5,00,000 per depositor by DICGC (RBI Subsidiary).</span>
+        </div>
+
+        {activeMode === 'direct_portal' && (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <h4 className="text-sm font-bold text-slate-900 dark:text-white">
+                How would you like to proceed?
+              </h4>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                You can open this deposit online via the bank&apos;s verified digital banking website, or request an official branch executive to assist you.
+              </p>
+            </div>
+
+            {/* Direct Official Link Button */}
+            <a
+              href={bank.portalUrl || 'https://www.rbi.org.in/'}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full py-3.5 px-4 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-sm text-center"
             >
-              <span>Continue to KYC Verification</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+              <span>Proceed to Official {bank.portalName || bank.name} Portal</span>
+              <ExternalLink className="w-4 h-4" />
+            </a>
+
+            {/* Copy Summary Checklist */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={handleCopySummary}
+                className="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900 hover:bg-slate-100 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-all flex items-center justify-center gap-2"
+              >
+                {copiedRef ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                <span>{copiedRef ? 'Details Copied to Clipboard!' : 'Copy Rate & Deposit Checklist'}</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setActiveMode('assisted_callback')}
+                className="py-2.5 px-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-100 text-slate-700 dark:text-slate-300 text-xs font-semibold transition-all flex items-center gap-1.5"
+              >
+                <PhoneCall className="w-3.5 h-3.5 text-slate-500" />
+                <span>Assisted Callback</span>
+              </button>
+            </div>
           </div>
         )}
 
-        {/* Step 2: Paperless KYC */}
-        {step === 2 && (
-          <div className="flex flex-col gap-4">
+        {activeMode === 'assisted_callback' && (
+          <form onSubmit={handleRequestCallback} className="flex flex-col gap-4">
+            <div className="flex items-center justify-between">
+              <span className="text-xs font-bold text-slate-900 dark:text-white">
+                Request Official Bank Agent Callback
+              </span>
+              <button
+                type="button"
+                onClick={() => setActiveMode('direct_portal')}
+                className="text-xs text-emerald-700 dark:text-emerald-400 font-bold hover:underline"
+              >
+                Back to Direct Portal
+              </button>
+            </div>
+
+            {errorMsg && (
+              <div className="p-2.5 rounded-lg bg-red-50 dark:bg-red-950/50 border border-red-200 text-xs text-red-600 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4 shrink-0" />
+                <span>{errorMsg}</span>
+              </div>
+            )}
+
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                Aadhaar Number (Linked to Mobile)
+                Full Legal Name
               </label>
               <input
                 type="text"
-                value={aadhaar}
-                onChange={(e) => setAadhaar(e.target.value)}
-                className="h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-sm focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
+                placeholder="e.g. Ramesh Kumar"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:ring-2 focus:ring-[#006c4a] focus:outline-hidden"
               />
             </div>
 
             <div className="flex flex-col gap-1.5">
               <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                Permanent Account Number (PAN)
+                10-Digit Mobile Number
               </label>
-              <input
-                type="text"
-                value={pan}
-                onChange={(e) => setPan(e.target.value.toUpperCase())}
-                className="h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-sm uppercase focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
-              />
-            </div>
-
-            <div className="grid grid-cols-2 gap-3">
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Nominee Name</label>
+              <div className="flex items-center">
+                <span className="h-10 px-3 bg-slate-100 dark:bg-slate-800 border border-r-0 border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-600 dark:text-slate-400 rounded-l-xl flex items-center">
+                  +91
+                </span>
                 <input
-                  type="text"
-                  value={nomineeName}
-                  onChange={(e) => setNomineeName(e.target.value)}
-                  className="h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-sm focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
+                  type="tel"
+                  placeholder="9876543210"
+                  maxLength={10}
+                  value={userPhone}
+                  onChange={(e) => setUserPhone(e.target.value.replace(/\D/g, ''))}
+                  className="h-10 px-3 rounded-r-xl flex-1 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white text-xs font-medium focus:ring-2 focus:ring-[#006c4a] focus:outline-hidden"
                 />
               </div>
-              <div className="flex flex-col gap-1.5">
-                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">Relationship</label>
-                <select
-                  value={nomineeRelation}
-                  onChange={(e) => setNomineeRelation(e.target.value)}
-                  className="h-11 px-3.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold text-sm focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
-                >
-                  <option value="Spouse">Spouse</option>
-                  <option value="Child">Child</option>
-                  <option value="Parent">Parent</option>
-                  <option value="Sibling">Sibling</option>
-                </select>
-              </div>
             </div>
 
-            <div className="flex items-center gap-3 pt-2">
-              <button
-                onClick={() => setStep(1)}
-                className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-200"
-              >
-                Back
-              </button>
-              <button
-                onClick={() => setStep(3)}
-                className="flex-1 py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
-              >
-                <span>Proceed to Funding</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Step 3: Funding Mode */}
-        {step === 3 && (
-          <div className="flex flex-col gap-4">
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-              Select Payment / Transfer Mode
-            </span>
-
-            <div className="grid grid-cols-3 gap-2">
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('netbanking')}
-                className={`p-3 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-bold transition-all ${
-                  paymentMethod === 'netbanking'
-                    ? 'border-[#006c4a] bg-emerald-50 dark:bg-emerald-950/40 text-[#00714e] dark:text-[#a7f3d0]'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50'
-                }`}
-              >
-                <Building className="w-5 h-5" />
-                <span>Net Banking</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('upi')}
-                className={`p-3 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-bold transition-all ${
-                  paymentMethod === 'upi'
-                    ? 'border-[#006c4a] bg-emerald-50 dark:bg-emerald-950/40 text-[#00714e] dark:text-[#a7f3d0]'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50'
-                }`}
-              >
-                <Smartphone className="w-5 h-5" />
-                <span>UPI Fast</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setPaymentMethod('rtgs')}
-                className={`p-3 rounded-xl border flex flex-col items-center gap-1.5 text-xs font-bold transition-all ${
-                  paymentMethod === 'rtgs'
-                    ? 'border-[#006c4a] bg-emerald-50 dark:bg-emerald-950/40 text-[#00714e] dark:text-[#a7f3d0]'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50'
-                }`}
-              >
-                <CreditCard className="w-5 h-5" />
-                <span>RTGS / NEFT</span>
-              </button>
-            </div>
-
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 flex flex-col gap-1 text-xs">
-              <span className="font-bold text-slate-900 dark:text-white">Amount Due for Funding:</span>
-              <span className="text-xl font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
-                ₹{formatINR(persona.principal)}
+            <label className="flex items-start gap-2.5 cursor-pointer pt-1">
+              <input
+                type="checkbox"
+                checked={dpdpConsent}
+                onChange={(e) => setDpdpConsent(e.target.checked)}
+                className="mt-0.5 w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+              />
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">
+                I hereby grant consent under the Digital Personal Data Protection (DPDP) Act 2023 for an authorized representative of {bank.name} to contact me regarding opening this fixed yield deposit.
               </span>
-              <span className="text-slate-500">Funds transferred directly into your escrow bank account.</span>
-            </div>
+            </label>
 
-            <div className="flex items-center gap-3 pt-2">
-              <button
-                onClick={() => setStep(2)}
-                className="px-4 py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-xs font-bold hover:bg-slate-200"
-              >
-                Back
-              </button>
-              <button
-                onClick={() => setStep(4)}
-                className="flex-1 py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
-              >
-                <span>Authorize & Create FD Certificate</span>
-                <CheckCircle2 className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
+            <button
+              type="submit"
+              className="w-full py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2"
+            >
+              <span>Submit Official Assistance Request</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </form>
         )}
 
-        {/* Step 4: Success & Certificate */}
-        {step === 4 && (
-          <div className="flex flex-col items-center text-center gap-4 py-2">
+        {activeMode === 'success' && (
+          <div className="flex flex-col items-center text-center gap-4 py-4">
             <div className="w-14 h-14 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0] flex items-center justify-center">
               <CheckCircle2 className="w-8 h-8" />
             </div>
 
             <div className="flex flex-col gap-1">
-              <h4 className="text-xl font-bold text-slate-900 dark:text-white">
-                Fixed Deposit Successfully Booked!
+              <h4 className="text-base font-bold text-slate-900 dark:text-white">
+                Assistance Request Registered
               </h4>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Your deposit certificate has been generated and indexed with {bank.name} and DICGC.
+              <p className="text-xs text-slate-500 dark:text-slate-400 max-w-sm">
+                Your deposit preferences have been securely logged. An official representative from {bank.name} will reach out to you within 1 business day.
               </p>
             </div>
 
-            <div className="w-full p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800 flex flex-col gap-2 text-xs text-left">
-              <div className="flex items-center justify-between">
-                <span className="text-slate-500">Certificate Reference:</span>
-                <button
-                  onClick={handleCopy}
-                  className="flex items-center gap-1 font-mono font-bold text-slate-900 dark:text-white hover:text-[#006c4a]"
-                >
-                  <span>{referenceId}</span>
-                  {copiedRef ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                </button>
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-xs flex flex-col gap-1 w-full text-left">
+              <div className="flex justify-between">
+                <span className="text-slate-500">Tracking Reference:</span>
+                <span className="font-mono font-bold text-slate-900 dark:text-white">{referenceId}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-slate-500">Applied Annual Rate:</span>
-                <span className="font-bold text-[#006c4a] dark:text-[#10b981]">{rate.toFixed(2)}% p.a.</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Principal Protected:</span>
-                <span className="font-bold text-slate-900 dark:text-white">₹{formatINR(persona.principal)}</span>
-              </div>
-              <div className="flex justify-between font-bold pt-1 border-t border-slate-200 dark:border-slate-800">
-                <span>Maturity Payout Value:</span>
-                <span className="text-sm text-[#006c4a] dark:text-[#10b981]">₹{formatINR(calc.maturityAmount)}</span>
+                <span className="text-slate-500">Contact Number:</span>
+                <span className="font-semibold text-slate-800 dark:text-slate-200">+91 {userPhone}</span>
               </div>
             </div>
 
             <button
+              type="button"
               onClick={onClose}
-              className="w-full py-3 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-sm hover:opacity-90 transition-opacity"
+              className="w-full py-2.5 rounded-xl bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 font-bold text-xs hover:opacity-90 transition-opacity"
             >
-              Done & Return to Leaderboard
+              Done
             </button>
           </div>
         )}

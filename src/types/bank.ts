@@ -13,9 +13,10 @@ export interface BankData {
   categoryTag: string;
   ratingAgency: 'CRISIL' | 'CARE' | 'ICRA' | 'Sovereign';
   rating: string;
-  baseRate: number; // For general citizen, e.g. 8.15
+  baseRate: number; // For general citizen for default tenure (e.g. 36M), e.g. 8.15
   seniorBonus: number; // e.g. 0.50
   superSeniorBonus: number; // e.g. 0.75
+  womenBonus?: number; // e.g. 0.10 - 0.25%
   logoUrl: string;
   minDeposit: number;
   tenureYears: number;
@@ -25,11 +26,21 @@ export interface BankData {
   notes: string;
   exitPenalty: string;
   lockInDays: number;
+  // Multi-tenure rate matrix: tenure in months -> annual interest rate %
+  ratesByTenure?: Record<number, number>;
+  // Geographic jurisdiction
+  operatingStates?: string[];
+  isPanIndia?: boolean;
+  // Official banking portal deep-link for safe redirection
+  portalUrl?: string;
+  portalName?: string;
+  rdSupported?: boolean;
 }
 
 export interface UserPersona {
   depositType: DepositType;
-  principal: number;
+  principal: number; // For FD: Lump sum; For RD: Monthly installment (or total principal)
+  monthlyInstallment?: number; // Explicit monthly installment for RD
   tenureMonths: number;
   compounding: CompoundingFrequency;
   age: number;
@@ -54,15 +65,28 @@ export interface QuarterData {
   isFyEnd?: boolean;
 }
 
+export interface TimelineDataPoint {
+  period: string;
+  month: number;
+  deposit: number;
+  cumulativeDeposit: number;
+  balance: number;
+  interestEarned: number;
+}
+
 export interface CalculationResult {
+  depositType: DepositType;
   appliedRate: number;
   effectiveAnnualYield: number;
+  totalInvested: number;
   maturityAmount: number;
   totalInterest: number;
   annualInterestFY1: number;
   annualInterestFY2: number;
   annualInterestFY3: number;
   estimatedTdsYear3: number;
+  totalTdsDeducted: number;
   netMaturityWithTds: number;
   quarters: QuarterData[];
+  timelineData: TimelineDataPoint[];
 }
