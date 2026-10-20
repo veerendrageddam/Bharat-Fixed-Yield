@@ -261,6 +261,14 @@ Status: **Production Ready (Phase 1–5 Complete)**
   - Diagnosed browser-native select arrow baseline clipping and misalignment when explicit heights (`h-10`, `h-12`) are applied.
   - Applied the standard design pattern across all select inputs: `appearance-none`, explicit right padding (`pr-9`/`pr-10`), and a vertically centered Lucide `<ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />`.
   - Upgraded Age Category, Gender Specification, State / Bank Jurisdiction, Min Rating, and DICGC Investment Horizon selects.
+- [x] **10.7 Default Pan-India State & Progressive Lazy Loading with Batch Controls (5 / 10 / 20)** `[COMPLETED]`
+  - Standardized default persona jurisdiction to **"All India (Pan-India)"** (`PAN_INDIA_OPTION.name`) across `App.tsx`, `YieldCommandCenter.tsx`, and `CalculatorScreen.tsx`.
+  - Built progressive lazy loading for institution records:
+    - Default batch size: **10 records** (configurable to **5**, **10**, or **20** records via interactive batch chips).
+    - True scroll-driven infinite loading powered by an invisible `IntersectionObserver` sentinel placed beneath the bank list.
+    - Accessible manual controls for non-scrolling / keyboard users: "Load More (+N)" button, "Show All (N)" button, and progress bar with percentage indicator.
+    - Instant filter reactivity: automatically resets visible bank count to the selected batch size whenever search queries, categories, or ratings change.
+    - Added unit test in `YieldCommandCenter.test.tsx` verifying initial 10-record slice, load more increment, batch switching to 5, and full dataset expansion. All 31 tests passing.
 
 ---
 
@@ -278,7 +286,9 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 7 | Built GitOps Automated Rate Pipeline with GHA Cron & Live Scraper | Live TGB rate verified, decoupled `rates.json`, weekly GHA cron, zero backend |
 | **2026-10-20** | Phase 8 | Zero-hardcode rate architecture, APGVB merger handling, APGB & TGB live scrapers | Populated rates.json purely via sync script, smart merger UI guidance, verified end-to-end |
 | **2026-10-20** | Phase 9 | Added Axis, Union, Yes, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Ujjivan, & India Post RD/FD | 31 active institutions, sovereign guarantee distinction, browser verified end-to-end |
-| **2026-10-20** | Phase 10 | UI/UX engineering audit, WCAG 2.1 AA focus rings, modal escape dismissal, empty state, Vitest test suite | 30 tests passing in <800ms, skip link, accessible labels, empty state with filter reset |
+| **2026-10-20** | Phase 10 | UI/UX engineering audit, WCAG 2.1 AA focus rings, modal escape dismissal, empty state, Vitest test suite | 31 tests passing in <900ms, skip link, accessible labels, empty state with filter reset |
+| **2026-10-20** | Phase 10.7 | Set default state to "All India (Pan-India)" & added lazy loading (5/10/20 batching) | Initial 10 records, IntersectionObserver infinite scroll + manual buttons, 31 passing tests |
+
 
 
 

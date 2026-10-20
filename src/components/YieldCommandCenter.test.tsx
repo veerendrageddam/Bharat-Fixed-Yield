@@ -68,4 +68,32 @@ describe('YieldCommandCenter Component UI, Accessibility & Search Interactions',
     fireEvent.click(resetBtn);
     expect(searchInput).toHaveValue('');
   });
+
+  it('renders progressive lazy loading with initial batch of 10 and supports Load More & Batch switching', () => {
+    // Render with all-india persona to ensure full dataset
+    const panIndiaPersona: UserPersona = { ...mockPersona, state: 'All India (Pan-India)' };
+    render(<YieldCommandCenter {...defaultProps} persona={panIndiaPersona} />);
+
+    // Check header counter
+    expect(screen.getByText(/Showing 10 of/i)).toBeInTheDocument();
+
+    // Check progress and Load More button
+    const loadMoreBtn = screen.getByRole('button', { name: /Load More/i });
+    expect(loadMoreBtn).toBeInTheDocument();
+
+    // Click Load More (+10) -> should increase visible count to 20
+    fireEvent.click(loadMoreBtn);
+    expect(screen.getByText(/Showing 20 of/i)).toBeInTheDocument();
+
+    // Switch batch size to 5
+    const batch5Btn = screen.getByRole('button', { name: /Show 5 records per batch/i });
+    fireEvent.click(batch5Btn);
+    expect(screen.getByText(/Showing 5 of/i)).toBeInTheDocument();
+
+    // Click Show All
+    const showAllBtn = screen.getByRole('button', { name: /Show All/i });
+    fireEvent.click(showAllBtn);
+    expect(screen.getByText(/All \d+ institutions loaded/i)).toBeInTheDocument();
+  });
 });
+

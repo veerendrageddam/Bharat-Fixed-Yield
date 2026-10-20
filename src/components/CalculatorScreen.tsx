@@ -472,6 +472,7 @@ export const CalculatorScreen: React.FC<CalculatorScreenProps> = ({
                     onChange={(e) => setPersona((p) => ({ ...p, state: e.target.value }))}
                     className="w-full h-12 pl-4 pr-10 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl text-xs sm:text-sm font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
                   >
+                    <option value="All India (Pan-India)">All India (Pan-India)</option>
                     <option value="Maharashtra">Maharashtra</option>
                     <option value="Delhi NCR">Delhi NCR</option>
                     <option value="Karnataka">Karnataka</option>

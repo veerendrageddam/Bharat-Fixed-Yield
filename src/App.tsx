@@ -11,6 +11,7 @@ import { DicgcSafetyScreen } from './components/DicgcSafetyScreen';
 import { CompareDrawer } from './components/CompareDrawer';
 import { BookingModal } from './components/BookingModal';
 import { SignInModal } from './components/SignInModal';
+import { PAN_INDIA_OPTION } from './data/jurisdictions';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('command-center');
@@ -29,7 +30,7 @@ export default function App() {
     compounding: 'quarterly',
     age: 62,
     gender: 'male',
-    state: 'Maharashtra',
+    state: PAN_INDIA_OPTION.name,
     residency: 'resident',
     panLinked: true,
     form15HSubmitted: false,

@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Wallet,
   TrendingUp,
@@ -101,6 +101,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const [activeChartTab, setActiveChartTab] = useState<'donut' | 'trajectory' | 'spread'>('donut');
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Lazy Loading / Pagination state (minimum 5 or 10 records per batch)
+  const [pageSize, setPageSize] = useState<number>(10);
+  const [visibleCount, setVisibleCount] = useState<number>(10);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
   // Check if search query matches any merged bank
   const activeMergerNotice = useMemo(() => {
     if (!searchQuery.trim()) return null;
@@ -155,7 +160,12 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     return banks.filter((b) => {
       // If user is searching specifically, don't restrict to selected state
       if (searchQuery.trim()) return true;
-      if (persona.state === PAN_INDIA_OPTION.name || persona.state === 'All India (Pan-India)') return true;
+      if (
+        persona.state === PAN_INDIA_OPTION.name ||
+        persona.state === 'All India (Pan-India)' ||
+        persona.state === 'Pan-India' ||
+        persona.state === 'All India'
+      ) return true;
       if (b.isPanIndia) return true;
       if (b.operatingStates && b.operatingStates.includes('ALL')) return true;
       return b.operatingStates ? b.operatingStates.includes(persona.state) : true;
@@ -199,6 +209,46 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       return rateB - rateA;
     });
   }, [stateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice]);
+
+  // Reset visibleCount whenever user alters any filter, query, or persona input
+  useEffect(() => {
+    setVisibleCount(pageSize);
+  }, [
+    pageSize,
+    searchQuery,
+    selectedCategory,
+    minRatingFilter,
+    dicgcOnly,
+    persona.state,
+    persona.depositType,
+    persona.tenureMonths,
+    persona.tenureDays,
+    persona.tenureUnit,
+  ]);
+
+  // Sliced list for lazy progressive rendering
+  const visibleBanks = useMemo(() => {
+    return filteredAndRankedBanks.slice(0, visibleCount);
+  }, [filteredAndRankedBanks, visibleCount]);
+
+  // Infinite scroll / lazy loading intersection observer
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') return;
+    if (!sentinelRef.current) return;
+    if (visibleCount >= filteredAndRankedBanks.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + pageSize, filteredAndRankedBanks.length));
+        }
+      },
+      { rootMargin: '200px' }
+    );
+
+    observer.observe(sentinelRef.current);
+    return () => observer.disconnect();
+  }, [visibleCount, filteredAndRankedBanks.length, pageSize]);
 
   // Tenure Days resolution
   const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
@@ -1233,7 +1283,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           {/* Subfilters */}
           <div className="flex items-center gap-3 text-xs flex-wrap">
             <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300 font-bold" aria-live="polite">
-              <span>{filteredAndRankedBanks.length} Banks Available</span>
+              <span>Showing {visibleBanks.length} of {filteredAndRankedBanks.length} Banks</span>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -1296,7 +1346,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   setSelectedCategory('all');
                   setMinRatingFilter('all');
                   setDicgcOnly(false);
-                  setPersona((prev) => ({ ...prev, state: 'Pan-India' }));
+                  setPersona((prev) => ({ ...prev, state: PAN_INDIA_OPTION.name }));
                 }}
                 className="mt-2 px-5 py-2.5 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
               >
@@ -1304,7 +1354,8 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               </button>
             </div>
           ) : (
-            filteredAndRankedBanks.map((bank, index) => {
+            <>
+              {visibleBanks.map((bank, index) => {
             const effectiveRate = getEffectiveRate(bank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
             const calc = calculateYield(
               currentAmount,
@@ -1443,7 +1494,81 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 </div>
               </div>
             );
-          })
+          })}
+
+          {/* Lazy Loading Sentinel & Pagination Controls */}
+          <div className="mt-4 flex flex-col items-center gap-4 py-5 border-t border-slate-200/80 dark:border-slate-800">
+            {/* Progress Indicator */}
+            <div className="w-full max-w-md flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
+                <span>
+                  Showing <strong className="text-slate-900 dark:text-white">{visibleBanks.length}</strong> of{' '}
+                  <strong className="text-slate-900 dark:text-white">{filteredAndRankedBanks.length}</strong> institutions
+                </span>
+                <span>{Math.round((visibleBanks.length / Math.max(filteredAndRankedBanks.length, 1)) * 100)}%</span>
+              </div>
+              <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-linear-to-r from-emerald-500 to-[#006c4a] rounded-full transition-all duration-300"
+                  style={{ width: `${(visibleBanks.length / Math.max(filteredAndRankedBanks.length, 1)) * 100}%` }}
+                />
+              </div>
+            </div>
+
+            {/* Action Buttons & Batch Switcher */}
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              {visibleCount < filteredAndRankedBanks.length ? (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount((prev) => Math.min(prev + pageSize, filteredAndRankedBanks.length))}
+                    className="px-5 py-2.5 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white dark:text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-xs flex items-center gap-2 cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  >
+                    <span>Load More (+{Math.min(pageSize, filteredAndRankedBanks.length - visibleCount)})</span>
+                    <ChevronDown className="w-4 h-4" />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setVisibleCount(filteredAndRankedBanks.length)}
+                    className="px-4 py-2.5 rounded-xl bg-white dark:bg-[#161b22] hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-slate-400"
+                  >
+                    Show All ({filteredAndRankedBanks.length})
+                  </button>
+                </>
+              ) : (
+                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-bold">
+                  <span>✓ All {filteredAndRankedBanks.length} institutions loaded</span>
+                </div>
+              )}
+
+              {/* Batch size selector: 5, 10, 20 */}
+              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 ml-0 sm:ml-4">
+                <span className="font-semibold">Batch:</span>
+                {[5, 10, 20].map((size) => (
+                  <button
+                    key={size}
+                    type="button"
+                    onClick={() => {
+                      setPageSize(size);
+                      setVisibleCount(size);
+                    }}
+                    className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer ${
+                      pageSize === size
+                        ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-2xs'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                    }`}
+                    aria-label={`Show ${size} records per batch`}
+                  >
+                    {size}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Invisible sentinel for scroll-driven lazy loading */}
+            <div ref={sentinelRef} className="h-2 w-full pointer-events-none" aria-hidden="true" />
+          </div>
+        </>
         )}
       </div>
     </section>
