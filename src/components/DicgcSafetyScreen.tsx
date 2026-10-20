@@ -8,7 +8,8 @@ import {
   ArrowRight,
   ShieldAlert,
   Coins,
-  Sparkles
+  Sparkles,
+  ChevronDown
 } from 'lucide-react';
 import { BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
@@ -131,19 +132,24 @@ export const DicgcSafetyScreen: React.FC<DicgcSafetyScreenProps> = ({
           </div>
 
           <div className="flex flex-col gap-2">
-            <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+            <label htmlFor="dicgc-tenure-select" className="text-xs font-bold text-slate-700 dark:text-slate-300">
               Investment Horizon
             </label>
-            <select
-              value={targetTenure}
-              onChange={(e) => setTargetTenure(parseInt(e.target.value, 10))}
-              className="h-12 px-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-sm focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
-            >
-              <option value="12">12 Months (1 Year)</option>
-              <option value="24">24 Months (2 Years)</option>
-              <option value="36">36 Months (3 Years)</option>
-              <option value="60">60 Months (5 Years)</option>
-            </select>
+            <div className="relative">
+              <select
+                id="dicgc-tenure-select"
+                aria-label="Investment Horizon"
+                value={targetTenure}
+                onChange={(e) => setTargetTenure(parseInt(e.target.value, 10))}
+                className="w-full h-12 pl-4 pr-10 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-bold text-sm appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
+              >
+                <option value="12">12 Months (1 Year)</option>
+                <option value="24">24 Months (2 Years)</option>
+                <option value="36">36 Months (3 Years)</option>
+                <option value="60">60 Months (5 Years)</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
             <span className="text-[11px] text-slate-500 dark:text-slate-400">
               Compounded quarterly under RBI Master Directions
             </span>

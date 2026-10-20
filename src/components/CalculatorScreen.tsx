@@ -9,7 +9,8 @@ import {
   ArrowRight,
   UserCheck,
   Building2,
-  Lock
+  Lock,
+  ChevronDown
 } from 'lucide-react';
 import { UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs } from '../utils/calculator';
@@ -464,21 +465,24 @@ export const CalculatorScreen: React.FC<CalculatorScreenProps> = ({
                 <label htmlFor="state-region" className="text-sm font-bold text-slate-900 dark:text-white">
                   State / Domicile
                 </label>
-                <select
-                  id="state-region"
-                  value={persona.state}
-                  onChange={(e) => setPersona((p) => ({ ...p, state: e.target.value }))}
-                  className="w-full h-12 px-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl text-xs sm:text-sm font-semibold focus:outline-hidden focus:ring-2 focus:ring-[#006c4a] cursor-pointer"
-                >
-                  <option value="Maharashtra">Maharashtra</option>
-                  <option value="Delhi NCR">Delhi NCR</option>
-                  <option value="Karnataka">Karnataka</option>
-                  <option value="Tamil Nadu">Tamil Nadu</option>
-                  <option value="Gujarat">Gujarat</option>
-                  <option value="Uttar Pradesh">Uttar Pradesh</option>
-                  <option value="West Bengal">West Bengal</option>
-                  <option value="Telangana">Telangana</option>
-                </select>
+                <div className="relative">
+                  <select
+                    id="state-region"
+                    value={persona.state}
+                    onChange={(e) => setPersona((p) => ({ ...p, state: e.target.value }))}
+                    className="w-full h-12 pl-4 pr-10 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white rounded-xl text-xs sm:text-sm font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
+                  >
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Delhi NCR">Delhi NCR</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Tamil Nadu">Tamil Nadu</option>
+                    <option value="Gujarat">Gujarat</option>
+                    <option value="Uttar Pradesh">Uttar Pradesh</option>
+                    <option value="West Bengal">West Bengal</option>
+                    <option value="Telangana">Telangana</option>
+                  </select>
+                  <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                </div>
               </div>
 
               {/* Residency Status */}

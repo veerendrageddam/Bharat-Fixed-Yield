@@ -257,6 +257,10 @@ Status: **Production Ready (Phase 1–5 Complete)**
     3. [`src/components/BookingModal.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/BookingModal.test.tsx) (5 tests: DPDP Act zero-Aadhaar/PAN verification, official bank deep-links, escape dismissal).
     4. [`src/components/YieldCommandCenter.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.test.tsx) (4 tests: reactive inputs, APGVB merger notice, empty state reset).
   - Added `"test": "vitest run"` and `"test:watch": "vitest"` npm scripts to [`package.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/package.json).
+- [x] **10.6 Selectbox Down-Chevron Alignment & Custom Styling** `[COMPLETED]`
+  - Diagnosed browser-native select arrow baseline clipping and misalignment when explicit heights (`h-10`, `h-12`) are applied.
+  - Applied the standard design pattern across all select inputs: `appearance-none`, explicit right padding (`pr-9`/`pr-10`), and a vertically centered Lucide `<ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />`.
+  - Upgraded Age Category, Gender Specification, State / Bank Jurisdiction, Min Rating, and DICGC Investment Horizon selects.
 
 ---
 

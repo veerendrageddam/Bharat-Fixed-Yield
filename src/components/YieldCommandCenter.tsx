@@ -6,6 +6,7 @@ import {
   Percent,
   SlidersHorizontal,
   ChevronRight,
+  ChevronDown,
   ArrowRight,
   Award,
   Building,
@@ -797,22 +798,24 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         {/* Persona Matrix Controls (Age, Gender, State, Form 15H) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
           {/* Age Tier */}
-          {/* Age Tier */}
           <div className="flex flex-col gap-1.5">
             <label htmlFor="persona-age-select" className="font-bold text-slate-700 dark:text-slate-300">
               Depositor Age Category
             </label>
-            <select
-              id="persona-age-select"
-              aria-label="Depositor Age Category"
-              value={persona.age >= 80 ? '80' : persona.age >= 60 ? '60' : '35'}
-              onChange={(e) => setPersona((prev) => ({ ...prev, age: Number(e.target.value) }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
-            >
-              <option value="35">General Citizen (&lt;60 yrs) - Card Rate</option>
-              <option value="65">Senior Citizen (60–79 yrs) - +0.50%</option>
-              <option value="82">Super Senior (80+ yrs) - +0.75%</option>
-            </select>
+            <div className="relative">
+              <select
+                id="persona-age-select"
+                aria-label="Depositor Age Category"
+                value={persona.age >= 80 ? '80' : persona.age >= 60 ? '60' : '35'}
+                onChange={(e) => setPersona((prev) => ({ ...prev, age: Number(e.target.value) }))}
+                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+              >
+                <option value="35">General Citizen (&lt;60 yrs) - Card Rate</option>
+                <option value="65">Senior Citizen (60–79 yrs) - +0.50%</option>
+                <option value="82">Super Senior (80+ yrs) - +0.75%</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
 
           {/* Gender */}
@@ -820,17 +823,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             <label htmlFor="persona-gender-select" className="font-bold text-slate-700 dark:text-slate-300">
               Gender Specification
             </label>
-            <select
-              id="persona-gender-select"
-              aria-label="Gender Specification"
-              value={persona.gender}
-              onChange={(e) => setPersona((prev) => ({ ...prev, gender: e.target.value as 'female' | 'male' | 'other' }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
-            >
-              <option value="female">Female (Women Bonus +0.15% & MSSC)</option>
-              <option value="male">Male (Standard Card)</option>
-              <option value="other">Other</option>
-            </select>
+            <div className="relative">
+              <select
+                id="persona-gender-select"
+                aria-label="Gender Specification"
+                value={persona.gender}
+                onChange={(e) => setPersona((prev) => ({ ...prev, gender: e.target.value as 'female' | 'male' | 'other' }))}
+                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+              >
+                <option value="female">Female (Women Bonus +0.15% & MSSC)</option>
+                <option value="male">Male (Standard Card)</option>
+                <option value="other">Other</option>
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
 
           {/* State / Jurisdiction */}
@@ -838,31 +844,34 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             <label htmlFor="persona-state-select" className="font-bold text-slate-700 dark:text-slate-300">
               State / Bank Jurisdiction
             </label>
-            <select
-              id="persona-state-select"
-              aria-label="State and Bank Jurisdiction"
-              value={persona.state}
-              onChange={(e) => setPersona((prev) => ({ ...prev, state: e.target.value }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
-            >
-              <optgroup label="Pan-India">
-                <option value={PAN_INDIA_OPTION.name}>{PAN_INDIA_OPTION.name}</option>
-              </optgroup>
-              <optgroup label="28 States">
-                {INDIAN_STATES.map((st) => (
-                  <option key={st.id} value={st.name}>
-                    {st.name}
-                  </option>
-                ))}
-              </optgroup>
-              <optgroup label="8 Union Territories">
-                {UNION_TERRITORIES.map((ut) => (
-                  <option key={ut.id} value={ut.name}>
-                    {ut.name} (UT)
-                  </option>
-                ))}
-              </optgroup>
-            </select>
+            <div className="relative">
+              <select
+                id="persona-state-select"
+                aria-label="State and Bank Jurisdiction"
+                value={persona.state}
+                onChange={(e) => setPersona((prev) => ({ ...prev, state: e.target.value }))}
+                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+              >
+                <optgroup label="Pan-India">
+                  <option value={PAN_INDIA_OPTION.name}>{PAN_INDIA_OPTION.name}</option>
+                </optgroup>
+                <optgroup label="28 States">
+                  {INDIAN_STATES.map((st) => (
+                    <option key={st.id} value={st.name}>
+                      {st.name}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="8 Union Territories">
+                  {UNION_TERRITORIES.map((ut) => (
+                    <option key={ut.id} value={ut.name}>
+                      {ut.name} (UT)
+                    </option>
+                  ))}
+                </optgroup>
+              </select>
+              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+            </div>
           </div>
 
           {/* Form 15G/15H Toggle */}
@@ -1229,17 +1238,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
             <div className="flex items-center gap-1.5">
               <label htmlFor="min-rating-filter" className="text-slate-500 font-medium">Min Rating:</label>
-              <select
-                id="min-rating-filter"
-                aria-label="Filter by minimum credit rating"
-                value={minRatingFilter}
-                onChange={(e) => setMinRatingFilter(e.target.value)}
-                className="h-8 px-2 rounded-lg bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
-              >
-                <option value="all">All Ratings</option>
-                <option value="AAA">CRISIL AAA Only</option>
-                <option value="A+">CARE / ICRA A+ &amp; above</option>
-              </select>
+              <div className="relative">
+                <select
+                  id="min-rating-filter"
+                  aria-label="Filter by minimum credit rating"
+                  value={minRatingFilter}
+                  onChange={(e) => setMinRatingFilter(e.target.value)}
+                  className="h-8 pl-2.5 pr-7 rounded-lg bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
+                >
+                  <option value="all">All Ratings</option>
+                  <option value="AAA">CRISIL AAA Only</option>
+                  <option value="A+">CARE / ICRA A+ &amp; above</option>
+                </select>
+                <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none" />
+              </div>
             </div>
 
             <label className="flex items-center gap-1.5 cursor-pointer">
