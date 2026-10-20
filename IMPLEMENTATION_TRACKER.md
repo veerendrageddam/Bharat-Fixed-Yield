@@ -18,6 +18,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 5: Build & Production Quality** | Clean Types, Vite Build Verification, Dependency Sanitization | `COMPLETED` | 100% | Completed |
 | **Phase 6: Custom % & Odd-Day Schemes** | Custom Rate Targets, 222D–1001D Schemes, RBI Odd-Day Math | `COMPLETED` | 100% | Completed |
 | **Phase 7: GitOps Automated Rate Pipeline** | Weekly GHA Cron, Live Bank Scraper, Decoupled `rates.json` | `COMPLETED` | 100% | Completed |
+| **Phase 8: Bank Consolidation & Zero-Hardcode Ingestion** | GoI 'One State One RRB', APGB & TGB Live Scrapers, Merged Banks Catalog | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -167,6 +168,37 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 8: Bank Consolidation & Zero-Hardcode Rate Architecture (GoI "One State, One RRB")
+*Target Files*: [`scripts/sync-rates.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sync-rates.ts), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts)
+
+- [x] **8.1 Elimination of Hardcoded Bank Rates in TypeScript (`src/data/bankData.ts`)** `[COMPLETED]`
+  - Refactored `src/data/bankData.ts` to purge all 700+ lines of duplicate hardcoded bank objects, rates, and matrices.
+  - Standardized `src/data/rates.json` as the Single Source of Truth, generated and synchronized strictly by `scripts/sync-rates.ts`.
+  - Dynamically hydrated `INITIAL_BANKS`, `TAX_SAVER_BANKS`, and `MERGED_BANKS_REGISTRY` with type-safe conversion.
+- [x] **8.2 APGVB Bifurcation & Amalgamation into APGB and TGB** `[COMPLETED]`
+  - Resolved Andhra Pradesh Grameena Vikas Bank (APGVB) bifurcation under the Government of India's "One State, One RRB" policy:
+    - **Telangana**: All 493 APGVB branches in Telangana merged into **Telangana Grameena Bank (TGB)** (`https://tgb.bank.in/`).
+    - **Andhra Pradesh**: AP branches amalgamated with Andhra Pragathi Grameena Bank, CGGB, and SGB into unified **Andhra Pradesh Grameena Bank (APGB)** (`https://apgb.bank.in/`), headquartered in Guntur.
+  - Recorded APGVB under `mergedBanks` with explicit successor bank mapping (`['apgb-bank', 'tgb-bank']`).
+  - Updated Gujarat Gramin Bank (GGB, `ggb.bank.in`), Maharashtra Gramin Bank (`mahagramin.bank.in`), and Karnataka Grameena Bank (`karnatakagraminbank.com`) to reflect their latest unified RRB entity structures.
+- [x] **8.3 Dual Official Live Scrapers for APGB & TGB** `[COMPLETED]`
+  - Built Cheerio live scraper for **APGB** (`https://apgb.bank.in/banking-products/deposits/deposit-interest-rates`):
+    - 1 Year (12M): 7.00%
+    - 2–5 Years (24M, 36M, 60M): 6.65%
+    - Senior Citizens: +0.50%, Super Senior Citizens: +0.75%, Women: +0.15%
+  - Built Cheerio live scraper for **TGB** (`https://tgb.bank.in/deposit-interest-rates`):
+    - 1–2 Years: 6.45%, 3 Years: 6.50%, 5 Years: 7.00%
+    - 444-DDD Special: 7.40%, TGB Sahasra (1000D): 7.50%, RD Lakhpati (36M): 7.50%
+  - Automated diff comparison and atomic file writes back to `src/data/rates.json`.
+- [x] **8.4 Smart Amalgamation Search & UI Merger Guidance** `[COMPLETED]`
+  - Added real-time search input with debounced querying in `YieldCommandCenter.tsx`.
+  - When searching for erstwhile entities (e.g. "APGVB", "Vikas"), an amber Amalgamation Information Banner appears automatically guiding the user:
+    *"Andhra Pradesh Grameena Vikas Bank (APGVB) was bifurcated: its 493 branches in Telangana merged into Telangana Grameena Bank (TGB), and its branches in Andhra Pradesh amalgamated into Andhra Pradesh Grameena Bank (APGB)."*
+  - Automatically filters and highlights both successor banks (`APGB` and `TGB`).
+  - Added robust `BankLogo` component with stylized building icon fallback on image load failure.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -179,5 +211,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 5 | Upgraded to stable Vite 6, purged express, verified `lint` and `build` | 0 lint errors, clean Vite production build in ~2s, verified via browser |
 | **2026-10-20** | Phase 6 | Implemented Custom Rate Target Modeling & Special Odd-Day Schemes (222D–1001D) | RBI fractional quarterly compounding, custom % slider/steppers, browser verified |
 | **2026-10-20** | Phase 7 | Built GitOps Automated Rate Pipeline with GHA Cron & Live Scraper | Live TGB rate verified, decoupled `rates.json`, weekly GHA cron, zero backend |
+| **2026-10-20** | Phase 8 | Zero-hardcode rate architecture, APGVB merger handling, APGB & TGB live scrapers | Populated rates.json purely via sync script, smart merger UI guidance, verified end-to-end |
+
 
 

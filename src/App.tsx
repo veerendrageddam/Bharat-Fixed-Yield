@@ -116,7 +116,7 @@ export default function App() {
                 onInvest={handleInvest}
                 comparedBankIds={comparedBankIds}
                 onToggleCompare={handleToggleCompare}
-                onNavigateTab={(tab) => {
+                onNavigateTab={(tab: string) => {
                   setActiveTab(tab);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}

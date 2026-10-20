@@ -28,7 +28,9 @@ import {
   Clock,
   Zap,
   Flame,
-  Check
+  Check,
+  Search,
+  X
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -47,8 +49,28 @@ import {
 import { BankCategory, BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
 import { INDIAN_STATES, UNION_TERRITORIES, PAN_INDIA_OPTION } from '../data/jurisdictions';
-import { LATEST_RATES_METADATA } from '../data/bankData';
+import { LATEST_RATES_METADATA, MERGED_BANKS_REGISTRY } from '../data/bankData';
 import { AmortizationModal } from './AmortizationModal';
+
+const BankLogo: React.FC<{ src: string; name: string }> = ({ src, name }) => {
+  const [hasError, setHasError] = useState(false);
+  if (hasError || !src) {
+    return (
+      <div className="w-12 h-12 rounded-xl border border-slate-100 dark:border-slate-800 p-1 bg-emerald-50 dark:bg-emerald-950/40 text-[#006c4a] dark:text-[#10b981] flex items-center justify-center shrink-0">
+        <Building className="w-6 h-6" />
+      </div>
+    );
+  }
+  return (
+    <img
+      src={src}
+      alt={`${name} logo`}
+      className="w-12 h-12 object-contain rounded-xl border border-slate-100 dark:border-slate-800 p-1 bg-white shrink-0"
+      loading="lazy"
+      onError={() => setHasError(true)}
+    />
+  );
+};
 
 interface YieldCommandCenterProps {
   persona: UserPersona;
@@ -76,6 +98,24 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const [dicgcOnly, setDicgcOnly] = useState<boolean>(true);
   const [activeModalBank, setActiveModalBank] = useState<BankData | null>(null);
   const [activeChartTab, setActiveChartTab] = useState<'donut' | 'trajectory' | 'spread'>('donut');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Check if search query matches any merged bank
+  const activeMergerNotice = useMemo(() => {
+    if (!searchQuery.trim()) return null;
+    const q = searchQuery.toLowerCase().trim();
+    for (const merged of Object.values(MERGED_BANKS_REGISTRY)) {
+      if (
+        merged.id.toLowerCase().includes(q) ||
+        merged.name.toLowerCase().includes(q) ||
+        q.includes('apgvb') ||
+        q.includes('vikas')
+      ) {
+        return merged;
+      }
+    }
+    return null;
+  }, [searchQuery]);
 
   // Input amount handler
   const currentAmount = persona.depositType === 'RD' 
@@ -112,16 +152,25 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   // State filtering logic
   const stateFilteredBanks = useMemo(() => {
     return banks.filter((b) => {
+      // If user is searching specifically, don't restrict to selected state
+      if (searchQuery.trim()) return true;
       if (persona.state === PAN_INDIA_OPTION.name || persona.state === 'All India (Pan-India)') return true;
       if (b.isPanIndia) return true;
       if (b.operatingStates && b.operatingStates.includes('ALL')) return true;
       return b.operatingStates ? b.operatingStates.includes(persona.state) : true;
     });
-  }, [banks, persona.state]);
+  }, [banks, persona.state, searchQuery]);
 
   // Category and sub-filter logic
   const filteredAndRankedBanks = useMemo(() => {
     const list = stateFilteredBanks.filter((b) => {
+      if (searchQuery.trim()) {
+        const q = searchQuery.toLowerCase().trim();
+        const matchesName = b.name.toLowerCase().includes(q) || b.id.toLowerCase().includes(q) || b.subTitle.toLowerCase().includes(q);
+        const matchesMergerSuccessor = activeMergerNotice && activeMergerNotice.successorBankIds.includes(b.id);
+        if (!matchesName && !matchesMergerSuccessor) return false;
+      }
+
       if (selectedCategory === 'sfb' && b.category !== 'sfb') return false;
       if (selectedCategory === 'rrb' && b.category !== 'rrb') return false;
       if (selectedCategory === 'private' && b.category !== 'private') return false;
@@ -143,7 +192,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       const rateB = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
       return rateB - rateA;
     });
-  }, [stateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona]);
+  }, [stateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice]);
 
   // Tenure Days resolution
   const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
@@ -1062,6 +1111,63 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           </div>
         </div>
 
+        {/* Search & Merger Resolution Bar */}
+        <div className="flex flex-col gap-3">
+          <div className="relative w-full">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search bank name or erstwhile merged entities (e.g., APGVB, APGB, TGB, SBI, HDFC)..."
+              className="w-full h-11 pl-10 pr-9 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 shadow-2xs transition-all"
+            />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"
+                aria-label="Clear search"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            )}
+          </div>
+
+          {/* Smart Amalgamation / Merger Guidance Banner */}
+          {activeMergerNotice && (
+            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-xl p-4 flex items-start gap-3 transition-all">
+              <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+              <div className="flex flex-col gap-1.5 text-xs sm:text-sm">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-bold text-amber-900 dark:text-amber-200">
+                    {activeMergerNotice.name}
+                  </span>
+                  <span className="px-2 py-0.5 rounded-full bg-amber-200 dark:bg-amber-800 text-amber-900 dark:text-amber-100 font-extrabold text-[10px] tracking-wider uppercase">
+                    Amalgamated / Restructured
+                  </span>
+                </div>
+                <p className="text-amber-800 dark:text-amber-300 leading-relaxed">
+                  {activeMergerNotice.notice}
+                </p>
+                <div className="flex items-center gap-2 flex-wrap pt-1">
+                  <span className="font-semibold text-amber-900 dark:text-amber-200 text-xs">
+                    Successor Banks:
+                  </span>
+                  {activeMergerNotice.successorBankNames.map((name) => (
+                    <span
+                      key={name}
+                      className="inline-flex items-center px-2.5 py-1 rounded-lg bg-white dark:bg-[#161b22] text-emerald-800 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-bold text-xs shadow-2xs"
+                    >
+                      ✓ {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
         {/* Category Tabs & Subfilters */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
@@ -1147,12 +1253,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                     #{index + 1}
                   </div>
 
-                  <img
-                    src={bank.logoUrl}
-                    alt={`${bank.name} logo`}
-                    className="w-12 h-12 object-contain rounded-xl border border-slate-100 dark:border-slate-800 p-1 bg-white shrink-0"
-                    loading="lazy"
-                  />
+                  <BankLogo src={bank.logoUrl} name={bank.name} />
 
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2 flex-wrap">

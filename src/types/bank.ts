@@ -47,6 +47,23 @@ export interface BankData {
   portalUrl?: string;
   portalName?: string;
   rdSupported?: boolean;
+  status?: 'active' | 'amalgamated';
+  sourceUrl?: string;
+  lastVerified?: string;
+}
+
+export interface MergedBankInfo {
+  id: string;
+  name: string;
+  status: 'amalgamated';
+  category: 'sfb' | 'private' | 'psu' | 'rrb';
+  effectiveDate: string;
+  rationale: string;
+  successorBankIds: string[];
+  successorBankNames: string[];
+  notice: string;
+  formerOperatingStates: string[];
+  sourceNotice?: string;
 }
 
 export interface UserPersona {

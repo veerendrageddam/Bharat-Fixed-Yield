@@ -216,19 +216,28 @@ gantt
 ```
 
 ### Active Progress Checklist (See [IMPLEMENTATION_TRACKER.md](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/IMPLEMENTATION_TRACKER.md))
-- [ ] **Phase 1: Math & Domain Accuracy**
-  - [ ] Implement RBI-compliant RD formula in `calculator.ts` with quarterly compounding of monthly installments.
-  - [ ] Add dynamic label switching between *"Principal Deposit Sum"* (FD) and *"Monthly Installment"* (RD).
-  - [ ] Verify Section 194A (₹40k) and Section 80TTB (₹50k senior) TDS thresholds.
-- [ ] **Phase 2: Compliance & Security Hardening**
-  - [ ] Purge mock Aadhaar & PAN collection from `BookingModal.tsx` (DPDP Act 2023 compliance).
-  - [ ] Replace with verified official bank redirection deep links (SBI YONO, HDFC NetBanking, etc.).
-- [ ] **Phase 3: Unified "Yield Command Center"**
-  - [ ] Merge `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` into a single-screen reactive view.
-  - [ ] Render dynamic Donut Chart (Principal vs Wealth Gain) and Compounding Growth Area Chart.
-- [ ] **Phase 4: Dynamic Personalization & Multi-Tenure Rates**
-  - [ ] Expand bank data schema with 1Y, 2Y, 3Y, 5Y Tax-Saver rate matrices.
-  - [ ] Activate State jurisdiction filtering and Women depositor bonuses.
-- [ ] **Phase 5: Build Integrity & Production Quality**
-  - [ ] Sanitize dependencies, verify clean build, and test responsive mobile accessibility.
+- [x] **Phase 1: Math & Domain Accuracy** `[COMPLETED]`
+  - [x] Implemented RBI-compliant RD formula in `calculator.ts` with quarterly compounding of monthly installments.
+  - [x] Added dynamic label switching between *"Principal Deposit Sum"* (FD) and *"Monthly Installment"* (RD).
+  - [x] Verified Section 194A (₹40k) and Section 80TTB (₹50k senior) TDS thresholds.
+- [x] **Phase 2: Compliance & Security Hardening** `[COMPLETED]`
+  - [x] Purged mock Aadhaar & PAN collection from `BookingModal.tsx` (DPDP Act 2023 compliance).
+  - [x] Replaced with verified official bank redirection deep links (SBI YONO, HDFC NetBanking, APGB, TGB, etc.).
+- [x] **Phase 3: Unified "Yield Command Center"** `[COMPLETED]`
+  - [x] Merged `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` into a single-screen reactive view.
+  - [x] Rendered dynamic Donut Chart (Principal vs Wealth Gain) and Compounding Growth Area Chart.
+- [x] **Phase 4: Dynamic Personalization & Multi-Tenure Rates** `[COMPLETED]`
+  - [x] Expanded bank data schema with 1Y, 2Y, 3Y, 5Y Tax-Saver rate matrices.
+  - [x] Activated State jurisdiction filtering and Women depositor bonuses.
+- [x] **Phase 5: Build Integrity & Production Quality** `[COMPLETED]`
+  - [x] Sanitized dependencies, verified clean build in ~2s, and tested responsive mobile accessibility.
+- [x] **Phase 6: Custom % & Odd-Day Schemes** `[COMPLETED]`
+  - [x] Custom percentage target modeling with RBI fractional quarterly compounding.
+- [x] **Phase 7: GitOps Automated Rate Pipeline** `[COMPLETED]`
+  - [x] Scheduled GitHub Actions weekly cron, live bank scraping, decoupled `rates.json`.
+- [x] **Phase 8: Bank Consolidation & Zero-Hardcode Ingestion Architecture** `[COMPLETED]`
+  - [x] Purged all hardcoded rates from TypeScript files; `src/data/rates.json` is the sole source of truth populated via `scripts/sync-rates.ts`.
+  - [x] Modeled APGVB bifurcation into Telangana Grameena Bank (TGB, `https://tgb.bank.in/`) and Andhra Pradesh Grameena Bank (APGB, `https://apgb.bank.in/`).
+  - [x] Built live scrapers for both APGB and TGB deposit cards.
+  - [x] Added smart amalgamation search in `YieldCommandCenter.tsx` with merger guidance banner.
 
