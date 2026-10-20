@@ -193,7 +193,9 @@ If AWS is required in the future (for enterprise compliance, startup credits, or
 
 ---
 
-## 6. Phased Production Implementation Roadmap
+## 6. Phased Production Implementation Roadmap & Tracking
+
+Detailed tracking and task breakdown is documented in [IMPLEMENTATION_TRACKER.md](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/IMPLEMENTATION_TRACKER.md).
 
 ```mermaid
 gantt
@@ -202,8 +204,8 @@ gantt
     section Phase 1: Core Engine & Unified UI
     Mathematical Engine (FD & RD compounding) :p1_1, 2026-10-20, 2d
     Unified Single-Tab UI & Interactive Sliders :p1_2, after p1_1, 3d
-    Data Visualizations (Recharts integration) :p1_3, after p1_2, 2d
-    Removal of Aadhaar/PAN & Safe Lead Redirect:p1_4, after p1_3, 1d
+    Data Visualizations (Donut & Area charts)  :p1_3, after p1_2, 2d
+    Removal of Aadhaar/PAN & Safe Bank Portal :p1_4, after p1_3, 1d
     section Phase 2: Dynamic Data & Storage
     Database Schema (Supabase/Neon Postgres)  :p2_1, after p1_4, 3d
     Bank Ingestion & Rate Pipeline            :p2_2, after p2_1, 4d
@@ -213,8 +215,20 @@ gantt
     Cloudflare DNS, SSL & Live Deployment     :p3_2, after p3_1, 2d
 ```
 
-### Next Immediate Action Items
-1. Unify `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` into a cohesive, single-tab interface.
-2. Implement correct RD math alongside FD calculations with dynamic label switching.
-3. Integrate Recharts to render Principal vs. Interest Donut charts and Tenure Compounding Area charts.
-4. Replace insecure Aadhaar/PAN fields with compliant official bank redirection buttons.
+### Active Progress Checklist (See [IMPLEMENTATION_TRACKER.md](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/IMPLEMENTATION_TRACKER.md))
+- [ ] **Phase 1: Math & Domain Accuracy**
+  - [ ] Implement RBI-compliant RD formula in `calculator.ts` with quarterly compounding of monthly installments.
+  - [ ] Add dynamic label switching between *"Principal Deposit Sum"* (FD) and *"Monthly Installment"* (RD).
+  - [ ] Verify Section 194A (₹40k) and Section 80TTB (₹50k senior) TDS thresholds.
+- [ ] **Phase 2: Compliance & Security Hardening**
+  - [ ] Purge mock Aadhaar & PAN collection from `BookingModal.tsx` (DPDP Act 2023 compliance).
+  - [ ] Replace with verified official bank redirection deep links (SBI YONO, HDFC NetBanking, etc.).
+- [ ] **Phase 3: Unified "Yield Command Center"**
+  - [ ] Merge `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` into a single-screen reactive view.
+  - [ ] Render dynamic Donut Chart (Principal vs Wealth Gain) and Compounding Growth Area Chart.
+- [ ] **Phase 4: Dynamic Personalization & Multi-Tenure Rates**
+  - [ ] Expand bank data schema with 1Y, 2Y, 3Y, 5Y Tax-Saver rate matrices.
+  - [ ] Activate State jurisdiction filtering and Women depositor bonuses.
+- [ ] **Phase 5: Build Integrity & Production Quality**
+  - [ ] Sanitize dependencies, verify clean build, and test responsive mobile accessibility.
+

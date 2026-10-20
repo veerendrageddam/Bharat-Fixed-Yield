@@ -214,4 +214,5 @@ npm run preview
 
 ## Architecture & Standards Documentation
 
-For complete technical specifications, mathematical proofs, cost breakdowns, and the full architectural roadmap, see **[context.md](context.md)**.
+For complete technical specifications, mathematical proofs, cost breakdowns, and the full architectural roadmap, see **[context.md](context.md)**.  
+For the active task checklist, status tracking, and execution log, see **[IMPLEMENTATION_TRACKER.md](IMPLEMENTATION_TRACKER.md)**.
