@@ -85,33 +85,40 @@ Bharat Fixed Yield is designed to be an **RBI/DICGC-indexed yield comparison pla
 
 ---
 
-## 3. Recommended Production Tech Stack
+## 3. Recommended Production Tech Stack & Architectural Analysis
 
-Designed for **maximum performance**, **sub-100ms response times**, **SEO indexing**, and **lowest operational cost**:
+Designed around the **Core Engineering Principle**: *Build the simplest production-quality solution that satisfies current requirements, making deliberate decisions about maintainability, security, performance, scalability, UX, and future change.*
+
+### Architectural Data Realities
+1. **Tiny Data Footprint**: ~60–100 banks × ~10 tenure brackets × 3 customer tiers = **~2,000 to 5,000 total rate rows** (~1–2 MB of JSON data).
+2. **Extreme Read Dominance**: >99.9% read-to-write ratio. Bank interest rates change only a few times a month (typically following RBI Monetary Policy Committee announcements).
+3. **SEO is the Core Growth Vector**: Deposit aggregators depend on organic Google search intent (*"best 1 year FD rates 2026"*, *"SBI senior citizen RD calculator"*). Pure client-side SPAs (Vite) fail to rank compared to pre-rendered SSG/ISR pages.
+
+### Lean Production Architecture Diagram
 
 ```
 ┌────────────────────────────────────────────────────────────────────────┐
 │                          CLIENT BROWSER                                │
-│        Next.js 15 Client (React 19) + Tailwind CSS v4 + Recharts       │
+│       Next.js 15 App (React 19) + Tailwind CSS v4 + Recharts           │
+│       - Real-time client-side compounding & tax calculations           │
+│       - Reactive sliders & interactive charts without network hops     │
 └───────────────────────────────────┬────────────────────────────────────┘
-                                    │ HTTPS / Edge CDN
+                                    │ HTTPS (Fast Edge Hits < 10ms)
 ┌───────────────────────────────────▼────────────────────────────────────┐
 │                  CLOUDFLARE EDGE / VERCEL PLATFORM                     │
 │  - Edge Caching (stale-while-revalidate for public rate endpoints)     │
-│  - SSR / SSG for Bank SEO Pages (e.g. /fd-rates/sbi, /fd-rates/hdfc)   │
-│  - Serverless API Routes (/api/rates, /api/calculate)                  │
-└───────────────────┬───────────────────────────────┬────────────────────┘
-                    │                               │
-       Fast Read    │                               │ Read / Fallback
-   (<10ms Response) │                               │
-                    ▼                               ▼
-       ┌────────────────────────┐      ┌─────────────────────────┐
-       │     UPSTASH REDIS      │      │   NEON / SUPABASE       │
-       │   (Serverless Cache)   │      │ (Serverless PostgreSQL) │
-       └────────────▲───────────┘      └────────────▲────────────┘
-                    │                               │
-                    └───────────────┬───────────────┘
-                                    │ Daily Cron / Write
+│  - SSG / ISR for Bank SEO Pages (/fd-rates/sbi, /rd-rates/hdfc)        │
+│  - Instant cache invalidation via Webhooks on rate revision            │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │ Cache Miss / Nightly Revalidation
+                                    ▼
+                       ┌─────────────────────────┐
+                       │   SUPABASE / NEON       │
+                       │ (Serverless PostgreSQL) │
+                       │ - Relational integrity  │
+                       │ - Auto-pauses on idle   │
+                       └────────────▲────────────┘
+                                    │ Daily Cron / Rate Upsert
                        ┌────────────┴─────────────┐
                        │ RATE INGESTION WORKER    │
                        │ (GitHub Actions / Cron)  │
@@ -120,35 +127,73 @@ Designed for **maximum performance**, **sub-100ms response times**, **SEO indexi
                        └──────────────────────────┘
 ```
 
-| Layer | Recommended Choice | Rationale & Trade-offs |
-|---|---|---|
-| **Framework** | **Next.js 15 (App Router)** or **Vite + SSR** | Aggregator sites rely heavily on organic search traffic (e.g., *"best 3-year FD rates today"*). SSR/SSG ensures optimal SEO, while client components deliver fluid interactive sliders. |
-| **Styling** | **Tailwind CSS v4** | Retains existing design system, eliminates runtime CSS overhead, supports seamless light/dark mode. |
-| **Visualizations** | **Recharts** | Declarative, SVG-based, responsive, accessible tooltips, and compatible with React 19. |
-| **Database** | **Neon PostgreSQL** or **Supabase** | Serverless SQL database with relational integrity for complex tenure matrices, auto-pausing when idle. |
-| **Cache Layer** | **Upstash Redis (Serverless)** | Sub-10ms response time for rate card reads. Low write frequency (rates change monthly) + high read frequency (thousands of queries daily). |
-| **Ingestion Pipeline**| **Cloudflare Workers Cron** or **GitHub Actions** | Scheduled headless scrapers/crawlers targeting top scheduled banks without managing persistent VMs. |
-| **Hosting & CDN** | **Vercel** + **Cloudflare DNS/WAF** | Free SSL, global Edge CDN caching, DDoS protection, zero infrastructure maintenance overhead. |
+### Component Analysis & Deliberate Rationale
+
+| Layer | Selected Technology | Why Chosen & Deliberate Trade-offs | What Was Rejected & Why |
+|---|---|---|---|
+| **Framework** | **Next.js 15 (App Router)** | **Chosen**: SSG/ISR generates high-ranking static pages for each bank and tenure combination. React 19 hydration allows instant client-side math execution for sliders without API roundtrips.<br>**Trade-off**: Requires Node/Edge build step rather than raw static HTML export. | **Rejected (Pure Vite SPA)**: Client-only rendering yields poor search crawlability for financial comparison keywords, hampering organic discovery. |
+| **Styling** | **Tailwind CSS v4** | **Chosen**: Zero-runtime CSS engine with immediate compilation, modern CSS variables, and seamless dark mode. Already established in codebase. | **Rejected (CSS-in-JS like styled-components)**: Causes runtime overhead and hydration mismatches in server components. |
+| **Visualizations** | **Recharts** | **Chosen**: Declarative, lightweight SVG rendering, mobile-responsive, accessible tooltips. Perfect for donut and compounding area charts. | **Rejected (Heavy Canvas/D3.js)**: Excessive boilerplate for standard financial curves; larger bundle size. |
+| **Database** | **Supabase or Neon (PostgreSQL)** | **Chosen**: Relational model is ideal for structured tenure brackets (`tenure_days BETWEEN x AND y`), multi-state availability filtering, and bank types. Serverless pricing auto-pauses when idle. | **Rejected (DynamoDB / MongoDB)**: Complex range queries across states, ages, and tenures require multiple GSI indexes and composite keys in NoSQL, making queries fragile and expensive. |
+| **Cache Layer** | **HTTP Edge CDN & Next.js ISR (No Redis)** | **Chosen**: Entire dataset is ~1–2 MB. Caching at the Edge CDN layer (Cloudflare/Vercel) provides <10ms latency globally with **zero infrastructure overhead and $0 cost**. | **Rejected (Upstash / Redis)**: **Premature optimization**. Introducing an external Redis cache adds a network hop, separate connection management, and an extra vendor bill for static data. |
+| **Ingestion Pipeline**| **GitHub Actions Cron Worker** | **Chosen**: 2,000 free minutes/month on private repos. Daily 30-second headless crawler script writes rate diffs to Postgres. Zero persistent servers required. | **Rejected (24/7 EC2 / Celery Worker)**: Waste of budget paying for an idle server that only works for 60 seconds each night. |
+| **Hosting & DNS**| **Vercel / Cloudflare Pages + Cloudflare DNS** | **Chosen**: Free SSL, automatic global CDN distribution, DDoS mitigation, continuous Git deployment. | **Rejected (Self-managed VPS/Nginx)**: High manual maintenance (SSL renewals, OS patches, security hardening) for zero added benefit. |
 
 ---
 
-## 4. Cost-Effective Hosting & Budget Model
+## 4. AWS Evaluation: Free Tier vs. Long-Term Cost Reality
 
-| Service | Tier / Plan | Estimated Monthly Cost |
-|---|---|---|
-| **Cloudflare** | Free (DNS, CDN, Global Edge Caching, SSL) | $0 / mo |
-| **Vercel / Cloudflare Pages** | Hobby / Standard Free Tier | $0 / mo |
-| **Neon PostgreSQL** | Free Tier (0.5 GB storage, 100k queries/mo) | $0 / mo |
-| **Upstash Redis** | Free Tier (10,000 commands/day) | $0 / mo |
-| **Ingestion Worker** | GitHub Actions (2,000 free minutes/mo) | $0 / mo |
-| **Domain Name** | `.in` / `.com` registry | ~₹800 – ₹1,200 / year |
-| **Total Starting Cost** | | **₹0 – ₹100 / month** |
+Evaluating whether AWS is suitable for Bharat Fixed Yield as an early-stage product:
+
+### The AWS "12-Month Free Tier" Trap
+Many developers assume AWS is "free" or cheap, but standard setups incur hidden recurring costs:
+1. **The Month-13 Cliff**:
+   - AWS Free Tier for EC2 (`t2.micro`/`t3.micro`) and RDS PostgreSQL (`db.t3.micro`) **expires completely after 12 months**.
+   - After month 12, a single idle RDS instance costs **~$18 to $25/month** ($216–$300/year).
+2. **Hidden Networking & Infra Taxes**:
+   - **Public IPv4 Addresses**: AWS charges **$3.65/month** per public IP (introduced Feb 2024).
+   - **VPC NAT Gateways**: Placing RDS in a private subnet requires an AWS NAT Gateway, which costs **~$32.40/month minimum** before traffic charges.
+   - **Application Load Balancer (ALB)**: Costs **~$16.20/month** just to run custom SSL certificates for containerized services.
+3. **Operational Overhead**: Managing IAM roles, security groups, VPC subnets, and database maintenance windows creates unnecessary operational toil for an early-stage product.
+
+### When AWS Makes Sense (The Pragmatic AWS Path)
+If AWS is required in the future (for enterprise compliance, startup credits, or ecosystem synergy), the only cost-effective architecture is **Serverless AWS**:
+- **Frontend**: AWS CloudFront + S3 (1 TB/month egress is **free forever**).
+- **Compute**: AWS Lambda + HTTP API Gateway (1,000,000 requests/month **free forever**).
+- **Database**: External Serverless Postgres (Supabase/Neon) OR **AWS Lightsail Database** ($15/month fixed, predictable, zero VPC/NAT charges).
+
+### Cost Comparison Table: Recommended Stack vs. AWS
+
+| Architecture Component | Recommended Lean Stack (Next.js + Supabase) | AWS Standard Setup (EC2 + RDS + ALB) | AWS Serverless Setup (CloudFront + S3 + Lambda) |
+|---|---|---|---|
+| **Frontend Hosting** | **$0 / mo** (Vercel / Cloudflare) | $3.65+ / mo (IPv4 + EC2) | **$0 / mo** (S3 + CloudFront free tier) |
+| **API / Compute** | **$0 / mo** (Next.js Edge / Serverless) | Included in EC2 | **$0 / mo** (Lambda 1M free req/mo) |
+| **Database (Year 1)** | **$0 / mo** (Supabase/Neon free tier) | $0 / mo (RDS db.t3.micro) | $0 / mo (Supabase/Neon external) |
+| **Database (Year 2+)**| **$0 / mo** (within free tier quotas) | **$18 – $25 / mo** (RDS billing begins) | $0 / mo (within free tier quotas) |
+| **Networking & NAT** | **$0 / mo** (Cloudflare Edge) | **$32 – $48 / mo** (NAT Gateway + ALB) | **$0 / mo** (CloudFront edge) |
+| **Estimated Year 1 Cost**| **₹0 / month** | **$35 – $50 / mo** (~₹3,000 – ₹4,200/mo) | **$0 / month** |
+| **Estimated Year 2+ Cost**| **₹0 – $20 / month** (scales with MAU) | **$65 – $90 / mo** (~₹5,500 – ₹7,500/mo) | **$0 – $15 / month** |
+
+*Conclusion*: Starting with the **Modern Serverless Stack (Vercel + Supabase + Cloudflare)** saves over **₹40,000 – ₹80,000 annually** while delivering better global latency and zero DevOps overhead.
+
+---
+
+## 5. Cost-Effective Hosting & Budget Model (Recommended Stack)
+
+| Service | Tier / Plan | Monthly Cost | Yearly Cost |
+|---|---|---|---|
+| **Cloudflare** | Free (DNS, Global Edge Caching, SSL, WAF) | $0 | $0 |
+| **Vercel / Cloudflare Pages** | Hobby / Standard Free Tier | $0 | $0 |
+| **Supabase / Neon** | Free Tier (500 MB Postgres, 50k MAU) | $0 | $0 |
+| **GitHub Actions** | Free Tier (2,000 build minutes/month) | $0 | $0 |
+| **Domain Name (`.in` / `.com`)** | Standard Registrar | ~₹80 / mo | ~₹999 / year |
+| **Total Production Cost** | | **~₹80 / month** | **~₹999 / year** |
 
 *Note: This architecture scales automatically to 100,000+ monthly active users (MAU) before requiring transition to paid tiers (which remain under $25–$50/month).*
 
 ---
 
-## 5. Phased Production Implementation Roadmap
+## 6. Phased Production Implementation Roadmap
 
 ```mermaid
 gantt
@@ -160,7 +205,7 @@ gantt
     Data Visualizations (Recharts integration) :p1_3, after p1_2, 2d
     Removal of Aadhaar/PAN & Safe Lead Redirect:p1_4, after p1_3, 1d
     section Phase 2: Dynamic Data & Storage
-    Database Schema (Postgres + Redis Cache)  :p2_1, after p1_4, 3d
+    Database Schema (Supabase/Neon Postgres)  :p2_1, after p1_4, 3d
     Bank Ingestion & Rate Pipeline            :p2_2, after p2_1, 4d
     State & Gender Filtering Engine           :p2_3, after p2_2, 2d
     section Phase 3: Launch & SEO
