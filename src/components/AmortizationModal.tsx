@@ -16,6 +16,16 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
   onClose,
   onInvest,
 }) => {
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
+
   if (!bank) return null;
 
   const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;

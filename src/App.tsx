@@ -98,7 +98,7 @@ export default function App() {
       />
 
       {/* Main Content Viewport with smooth transitions */}
-      <main className="flex-1 w-full pt-20">
+      <main id="main-content" className="flex-1 w-full pt-20">
         <AnimatePresence mode="wait">
           {isCommandCenterTab && (
             <motion.div

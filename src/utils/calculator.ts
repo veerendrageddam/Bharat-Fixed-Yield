@@ -37,7 +37,7 @@ export function getEffectiveRate(
   }
 
   const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
-  let rate = bank.baseRate;
+  let rate = bank.baseRate ?? 0;
 
   // Use RD tenure rates if user selected RD and bank defines distinct RD rates
   const ratesMatrix = (persona.depositType === 'RD' && bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
@@ -68,17 +68,21 @@ export function getEffectiveRate(
 
   // Age bonuses
   if (persona.age >= 80) {
-    rate += bank.superSeniorBonus;
+    rate += (bank.superSeniorBonus ?? bank.seniorBonus ?? 0);
   } else if (persona.age >= 60) {
-    rate += bank.seniorBonus;
+    rate += (bank.seniorBonus ?? 0);
   }
 
   // Women depositor bonus
   if (persona.gender === 'female' && bank.womenBonus) {
-    rate += bank.womenBonus;
+    rate += (bank.womenBonus ?? 0);
   }
 
-  return Number(rate.toFixed(2));
+  if (isNaN(rate)) {
+    rate = bank.baseRate ?? 0;
+  }
+
+  return Number((rate || 0).toFixed(2));
 }
 
 /**

@@ -20,6 +20,18 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setModalOpen(false);
+      }
+    };
+    if (modalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalOpen]);
+
   if (comparedBanks.length === 0) return null;
 
   const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
@@ -95,7 +107,8 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
 
               <button
                 onClick={() => setModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                aria-label="Close comparison modal"
               >
                 <X className="w-4 h-4" />
               </button>

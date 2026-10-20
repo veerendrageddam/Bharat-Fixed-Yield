@@ -797,12 +797,17 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         {/* Persona Matrix Controls (Age, Gender, State, Form 15H) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
           {/* Age Tier */}
+          {/* Age Tier */}
           <div className="flex flex-col gap-1.5">
-            <span className="font-bold text-slate-700 dark:text-slate-300">Depositor Age Category</span>
+            <label htmlFor="persona-age-select" className="font-bold text-slate-700 dark:text-slate-300">
+              Depositor Age Category
+            </label>
             <select
+              id="persona-age-select"
+              aria-label="Depositor Age Category"
               value={persona.age >= 80 ? '80' : persona.age >= 60 ? '60' : '35'}
               onChange={(e) => setPersona((prev) => ({ ...prev, age: Number(e.target.value) }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden"
+              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
             >
               <option value="35">General Citizen (&lt;60 yrs) - Card Rate</option>
               <option value="65">Senior Citizen (60–79 yrs) - +0.50%</option>
@@ -812,11 +817,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
           {/* Gender */}
           <div className="flex flex-col gap-1.5">
-            <span className="font-bold text-slate-700 dark:text-slate-300">Gender Specification</span>
+            <label htmlFor="persona-gender-select" className="font-bold text-slate-700 dark:text-slate-300">
+              Gender Specification
+            </label>
             <select
+              id="persona-gender-select"
+              aria-label="Gender Specification"
               value={persona.gender}
               onChange={(e) => setPersona((prev) => ({ ...prev, gender: e.target.value as 'female' | 'male' | 'other' }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden"
+              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
             >
               <option value="female">Female (Women Bonus +0.15% & MSSC)</option>
               <option value="male">Male (Standard Card)</option>
@@ -826,11 +835,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
           {/* State / Jurisdiction */}
           <div className="flex flex-col gap-1.5">
-            <span className="font-bold text-slate-700 dark:text-slate-300">State / Bank Jurisdiction</span>
+            <label htmlFor="persona-state-select" className="font-bold text-slate-700 dark:text-slate-300">
+              State / Bank Jurisdiction
+            </label>
             <select
+              id="persona-state-select"
+              aria-label="State and Bank Jurisdiction"
               value={persona.state}
               onChange={(e) => setPersona((prev) => ({ ...prev, state: e.target.value }))}
-              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden"
+              className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
             >
               <optgroup label="Pan-India">
                 <option value={PAN_INDIA_OPTION.name}>{PAN_INDIA_OPTION.name}</option>
@@ -1127,11 +1140,13 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           <div className="relative w-full">
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
+              id="bank-search-input"
+              aria-label="Search banks or erstwhile merged entities"
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search bank name or erstwhile merged entities (e.g., APGVB, APGB, TGB, SBI, HDFC)..."
-              className="w-full h-11 pl-10 pr-9 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 shadow-2xs transition-all"
+              className="w-full h-11 pl-10 pr-9 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-sm text-slate-900 dark:text-white placeholder:text-slate-400 focus:outline-hidden focus:border-emerald-500 focus-visible:ring-2 focus-visible:ring-emerald-500 shadow-2xs transition-all"
             />
             {searchQuery && (
               <button
@@ -1208,12 +1223,18 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
           {/* Subfilters */}
           <div className="flex items-center gap-3 text-xs flex-wrap">
+            <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300 font-bold" aria-live="polite">
+              <span>{filteredAndRankedBanks.length} Banks Available</span>
+            </div>
+
             <div className="flex items-center gap-1.5">
-              <span className="text-slate-500">Min Rating:</span>
+              <label htmlFor="min-rating-filter" className="text-slate-500 font-medium">Min Rating:</label>
               <select
+                id="min-rating-filter"
+                aria-label="Filter by minimum credit rating"
                 value={minRatingFilter}
                 onChange={(e) => setMinRatingFilter(e.target.value)}
-                className="h-8 px-2 rounded-lg bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-semibold focus:outline-hidden"
+                className="h-8 px-2 rounded-lg bg-white dark:bg-[#161b22] border border-slate-200 dark:border-slate-800 text-slate-800 dark:text-slate-200 font-semibold focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
               >
                 <option value="all">All Ratings</option>
                 <option value="AAA">CRISIL AAA Only</option>
@@ -1226,7 +1247,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 type="checkbox"
                 checked={dicgcOnly}
                 onChange={(e) => setDicgcOnly(e.target.checked)}
-                className="w-3.5 h-3.5 text-emerald-600 rounded border-slate-300"
+                className="w-3.5 h-3.5 text-emerald-600 rounded border-slate-300 focus-visible:ring-2 focus-visible:ring-emerald-500"
               />
               <span className="font-semibold text-slate-700 dark:text-slate-300">
                 DICGC Insured Only (₹5L)
@@ -1237,7 +1258,41 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
         {/* Bank List Cards */}
         <div className="flex flex-col gap-4">
-          {filteredAndRankedBanks.map((bank, index) => {
+          {filteredAndRankedBanks.length === 0 ? (
+            <div className="w-full bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs p-8 sm:p-12 text-center flex flex-col items-center justify-center gap-4">
+              <div className="w-14 h-14 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 flex items-center justify-center">
+                <Search className="w-7 h-7" />
+              </div>
+              <div className="max-w-md flex flex-col gap-1.5">
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                  No Banks Match Your Criteria
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
+                  {searchQuery ? (
+                    <>
+                      No institutions match <strong className="text-slate-800 dark:text-slate-200">&ldquo;{searchQuery}&rdquo;</strong> under the current state and category filters.
+                    </>
+                  ) : (
+                    'No institutions found with the selected credit rating or jurisdiction filters.'
+                  )}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setSearchQuery('');
+                  setSelectedCategory('all');
+                  setMinRatingFilter('all');
+                  setDicgcOnly(false);
+                  setPersona((prev) => ({ ...prev, state: 'Pan-India' }));
+                }}
+                className="mt-2 px-5 py-2.5 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-xs sm:text-sm transition-all shadow-xs cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+              >
+                Reset All Filters &amp; Search
+              </button>
+            </div>
+          ) : (
+            filteredAndRankedBanks.map((bank, index) => {
             const effectiveRate = getEffectiveRate(bank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
             const calc = calculateYield(
               currentAmount,
@@ -1376,9 +1431,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 </div>
               </div>
             );
-          })}
-        </div>
-      </section>
+          })
+        )}
+      </div>
+    </section>
 
       {/* Amortization Modal */}
       {activeModalBank && (
