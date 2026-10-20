@@ -1,6 +1,7 @@
 import { BankData } from '../types/bank';
+import ratesData from './rates.json';
 
-export const INITIAL_BANKS: BankData[] = [
+const STATIC_BANKS: BankData[] = [
   {
     id: 'unity-sfb',
     rank: 1,
@@ -462,29 +463,35 @@ export const INITIAL_BANKS: BankData[] = [
     categoryTag: 'Regional Rural Bank (Govt Sponsored)',
     ratingAgency: 'Sovereign',
     rating: 'Highest Safety',
-    baseRate: 7.50,
+    baseRate: 6.50,
     seniorBonus: 0.50,
-    superSeniorBonus: 0.80,
-    womenBonus: 0.15,
+    superSeniorBonus: 0.50,
+    womenBonus: 0.00,
     logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ',
     minDeposit: 1000,
     tenureYears: 3,
     tenureMonths: 36,
-    specialTenure: '444 Days TGB Amrit (7.60%)',
+    specialTenure: '1000 Days TGB Sahasra (7.50%)',
+    specialSchemes: [
+      { name: 'TGB Sahasra', days: 1000, rate: 7.50, badge: 'Peak RRB 7.50%' },
+      { name: '444-DDD Special', days: 444, rate: 7.40, badge: 'Special 444D' },
+      { name: 'RD Lakhpati (36M RD)', days: 1095, rate: 7.50, badge: 'High Yield RD' },
+      { name: 'RD Nethanna Podupu (24M RD)', days: 730, rate: 6.45 },
+    ],
     dicgcCovered: true,
     notes: 'Hyderabad HQ • Full statutory DICGC insurance guarantee up to ₹5 Lakhs per depositor.',
     exitPenalty: '0.50% Break Penalty',
     lockInDays: 7,
     ratesByTenure: {
-      12: 7.10,
-      24: 7.35,
-      36: 7.50,
-      60: 6.95,
+      12: 6.45,
+      24: 6.45,
+      36: 6.50,
+      60: 7.00,
     },
     isPanIndia: false,
     operatingStates: ['Telangana'],
-    portalUrl: 'https://www.tgbhyd.in/',
-    portalName: 'TGB NetBanking',
+    portalUrl: 'https://tgb.bank.in/deposit-interest-rates',
+    portalName: 'Telangana Grameena Bank Official Portal',
     rdSupported: true,
   },
   {
@@ -704,6 +711,29 @@ export const INITIAL_BANKS: BankData[] = [
     rdSupported: true,
   },
 ];
+
+export const LATEST_RATES_METADATA = {
+  lastUpdated: ratesData.lastUpdated,
+  source: ratesData.source,
+  version: ratesData.version,
+};
+
+// Dynamic rate hydration: Overlay latest GHA scraped rates on top of static metadata
+export const INITIAL_BANKS: BankData[] = STATIC_BANKS.map((b) => {
+  const dynamic = (ratesData.rates as Record<string, any>)?.[b.id];
+  if (!dynamic) return b;
+  return {
+    ...b,
+    baseRate: typeof dynamic.baseRate === 'number' ? dynamic.baseRate : b.baseRate,
+    ratesByTenure: dynamic.ratesByTenure ?? b.ratesByTenure,
+    specialTenure: dynamic.specialTenure ?? b.specialTenure,
+    specialSchemes: dynamic.specialSchemes ?? b.specialSchemes,
+    seniorBonus: typeof dynamic.seniorBonus === 'number' ? dynamic.seniorBonus : b.seniorBonus,
+    superSeniorBonus: typeof dynamic.superSeniorBonus === 'number' ? dynamic.superSeniorBonus : b.superSeniorBonus,
+    womenBonus: typeof dynamic.womenBonus === 'number' ? dynamic.womenBonus : b.womenBonus,
+    portalUrl: dynamic.sourceUrl ?? b.portalUrl,
+  };
+});
 
 export const TAX_SAVER_BANKS = INITIAL_BANKS.map((b) => ({
   ...b,

@@ -16,6 +16,8 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 3: Unified Command Center** | Single-Screen UX, Reactive Sliders, Donut & Area Charts | `COMPLETED` | 100% | Completed |
 | **Phase 4: Personalization Engine** | Multi-Tenure Rate Tables, State/Jurisdiction, Women Bonus | `COMPLETED` | 100% | Completed |
 | **Phase 5: Build & Production Quality** | Clean Types, Vite Build Verification, Dependency Sanitization | `COMPLETED` | 100% | Completed |
+| **Phase 6: Custom % & Odd-Day Schemes** | Custom Rate Targets, 222D–1001D Schemes, RBI Odd-Day Math | `COMPLETED` | 100% | Completed |
+| **Phase 7: GitOps Automated Rate Pipeline** | Weekly GHA Cron, Live Bank Scraper, Decoupled `rates.json` | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -144,6 +146,27 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 7: GitOps Automated Rate Ingestion Pipeline via GitHub Actions
+*Target Files*: [`.github/workflows/update-rates.yml`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/.github/workflows/update-rates.yml), [`scripts/sync-rates.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sync-rates.ts), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts)
+
+- [x] **7.1 Decoupled Rates Storage Schema (`src/data/rates.json`)** `[COMPLETED]`
+  - Extracted volatile rate cards into a versioned, timestamped JSON document with source tracking and verified audit timestamps.
+  - Implemented dynamic hydration in `bankData.ts` overlaying scraped rates onto static bank metadata with immutable defaults.
+  - Corrected Telangana Grameena Bank (TGB) live rate matrix from official circulars (1Y: 6.45%, 2Y: 6.45%, 3Y: 6.50%, 5Y: 7.00%, 444D: 7.40%, 1000D: 7.50%).
+- [x] **7.2 Rate Synchronization Engine (`scripts/sync-rates.ts`)** `[COMPLETED]`
+  - Built an extensible TypeScript scraper using Cheerio and native `fetch` with realistic browser headers and timeouts.
+  - Implemented financial sanity bounds validation (`3.00% <= rate <= 11.50%`) preventing corrupted rates on upstream DOM layout changes.
+  - Automated diff detection ensuring clean, idempotent writes and avoiding false-positive commits.
+  - Emits formatted GitHub Actions Step Summaries (`$GITHUB_STEP_SUMMARY`) for auditability.
+- [x] **7.3 Scheduled GitHub Actions Workflow (`.github/workflows/update-rates.yml`)** `[COMPLETED]`
+  - Configured weekly cron schedule (`0 2 * * 1` = Mondays at 02:00 UTC / 07:30 AM IST).
+  - Added manual `workflow_dispatch` trigger for immediate one-click execution upon RBI Monetary Policy announcements.
+  - Configured least-privilege permissions (`contents: write`) with automatic bot commit (`[skip ci]`) when rates change.
+- [x] **7.4 Live Verification Trust Badge in UI** `[COMPLETED]`
+  - Added an interactive live rate verification banner in `YieldCommandCenter.tsx` showcasing active automated tracking and the exact verification date.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -155,4 +178,6 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 4 | Expanded `bankData.ts` and `bank.ts` with multi-tenure rates, states & women bonus | Dynamic personalized rate resolution across tenures and categories |
 | **2026-10-20** | Phase 5 | Upgraded to stable Vite 6, purged express, verified `lint` and `build` | 0 lint errors, clean Vite production build in ~2s, verified via browser |
 | **2026-10-20** | Phase 6 | Implemented Custom Rate Target Modeling & Special Odd-Day Schemes (222D–1001D) | RBI fractional quarterly compounding, custom % slider/steppers, browser verified |
+| **2026-10-20** | Phase 7 | Built GitOps Automated Rate Pipeline with GHA Cron & Live Scraper | Live TGB rate verified, decoupled `rates.json`, weekly GHA cron, zero backend |
+
 

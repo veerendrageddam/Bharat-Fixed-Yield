@@ -1,0 +1,409 @@
+{
+  "lastUpdated": "2026-10-20T12:35:07.437Z",
+  "version": "1.0.0",
+  "source": "RBI Scheduled Bank Disclosures & Official Rate Cards",
+  "rates": {
+    "unity-sfb": {
+      "baseRate": 8.15,
+      "ratesByTenure": {
+        "12": 7.85,
+        "24": 8,
+        "36": 8.15,
+        "60": 7.75
+      },
+      "specialTenure": "1001 Days (8.40%)",
+      "specialSchemes": [
+        {
+          "name": "Unity Shrestha",
+          "days": 1001,
+          "rate": 8.4,
+          "badge": "Peak SFB 8.40%"
+        },
+        {
+          "name": "Unity 501D",
+          "days": 501,
+          "rate": 8.25
+        },
+        {
+          "name": "Unity 701D",
+          "days": 701,
+          "rate": 8.35
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.unitybank.co.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "suryoday-sfb": {
+      "baseRate": 8,
+      "ratesByTenure": {
+        "12": 7.75,
+        "24": 8.1,
+        "36": 8,
+        "60": 7.5
+      },
+      "specialTenure": "2 Years 2 Days (8.25%)",
+      "specialSchemes": [
+        {
+          "name": "Suryoday 2Y2D",
+          "days": 732,
+          "rate": 8.25,
+          "badge": "Special 732D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.1,
+      "sourceUrl": "https://www.suryodaybank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "utkarsh-sfb": {
+      "baseRate": 8,
+      "ratesByTenure": {
+        "12": 7.75,
+        "24": 8,
+        "36": 8,
+        "60": 7.5
+      },
+      "specialTenure": "1500 Days (8.25%)",
+      "specialSchemes": [
+        {
+          "name": "Utkarsh 1500D",
+          "days": 1500,
+          "rate": 8.25,
+          "badge": "Long Term High Yield"
+        },
+        {
+          "name": "Utkarsh 777D",
+          "days": 777,
+          "rate": 8.15
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.1,
+      "sourceUrl": "https://www.utkarsh.bank/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "equitas-sfb": {
+      "baseRate": 7.9,
+      "ratesByTenure": {
+        "12": 7.6,
+        "24": 7.8,
+        "36": 7.9,
+        "60": 7.25
+      },
+      "specialTenure": "444 Days (8.15%)",
+      "specialSchemes": [
+        {
+          "name": "Equitas 444D",
+          "days": 444,
+          "rate": 8.15,
+          "badge": "Special 444 Days"
+        },
+        {
+          "name": "Equitas 888D",
+          "days": 888,
+          "rate": 8.05
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.1,
+      "sourceUrl": "https://www.equitasbank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "hdfc-bank": {
+      "baseRate": 7.25,
+      "ratesByTenure": {
+        "12": 6.9,
+        "24": 7.15,
+        "36": 7.25,
+        "60": 7
+      },
+      "specialTenure": "55 Months (7.40%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0,
+      "sourceUrl": "https://netbanking.hdfcbank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "icici-bank": {
+      "baseRate": 7.25,
+      "ratesByTenure": {
+        "12": 6.85,
+        "24": 7.1,
+        "36": 7.25,
+        "60": 7
+      },
+      "specialTenure": "15 Months (7.25%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0,
+      "sourceUrl": "https://www.icicibank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "sbi-bank": {
+      "baseRate": 7.1,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 7,
+        "36": 7.1,
+        "60": 6.9
+      },
+      "specialTenure": "444 Days Amrit Vrishti (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "SBI 'Amrit Vrishti'",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "SBI Flagship Scheme"
+        },
+        {
+          "name": "SBI 'Amrit Kalash'",
+          "days": 400,
+          "rate": 7.1,
+          "badge": "Limited 400D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.onlinesbi.sbi/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "bank-of-baroda": {
+      "baseRate": 7.15,
+      "ratesByTenure": {
+        "12": 6.85,
+        "24": 7.05,
+        "36": 7.15,
+        "60": 6.8
+      },
+      "specialTenure": "399 Days BoB Tiranga (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "BoB Tiranga Plus",
+          "days": 399,
+          "rate": 7.25,
+          "badge": "Special 399D"
+        },
+        {
+          "name": "BoB Monsoon Dhamaka",
+          "days": 333,
+          "rate": 7.15
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.bankofbaroda.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "pnb-bank": {
+      "baseRate": 7.05,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 7,
+        "36": 7.05,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days PNB Uttam (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "PNB Uttam",
+          "days": 400,
+          "rate": 7.25,
+          "badge": "High Yield 400D"
+        },
+        {
+          "name": "PNB 300D Special",
+          "days": 300,
+          "rate": 7.05
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.pnbindia.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "saraswat-bank": {
+      "baseRate": 7.6,
+      "ratesByTenure": {
+        "12": 7.4,
+        "24": 7.75,
+        "36": 7.6,
+        "60": 7.15
+      },
+      "specialTenure": "2 Years (7.75%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.1,
+      "sourceUrl": "https://www.saraswatbank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "apgb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 7
+      },
+      "specialTenure": "444 Days Pragathi Yield (7.65%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.apgb.org/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "apgvb-bank": {
+      "baseRate": 7.55,
+      "ratesByTenure": {
+        "12": 7.15,
+        "24": 7.4,
+        "36": 7.55,
+        "60": 7
+      },
+      "specialTenure": "400 Days Vikas Yield (7.65%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.apgvbank.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "tgb-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.45,
+        "24": 6.45,
+        "36": 6.5,
+        "60": 7
+      },
+      "specialTenure": "1000 Days TGB Sahasra (7.50%)",
+      "specialSchemes": [
+        {
+          "name": "444-DDD Special",
+          "days": 444,
+          "rate": 7.4,
+          "badge": "Special 444D"
+        },
+        {
+          "name": "TGB Sahasra",
+          "days": 1000,
+          "rate": 7.5,
+          "badge": "Peak RRB 7.50%"
+        },
+        {
+          "name": "RD Lakhpati (36M RD)",
+          "days": 1095,
+          "rate": 7.5,
+          "badge": "High Yield RD"
+        },
+        {
+          "name": "RD Nethanna Podupu (24M RD)",
+          "days": 730,
+          "rate": 6.45
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.5,
+      "womenBonus": 0,
+      "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
+      "lastVerified": "2026-10-20T12:35:07.437Z"
+    },
+    "kgb-bank": {
+      "baseRate": 7.6,
+      "ratesByTenure": {
+        "12": 7.2,
+        "24": 7.45,
+        "36": 7.6,
+        "60": 7.1
+      },
+      "specialTenure": "444 Days KGB Special (7.75%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://keralagbank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "kagb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 7
+      },
+      "specialTenure": "555 Days KaGB Golden (7.65%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://karnatakagraminbank.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "mgb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 7
+      },
+      "specialTenure": "444 Days Maha Special (7.60%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.mahagramin.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "bggb-bank": {
+      "baseRate": 7.45,
+      "ratesByTenure": {
+        "12": 7.05,
+        "24": 7.3,
+        "36": 7.45,
+        "60": 6.95
+      },
+      "specialTenure": "399 Days Baroda Gramin (7.55%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://bggb.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "aryavart-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 7
+      },
+      "specialTenure": "444 Days Aryavart Special (7.65%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://aryavart-rrb.com/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    },
+    "jkgb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 6.95
+      },
+      "specialTenure": "400 Days JKGB Amrit (7.60%)",
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.jkgb.in/",
+      "lastVerified": "2026-10-20T12:30:00.000Z"
+    }
+  }
+}

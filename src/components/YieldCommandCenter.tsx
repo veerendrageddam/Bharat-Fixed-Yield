@@ -47,6 +47,7 @@ import {
 import { BankCategory, BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
 import { INDIAN_STATES, UNION_TERRITORIES, PAN_INDIA_OPTION } from '../data/jurisdictions';
+import { LATEST_RATES_METADATA } from '../data/bankData';
 import { AmortizationModal } from './AmortizationModal';
 
 interface YieldCommandCenterProps {
@@ -1039,6 +1040,28 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
       {/* SECTION 3: LIVE REACTIVE BANK LEADERBOARD */}
       <section className="w-full flex flex-col gap-6">
+        {/* Verification Status Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/60 dark:bg-emerald-950/20 p-3.5 sm:p-4 rounded-2xl border border-emerald-200/80 dark:border-emerald-900/40">
+          <div className="flex items-center gap-2.5">
+            <span className="relative flex h-2.5 w-2.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+            </span>
+            <div className="flex flex-col">
+              <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
+                Live RBI & Scheduled Bank Rate Cards
+              </span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                Automated weekly sync pipeline actively tracks official circulars & rate revisions
+              </span>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-white dark:bg-[#161b22] px-3 py-1.5 rounded-xl border border-emerald-200/60 dark:border-emerald-800/40 shadow-2xs">
+            <Calendar className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981]" />
+            <span>Verified: {new Date(LATEST_RATES_METADATA.lastUpdated).toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+          </div>
+        </div>
+
         {/* Category Tabs & Subfilters */}
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex items-center gap-1.5 overflow-x-auto pb-2 md:pb-0 scrollbar-none">
