@@ -86,8 +86,10 @@ Status: **Production Ready (Phase 1–5 Complete)**
     - 3 Years (36 Months)
     - 5 Years (60 Months - Tax Saver 80C)
     - Special High-Yield Tenures (e.g., 400 Days, 444 Days, 1001 Days)
-- [x] **4.2 State & Jurisdiction Filtering** `[COMPLETED]`
-  - Filtered scheduled cooperative banks and Regional Rural Banks (RRBs) by `operatingStates.includes(persona.state) || isPanIndia`.
+- [x] **4.2 All 28 States & 8 Union Territories + Regional Rural Banks (RRBs)** `[COMPLETED]`
+  - Added centralized [`src/data/jurisdictions.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/jurisdictions.ts) containing all 28 States, 8 Union Territories, and Pan-India option with categorized `<optgroup>` rendering.
+  - Added dedicated `'rrb'` bank category with state government sponsorship badges (e.g. *Andhra Pragathi Grameena Bank / APGB*, *APGVB*, *Telangana Grameena Bank / TGB*, *Kerala Gramin Bank*, *Karnataka Gramin Bank*, *Maharashtra Gramin Bank*, *Baroda Gujarat Gramin Bank*, *Aryavart Bank UP*, *J&K Grameen Bank*).
+  - Ensured 100% DICGC ₹5,00,000 statutory deposit insurance coverage clarity for all regional and cooperative institutions.
 - [x] **4.3 Gender-Specific Special Rates** `[COMPLETED]`
   - Wired up `persona.gender === 'female'` to activate:
     - Mahila Samman Savings Certificate (MSSC) benchmark.
@@ -116,6 +118,32 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 6: Custom Percentage Yield Modeling & Special Bank Schemes (Odd Days)
+*Target Files*: [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/utils/calculator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.ts), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts), [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts)
+
+- [x] **6.1 Custom Percentage Interest Rate Calculator** `[COMPLETED]`
+  - Allows users to enter any custom percentage rate (e.g. `8.25%`, `8.50%`) with `+0.10%` / `-0.10%` steppers, direct numeric input, slider (4.00%–12.00%), and quick target pills (`7.00%` through `9.50%`).
+  - Active custom percentage dynamically recalculates all maturity projections, wealth split donut charts, compounding trajectory curves, and rate spread benchmark charts.
+  - Live feedback informs user how many banks in their state meet or exceed their target rate.
+  - Bank leaderboard cards display real-time comparison badges (e.g. `+0.40% vs target` or `-0.50% vs target`).
+- [x] **6.2 Special Bank Schemes with Odd-Day Tenures (222D, 399D, 444D, 555D, 777D, 1001D)** `[COMPLETED]`
+  - Standardized odd-day quarterly compounding per RBI Master Directions:
+    $$A = P\left(1 + \frac{r}{400}\right)^{4 \times \frac{D}{365}}$$
+  - Populated actual special promotional schemes in `bankData.ts`:
+    - **SBI Amrit Vrishti** (444 Days @ 7.25%, Seniors 7.75%)
+    - **SBI Amrit Kalash** (400 Days @ 7.10%)
+    - **Bank of Baroda Tiranga Plus** (399 Days @ 7.25%)
+    - **Punjab National Bank Uttam** (400 Days @ 7.25%)
+    - **Andhra Pragathi Grameena Bank Pragathi 444** (444 Days @ 7.65%)
+    - **Equitas SFB** (444 Days @ 8.15%, 888 Days @ 8.05%)
+    - **Utkarsh SFB** (777 Days @ 8.15%, 1500 Days @ 8.25%)
+    - **Suryoday SFB** (732 Days @ 8.25%)
+    - **Unity SFB** (1001 Days @ 8.40%, 501 Days @ 8.25%)
+  - Interactive "Special Schemes (Odd Days)" selector tab with quick chips and a custom day numeric input (`[ 444 ] Days`).
+  - Matched special scheme badges displayed on bank cards when odd-day tenures are selected.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -126,3 +154,5 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 3 | Built `YieldCommandCenter.tsx` with Recharts and single-screen UX | Single tab combining FD/RD calculators + charts + live leaderboard |
 | **2026-10-20** | Phase 4 | Expanded `bankData.ts` and `bank.ts` with multi-tenure rates, states & women bonus | Dynamic personalized rate resolution across tenures and categories |
 | **2026-10-20** | Phase 5 | Upgraded to stable Vite 6, purged express, verified `lint` and `build` | 0 lint errors, clean Vite production build in ~2s, verified via browser |
+| **2026-10-20** | Phase 6 | Implemented Custom Rate Target Modeling & Special Odd-Day Schemes (222D–1001D) | RBI fractional quarterly compounding, custom % slider/steppers, browser verified |
+

@@ -23,7 +23,12 @@ import {
   HelpCircle,
   BarChart3,
   PieChart as PieIcon,
-  LineChart as LineIcon
+  LineChart as LineIcon,
+  Target,
+  Clock,
+  Zap,
+  Flame,
+  Check
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -41,6 +46,7 @@ import {
 } from 'recharts';
 import { BankCategory, BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
+import { INDIAN_STATES, UNION_TERRITORIES, PAN_INDIA_OPTION } from '../data/jurisdictions';
 import { AmortizationModal } from './AmortizationModal';
 
 interface YieldCommandCenterProps {
@@ -53,21 +59,6 @@ interface YieldCommandCenterProps {
   onToggleCompare: (bank: BankData) => void;
   onNavigateTab: (tab: string) => void;
 }
-
-const INDIAN_STATES = [
-  'All India (Pan-India)',
-  'Maharashtra',
-  'Delhi',
-  'Karnataka',
-  'Tamil Nadu',
-  'Gujarat',
-  'Uttar Pradesh',
-  'Telangana',
-  'West Bengal',
-  'Rajasthan',
-  'Kerala',
-  'Goa',
-];
 
 export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   persona,
@@ -120,7 +111,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   // State filtering logic
   const stateFilteredBanks = useMemo(() => {
     return banks.filter((b) => {
-      if (persona.state === 'All India (Pan-India)') return true;
+      if (persona.state === PAN_INDIA_OPTION.name || persona.state === 'All India (Pan-India)') return true;
       if (b.isPanIndia) return true;
       if (b.operatingStates && b.operatingStates.includes('ALL')) return true;
       return b.operatingStates ? b.operatingStates.includes(persona.state) : true;
@@ -131,6 +122,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const filteredAndRankedBanks = useMemo(() => {
     const list = stateFilteredBanks.filter((b) => {
       if (selectedCategory === 'sfb' && b.category !== 'sfb') return false;
+      if (selectedCategory === 'rrb' && b.category !== 'rrb') return false;
       if (selectedCategory === 'private' && b.category !== 'private') return false;
       if (selectedCategory === 'psu' && b.category !== 'psu') return false;
       if (selectedCategory === 'taxsaver' && persona.tenureMonths !== 60 && !b.badge.includes('Tax')) return false;
@@ -143,28 +135,41 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       return true;
     });
 
-    // Sort by effective rate descending
+    // Sort by actual offered bank rate descending (unbiased by custom rate)
     return [...list].sort((a, b) => {
-      const rateA = getEffectiveRate(a, persona, persona.tenureMonths);
-      const rateB = getEffectiveRate(b, persona, persona.tenureMonths);
+      const tenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
+      const rateA = getEffectiveRate(a, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
+      const rateB = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
       return rateB - rateA;
     });
   }, [stateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona]);
 
+  // Tenure Days resolution
+  const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
+
   // Top Yield Bank calculation
   const topBank = filteredAndRankedBanks[0] || banks[0];
-  const topRate = getEffectiveRate(topBank, persona, persona.tenureMonths);
+  const peakMarketRate = topBank 
+    ? getEffectiveRate(topBank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) 
+    : 8.40;
+
+  // Active Simulation Rate: driven by custom rate if enabled, else peak market rate
+  const activeSimulationRate = persona.useCustomRate && persona.customRate !== undefined
+    ? persona.customRate
+    : peakMarketRate;
+
   const topCalculation = useMemo(() => {
     return calculateYield(
       currentAmount,
-      topRate,
+      activeSimulationRate,
       persona.tenureMonths,
       persona.age,
       persona.form15HSubmitted,
       persona.depositType,
-      persona.panLinked
+      persona.panLinked,
+      activeTenureDays
     );
-  }, [currentAmount, topRate, persona]);
+  }, [currentAmount, activeSimulationRate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, activeTenureDays]);
 
   // Donut chart data
   const donutData = useMemo(() => {
@@ -180,33 +185,55 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     const pvtTop = stateFilteredBanks.filter(b => b.category === 'private')[0];
     const psuTop = stateFilteredBanks.filter(b => b.category === 'psu')[0];
 
-    return [
+    const data: Array<{ name: string; rate: number; bank: string }> = [];
+
+    if (persona.useCustomRate && persona.customRate !== undefined) {
+      data.push({
+        name: 'Your Target',
+        rate: persona.customRate,
+        bank: 'Custom %',
+      });
+    }
+
+    data.push(
       {
         name: 'Top SFB',
-        rate: sfbTop ? getEffectiveRate(sfbTop, persona, persona.tenureMonths) : 8.15,
+        rate: sfbTop ? getEffectiveRate(sfbTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 8.15,
         bank: sfbTop ? sfbTop.name.split(' ')[0] : 'SFB',
       },
       {
         name: 'Top Private',
-        rate: pvtTop ? getEffectiveRate(pvtTop, persona, persona.tenureMonths) : 7.25,
+        rate: pvtTop ? getEffectiveRate(pvtTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.25,
         bank: pvtTop ? pvtTop.name.split(' ')[0] : 'Private',
       },
       {
         name: 'Top PSU',
-        rate: psuTop ? getEffectiveRate(psuTop, persona, persona.tenureMonths) : 7.10,
+        rate: psuTop ? getEffectiveRate(psuTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.10,
         bank: psuTop ? psuTop.name.split(' ')[0] : 'PSU',
       },
       {
         name: 'RBI Repo',
         rate: 6.50,
         bank: 'Benchmark',
-      },
-    ];
-  }, [stateFilteredBanks, persona]);
+      }
+    );
+
+    return data;
+  }, [stateFilteredBanks, persona, activeTenureDays]);
 
   // Quick preset chips
   const fdPresets = [50000, 100000, 200000, 500000, 1000000];
   const rdPresets = [2000, 5000, 10000, 25000, 50000];
+  const customRateQuickPicks = [7.00, 7.50, 8.00, 8.25, 8.40, 8.75, 9.00];
+
+  // Number of banks beating custom rate
+  const banksMeetingTargetCount = useMemo(() => {
+    if (!persona.useCustomRate || persona.customRate === undefined) return 0;
+    return filteredAndRankedBanks.filter(b => {
+      const rate = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
+      return rate >= (persona.customRate ?? 0);
+    }).length;
+  }, [filteredAndRankedBanks, persona, activeTenureDays]);
 
   return (
     <div className="flex flex-col w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-10 gap-8">
@@ -367,54 +394,343 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             <div className="flex justify-between items-center">
               <span className="text-slate-500 dark:text-slate-400">Selected Horizon:</span>
               <span className="font-bold text-slate-800 dark:text-slate-200">
-                {persona.tenureMonths} Months ({(persona.tenureMonths / 12).toFixed(1)} Years)
+                {persona.tenureUnit === 'days'
+                  ? `${activeTenureDays} Days (${((activeTenureDays || 444) / 365).toFixed(2)} Years)`
+                  : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`}
               </span>
             </div>
             <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800">
-              <span className="font-bold text-slate-900 dark:text-white">Peak Market Yield:</span>
+              <div className="flex items-center gap-1.5">
+                <span className="font-bold text-slate-900 dark:text-white">Active Simulation Yield:</span>
+                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
+                  persona.useCustomRate 
+                    ? 'bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300' 
+                    : 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300'
+                }`}>
+                  {persona.useCustomRate ? 'Custom Target' : 'Peak Market Rate'}
+                </span>
+              </div>
               <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] text-sm tabular-nums">
-                {topRate.toFixed(2)}% p.a.
+                {activeSimulationRate.toFixed(2)}% p.a.
               </span>
             </div>
           </div>
         </div>
 
-        {/* Tenure Matrix & Horizon Tabs */}
-        <div className="flex flex-col gap-3 pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between">
-            <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-              Select Tenure Horizon
-            </label>
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              Currently: <strong>{persona.tenureMonths} Months</strong>
-            </span>
-          </div>
+        {/* TENURE SELECTOR: STANDARD MONTHS VS SPECIAL ODD-DAY SCHEMES */}
+        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
+              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                Tenure Horizon & Special Bank Schemes
+              </label>
+            </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-            {[
-              { months: 12, label: '1 Year (12M)', badge: 'Short Horizon' },
-              { months: 24, label: '2 Years (24M)', badge: 'Balanced' },
-              { months: 36, label: '3 Years (36M)', badge: 'Highest Yield' },
-              { months: 60, label: '5 Years (60M)', badge: 'Tax Saver 80C' },
-              { months: 44, label: 'Special Tenures', badge: '400D - 444D' },
-            ].map((t) => (
+            {/* Toggle: Standard Months vs Special Odd-Day Schemes */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
               <button
-                key={t.months}
                 type="button"
-                onClick={() => setPersona((prev) => ({ ...prev, tenureMonths: t.months === 44 ? 36 : t.months }))}
-                className={`p-3 rounded-xl border flex flex-col items-center text-center transition-all ${
-                  persona.tenureMonths === t.months || (t.months === 44 && persona.tenureMonths === 36)
-                    ? 'border-[#006c4a] bg-emerald-50/50 dark:bg-emerald-950/30 text-slate-900 dark:text-white shadow-xs'
-                    : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                onClick={() => setPersona((prev) => ({ ...prev, tenureUnit: 'months' }))}
+                className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+                  persona.tenureUnit !== 'days'
+                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
-                <span className="text-xs font-bold">{t.label}</span>
-                <span className="text-[10px] text-[#006c4a] dark:text-[#10b981] font-semibold mt-0.5">
-                  {t.badge}
-                </span>
+                Standard (Months)
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={() => setPersona((prev) => ({ 
+                  ...prev, 
+                  tenureUnit: 'days',
+                  tenureDays: prev.tenureDays || 444
+                }))}
+                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
+                  persona.tenureUnit === 'days'
+                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Flame className="w-3.5 h-3.5 text-amber-500" />
+                <span>Special Schemes (Odd Days)</span>
+              </button>
+            </div>
           </div>
+
+          {/* Standard Months Selector */}
+          {persona.tenureUnit !== 'days' ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              {[
+                { months: 12, label: '1 Year (12M)', badge: 'Short Horizon' },
+                { months: 24, label: '2 Years (24M)', badge: 'Balanced Growth' },
+                { months: 36, label: '3 Years (36M)', badge: 'Highest Regular Yield' },
+                { months: 60, label: '5 Years (60M)', badge: 'Tax Saver 80C' },
+              ].map((t) => (
+                <button
+                  key={t.months}
+                  type="button"
+                  onClick={() => setPersona((prev) => ({ ...prev, tenureMonths: t.months }))}
+                  className={`p-3 rounded-xl border flex flex-col items-center text-center transition-all ${
+                    persona.tenureMonths === t.months
+                      ? 'border-[#006c4a] bg-emerald-50/60 dark:bg-emerald-950/40 text-slate-900 dark:text-white shadow-xs'
+                      : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                  }`}
+                >
+                  <span className="text-xs font-bold">{t.label}</span>
+                  <span className="text-[10px] text-[#006c4a] dark:text-[#10b981] font-semibold mt-0.5">
+                    {t.badge}
+                  </span>
+                </button>
+              ))}
+            </div>
+          ) : (
+            /* Special Bank Schemes (Odd Days) Grid & Custom Days Input */
+            <div className="flex flex-col gap-3">
+              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
+                {[
+                  { days: 222, label: '222 Days', badge: 'Short Sprint' },
+                  { days: 333, label: '333 Days', badge: 'Special Fest' },
+                  { days: 399, label: '399 Days', badge: 'BoB Tiranga (7.25%)' },
+                  { days: 400, label: '400 Days', badge: 'SBI Kalash (7.10%)' },
+                  { days: 444, label: '444 Days', badge: 'SBI Vrishti / APGB' },
+                  { days: 555, label: '555 Days', badge: 'Sovereign High' },
+                  { days: 777, label: '777 Days', badge: 'Utkarsh (8.15%)' },
+                  { days: 1001, label: '1001 Days', badge: 'Unity Peak (8.40%)' },
+                ].map((s) => (
+                  <button
+                    key={s.days}
+                    type="button"
+                    onClick={() => setPersona((prev) => ({
+                      ...prev,
+                      tenureUnit: 'days',
+                      tenureDays: s.days,
+                      tenureMonths: Math.round(s.days / 30.416)
+                    }))}
+                    className={`p-2.5 rounded-xl border flex flex-col items-center text-center transition-all ${
+                      activeTenureDays === s.days
+                        ? 'border-amber-500 bg-amber-50/80 dark:bg-amber-950/40 text-slate-900 dark:text-white ring-1 ring-amber-500 shadow-xs'
+                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    <span className="text-xs font-extrabold">{s.label}</span>
+                    <span className="text-[9px] text-amber-700 dark:text-amber-300 font-semibold mt-0.5 truncate w-full">
+                      {s.badge}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Custom Odd-Days Direct Input */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Custom Days Input:</span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({
+                        ...prev,
+                        tenureDays: Math.max(30, (prev.tenureDays || 444) - 15),
+                        tenureMonths: Math.round(Math.max(30, (prev.tenureDays || 444) - 15) / 30.416)
+                      }))}
+                      className="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                    >
+                      -15D
+                    </button>
+                    <input
+                      type="number"
+                      min={7}
+                      max={3650}
+                      value={activeTenureDays || 444}
+                      onChange={(e) => {
+                        const days = parseInt(e.target.value, 10);
+                        if (!isNaN(days) && days > 0) {
+                          setPersona((prev) => ({
+                            ...prev,
+                            tenureDays: days,
+                            tenureMonths: Math.round(days / 30.416)
+                          }));
+                        }
+                      }}
+                      className="w-24 h-9 px-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center font-extrabold text-sm text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({
+                        ...prev,
+                        tenureDays: (prev.tenureDays || 444) + 15,
+                        tenureMonths: Math.round(((prev.tenureDays || 444) + 15) / 30.416)
+                      }))}
+                      className="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                    >
+                      +15D
+                    </button>
+                  </div>
+                  <span className="text-xs text-slate-500 font-medium">Days ({( (activeTenureDays || 444) / 365).toFixed(2)} Years)</span>
+                </div>
+
+                <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Compounding: <strong>Quarterly (Fractional Quarters)</strong> as per RBI Master Directions
+                </div>
+              </div>
+
+              {/* Informational Callout on ALM */}
+              <div className="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200">
+                <Info className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
+                <p>
+                  <strong>Why Odd Days (222D, 399D, 444D, 555D, 777D, 1001D)?</strong> Banks launch non-standard tenures for Asset-Liability Management (ALM) to match commercial loan maturities and festive liquidity without raising card rates across standard 1Y–5Y tenures. For odd days D, interest compounds every 90 days via A = P(1 + r/400)^(4 × D / 365).
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* CUSTOM RATE MODELING MODULE */}
+        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                Interest Rate Modeling: Live Market vs Custom Target (%)
+              </label>
+            </div>
+
+            {/* Toggle: Best Market Rate vs Custom Rate */}
+            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
+              <button
+                type="button"
+                onClick={() => setPersona((prev) => ({ ...prev, useCustomRate: false }))}
+                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
+                  !persona.useCustomRate
+                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Zap className="w-3.5 h-3.5 text-emerald-500" />
+                <span>Auto-Sync Best Market Rate ({peakMarketRate.toFixed(2)}%)</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setPersona((prev) => ({
+                  ...prev,
+                  useCustomRate: true,
+                  customRate: prev.customRate || 8.00
+                }))}
+                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
+                  persona.useCustomRate
+                    ? 'bg-white dark:bg-[#1c2128] text-purple-700 dark:text-purple-300 shadow-xs'
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                <Target className="w-3.5 h-3.5 text-purple-500" />
+                <span>Custom Target Rate (%)</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Custom Rate Interactive Panel */}
+          {persona.useCustomRate && (
+            <div className="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800/50 flex flex-col gap-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                    Your Target Interest Rate:
+                  </span>
+                  <div className="flex items-center gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({
+                        ...prev,
+                        customRate: Math.max(3.0, Number(((prev.customRate || 8.0) - 0.10).toFixed(2)))
+                      }))}
+                      className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                    >
+                      -0.10%
+                    </button>
+                    <div className="relative">
+                      <input
+                        type="number"
+                        step="0.05"
+                        min="3.0"
+                        max="15.0"
+                        value={persona.customRate ?? 8.0}
+                        onChange={(e) => {
+                          const val = parseFloat(e.target.value);
+                          if (!isNaN(val)) {
+                            setPersona((prev) => ({ ...prev, customRate: val }));
+                          }
+                        }}
+                        className="w-24 h-9 pl-3 pr-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center font-extrabold text-sm text-purple-700 dark:text-purple-300 focus:outline-hidden focus:ring-2 focus:ring-purple-500"
+                      />
+                      <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
+                        %
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({
+                        ...prev,
+                        customRate: Math.min(15.0, Number(((prev.customRate || 8.0) + 0.10).toFixed(2)))
+                      }))}
+                      className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
+                    >
+                      +0.10%
+                    </button>
+                  </div>
+                </div>
+
+                {/* Quick rate chips */}
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] text-slate-400 font-medium">Quick Target:</span>
+                  {customRateQuickPicks.map((rate) => (
+                    <button
+                      key={rate}
+                      type="button"
+                      onClick={() => setPersona((prev) => ({ ...prev, customRate: rate }))}
+                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
+                        persona.customRate === rate
+                          ? 'bg-purple-600 text-white shadow-2xs'
+                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100'
+                      }`}
+                    >
+                      {rate.toFixed(2)}%
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Slider for smooth dragging */}
+              <input
+                type="range"
+                min="4.00"
+                max="12.00"
+                step="0.05"
+                value={persona.customRate ?? 8.0}
+                onChange={(e) => setPersona((prev) => ({ ...prev, customRate: parseFloat(e.target.value) }))}
+                className="w-full h-2 bg-purple-200 dark:bg-purple-900/60 rounded-lg appearance-none cursor-pointer accent-purple-600"
+                aria-label="Custom percentage rate slider"
+              />
+
+              {/* Live Target Analysis readout */}
+              <div className="flex items-center justify-between text-xs pt-1">
+                <span className="text-slate-600 dark:text-slate-300">
+                  {banksMeetingTargetCount > 0 ? (
+                    <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1">
+                      <Check className="w-3.5 h-3.5" /> {banksMeetingTargetCount} bank(s) offer rates meeting or beating your {(persona.customRate ?? 8.0).toFixed(2)}% target!
+                    </span>
+                  ) : (
+                    <span className="text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
+                      <Info className="w-3.5 h-3.5" /> Highest bank offer is {peakMarketRate.toFixed(2)}% (Unity SFB). Your {(persona.customRate ?? 8.0).toFixed(2)}% target exceeds market offers.
+                    </span>
+                  )}
+                </span>
+                <span className="text-[11px] text-slate-400 font-medium">
+                  Directly drives all maturity growth simulations and timeline charts
+                </span>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Persona Matrix Controls (Age, Gender, State, Form 15H) */}
@@ -455,9 +771,23 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               onChange={(e) => setPersona((prev) => ({ ...prev, state: e.target.value }))}
               className="h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold focus:outline-hidden"
             >
-              {INDIAN_STATES.map((st) => (
-                <option key={st} value={st}>{st}</option>
-              ))}
+              <optgroup label="Pan-India">
+                <option value={PAN_INDIA_OPTION.name}>{PAN_INDIA_OPTION.name}</option>
+              </optgroup>
+              <optgroup label="28 States">
+                {INDIAN_STATES.map((st) => (
+                  <option key={st.id} value={st.name}>
+                    {st.name}
+                  </option>
+                ))}
+              </optgroup>
+              <optgroup label="8 Union Territories">
+                {UNION_TERRITORIES.map((ut) => (
+                  <option key={ut.id} value={ut.name}>
+                    {ut.name} (UT)
+                  </option>
+                ))}
+              </optgroup>
             </select>
           </div>
 
@@ -488,8 +818,12 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Maturity Projection
               </span>
-              <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0] text-[11px] font-bold">
-                {topRate.toFixed(2)}% p.a. Compounded
+              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
+                persona.useCustomRate
+                  ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
+                  : 'bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0]'
+              }`}>
+                {activeSimulationRate.toFixed(2)}% p.a. {persona.useCustomRate ? '(Custom Target)' : 'Compounded'}
               </span>
             </div>
 
@@ -711,6 +1045,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             {[
               { id: 'all', label: 'All Institutions' },
               { id: 'sfb', label: 'Small Finance Banks (Peak Yield)' },
+              { id: 'rrb', label: 'Regional Rural & State Banks' },
               { id: 'private', label: 'Private Banks (CRISIL AAA)' },
               { id: 'psu', label: 'Public Sector (Sovereign)' },
               { id: 'taxsaver', label: '5-Yr Tax Savers (80C)' },
@@ -762,7 +1097,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         {/* Bank List Cards */}
         <div className="flex flex-col gap-4">
           {filteredAndRankedBanks.map((bank, index) => {
-            const effectiveRate = getEffectiveRate(bank, persona, persona.tenureMonths);
+            const effectiveRate = getEffectiveRate(bank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
             const calc = calculateYield(
               currentAmount,
               effectiveRate,
@@ -770,9 +1105,13 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               persona.age,
               persona.form15HSubmitted,
               persona.depositType,
-              persona.panLinked
+              persona.panLinked,
+              activeTenureDays
             );
             const isCompared = comparedBankIds.includes(bank.id);
+            const matchedScheme = activeTenureDays 
+              ? bank.specialSchemes?.find(s => s.days === activeTenureDays) 
+              : undefined;
 
             return (
               <div
@@ -800,6 +1139,17 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                       <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-300">
                         {bank.categoryTag}
                       </span>
+                      {bank.sponsorGovt && (
+                        <span className="px-2.5 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 text-[11px] font-bold">
+                          🏛️ {bank.sponsorGovt}
+                        </span>
+                      )}
+                      {matchedScheme && (
+                        <span className="px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-900 dark:text-amber-200 text-[11px] font-bold border border-amber-300 dark:border-amber-800 flex items-center gap-1 shadow-2xs">
+                          <Sparkles className="w-3 h-3 text-amber-600" />
+                          <span>{matchedScheme.name} ({matchedScheme.days}D @ {matchedScheme.rate}%)</span>
+                        </span>
+                      )}
                       {bank.badge && (
                         <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0] text-[11px] font-bold">
                           {bank.badge}
@@ -812,6 +1162,12 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                     </p>
 
                     <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 pt-1 flex-wrap">
+                      {!bank.isPanIndia && bank.operatingStates && (
+                        <span className="px-2 py-0.5 rounded-md bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[10px] font-semibold flex items-center gap-1">
+                          <MapPin className="w-3 h-3" />
+                          Operating in: {bank.operatingStates.join(', ')}
+                        </span>
+                      )}
                       <span className="font-semibold text-slate-700 dark:text-slate-300">
                         {bank.ratingAgency}: <strong>{bank.rating}</strong>
                       </span>
@@ -828,7 +1184,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 {/* Right: Yield, Maturity Value & Actions */}
                 <div className="flex items-center justify-between lg:justify-end gap-6 w-full lg:w-auto pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100 dark:border-slate-800">
                   <div className="flex flex-col text-right">
-                    <span className="text-xs text-slate-500 dark:text-slate-400">Applied Rate</span>
+                    <div className="flex items-center justify-end gap-1.5 flex-wrap">
+                      <span className="text-xs text-slate-500 dark:text-slate-400">Applied Rate</span>
+                      {persona.useCustomRate && persona.customRate !== undefined && (
+                        <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${
+                          effectiveRate >= persona.customRate
+                            ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300'
+                            : 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
+                        }`}>
+                          {effectiveRate >= persona.customRate
+                            ? `+${(effectiveRate - persona.customRate).toFixed(2)}% vs target`
+                            : `${(effectiveRate - persona.customRate).toFixed(2)}% vs target`}
+                        </span>
+                      )}
+                    </div>
                     <span className="text-xl sm:text-2xl font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
                       {effectiveRate.toFixed(2)}% p.a.
                     </span>

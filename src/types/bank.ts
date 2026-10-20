@@ -1,14 +1,25 @@
 export type DepositType = 'FD' | 'RD';
 export type CompoundingFrequency = 'quarterly' | 'monthly' | 'maturity';
-export type BankCategory = 'sfb' | 'private' | 'psu' | 'taxsaver' | 'all';
+export type BankCategory = 'sfb' | 'private' | 'psu' | 'rrb' | 'taxsaver' | 'all';
 export type CreditRating = 'AAA' | 'AA+' | 'AA' | 'A+' | 'A' | 'Sovereign';
+
+export interface SpecialScheme {
+  name: string;
+  days: number;
+  rate: number; // General citizen base rate %
+  seniorBonus?: number;
+  superSeniorBonus?: number;
+  badge?: string;
+  validTill?: string;
+}
 
 export interface BankData {
   id: string;
   rank: number;
   name: string;
   subTitle: string;
-  category: 'sfb' | 'private' | 'psu';
+  category: 'sfb' | 'private' | 'psu' | 'rrb';
+  sponsorGovt?: string; // e.g. "Govt of AP & Canara Bank"
   badge: string;
   categoryTag: string;
   ratingAgency: 'CRISIL' | 'CARE' | 'ICRA' | 'Sovereign';
@@ -22,6 +33,7 @@ export interface BankData {
   tenureYears: number;
   tenureMonths: number;
   specialTenure?: string;
+  specialSchemes?: SpecialScheme[]; // Odd-day high-yield promotional schemes (e.g. 222D, 400D, 444D, 555D, 1001D)
   dicgcCovered: boolean;
   notes: string;
   exitPenalty: string;
@@ -42,6 +54,10 @@ export interface UserPersona {
   principal: number; // For FD: Lump sum; For RD: Monthly installment (or total principal)
   monthlyInstallment?: number; // Explicit monthly installment for RD
   tenureMonths: number;
+  tenureDays?: number; // For odd-day schemes (222, 399, 400, 444, 555, 777, 1001)
+  tenureUnit?: 'months' | 'days';
+  customRate?: number; // Custom percentage entered by user
+  useCustomRate?: boolean; // Whether custom percentage mode is active
   compounding: CompoundingFrequency;
   age: number;
   gender: 'female' | 'male' | 'other';

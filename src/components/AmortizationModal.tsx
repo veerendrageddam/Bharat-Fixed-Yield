@@ -18,7 +18,8 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
 }) => {
   if (!bank) return null;
 
-  const rate = getEffectiveRate(bank, persona, persona.tenureMonths);
+  const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+  const rate = getEffectiveRate(bank, persona, persona.tenureMonths, tenureDays);
   const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
   const calculation = calculateYield(
     depositAmount,
@@ -27,8 +28,13 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
     persona.age,
     persona.form15HSubmitted,
     persona.depositType,
-    persona.panLinked
+    persona.panLinked,
+    tenureDays
   );
+
+  const tenureText = persona.tenureUnit === 'days' && persona.tenureDays
+    ? `${persona.tenureDays} Days (${(persona.tenureDays / 365).toFixed(2)} Years)`
+    : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`;
 
   return (
     <div
@@ -51,7 +57,7 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
               {bank.name} - Amortization Schedule
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              RBI Master Directions Compliant Compounding ({persona.tenureMonths} Months / {(persona.tenureMonths / 12).toFixed(1)} Years @ {rate}% p.a.)
+              RBI Master Directions Compliant Compounding ({tenureText} @ {rate.toFixed(2)}% p.a.)
             </p>
           </div>
           <button

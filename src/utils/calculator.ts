@@ -23,19 +23,42 @@ export function formatLakhs(val: number): string {
 }
 
 /**
- * Resolves the effective rate for a bank based on the user's persona and tenure
+ * Resolves the effective rate for a bank based on persona, tenure (months or odd days), and custom rate override
  */
 export function getEffectiveRate(
   bank: BankData,
   persona: UserPersona,
-  tenureMonths?: number
+  tenureMonths?: number,
+  tenureDays?: number
 ): number {
-  const targetTenure = tenureMonths ?? persona.tenureMonths;
+  // If user entered a custom rate and enabled custom rate mode, respect that custom rate directly
+  if (persona.useCustomRate && persona.customRate !== undefined && persona.customRate > 0) {
+    return Number(persona.customRate.toFixed(2));
+  }
+
+  const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
   let rate = bank.baseRate;
 
-  // Use tenure-specific rate if available in rate matrix
-  if (bank.ratesByTenure && bank.ratesByTenure[targetTenure] !== undefined) {
-    rate = bank.ratesByTenure[targetTenure];
+  // 1. Check if an odd-day special high-yield scheme matches (e.g. 222D, 399D, 400D, 444D, 555D, 1001D)
+  if (effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
+    // Exact or nearest special scheme within 10 days
+    const matchedScheme = bank.specialSchemes.find(
+      (s) => Math.abs(s.days - effectiveDays) <= 10
+    );
+    if (matchedScheme) {
+      rate = matchedScheme.rate;
+    } else {
+      // Approximate day count to months
+      const approxMonths = Math.round(effectiveDays / 30.41);
+      if (bank.ratesByTenure && bank.ratesByTenure[approxMonths] !== undefined) {
+        rate = bank.ratesByTenure[approxMonths];
+      }
+    }
+  } else {
+    const targetTenure = tenureMonths ?? persona.tenureMonths;
+    if (bank.ratesByTenure && bank.ratesByTenure[targetTenure] !== undefined) {
+      rate = bank.ratesByTenure[targetTenure];
+    }
   }
 
   // Age bonuses
@@ -54,8 +77,9 @@ export function getEffectiveRate(
 }
 
 /**
- * Calculates Fixed Deposit Yield with quarterly compounding (Indian Banking RBI Standard)
- * Formula: A = P * (1 + r/400)^(4 * t) where t = tenureMonths / 12
+ * Calculates Fixed Deposit Yield with quarterly compounding (RBI Banking Standard)
+ * Supports both standard months and odd-day tenures (e.g. 222D, 444D, 555D, 1001D)
+ * Formula: A = P * (1 + r/400)^(4 * t) where t = days/365 or months/12
  */
 export function calculateFDYield(
   principal: number,
@@ -63,11 +87,13 @@ export function calculateFDYield(
   tenureMonths: number,
   age: number,
   form15HSubmitted: boolean = false,
-  panLinked: boolean = true
+  panLinked: boolean = true,
+  tenureDays?: number
 ): CalculationResult {
   const r = annualRate;
-  const quartersCount = Math.max(1, Math.round(tenureMonths / 3));
-  const t = tenureMonths / 12;
+  const isDaysMode = tenureDays !== undefined && tenureDays > 0;
+  const t = isDaysMode ? tenureDays / 365 : tenureMonths / 12;
+  const quartersCount = Math.max(1, isDaysMode ? Math.round(tenureDays / 91.25) : Math.round(tenureMonths / 3));
 
   let currentBalance = principal;
   let cumInterest = 0;
@@ -86,7 +112,7 @@ export function calculateFDYield(
   const exemptionThreshold = age >= 60 ? 50000 : 40000;
   const tdsRate = form15HSubmitted ? 0 : panLinked ? 0.10 : 0.20;
 
-  // Initial timeline point at month 0
+  // Initial timeline point at start
   timelineData.push({
     period: 'Start',
     month: 0,
@@ -119,7 +145,6 @@ export function calculateFDYield(
     const isFyEnd = q % 4 === 0;
     const fyLabel = isFyEnd ? `FY${Math.ceil(q / 4)} End` : undefined;
 
-    // Evaluate TDS at FY End or as interest crosses threshold
     let tdsStatus = `Exempt (<₹${Math.round(exemptionThreshold / 1000)}k)`;
     const fyInterestSoFar = q <= 4 ? fy1Interest : q <= 8 ? fy2Interest : fy3Interest;
 
@@ -148,9 +173,10 @@ export function calculateFDYield(
       isFyEnd,
     });
 
+    const elapsedLabel = isDaysMode ? `Day ${Math.min(tenureDays, Math.round(q * 91.25))}` : `M${q * 3}`;
     timelineData.push({
-      period: `M${q * 3}`,
-      month: q * 3,
+      period: elapsedLabel,
+      month: isDaysMode ? Math.round((q * 91.25) / 30.41) : q * 3,
       deposit: 0,
       cumulativeDeposit: principal,
       balance: currentBalance,
@@ -158,11 +184,26 @@ export function calculateFDYield(
     });
   }
 
-  const maturityAmount = currentBalance;
-  const totalInterest = maturityAmount - principal;
+  // Exact maturity value using RBI fractional quarterly compounding: A = P * (1 + r/400)^(4 * t)
+  const exactMaturityAmount = Math.round(principal * Math.pow(1 + r / 400, 4 * t));
+  const maturityAmount = exactMaturityAmount > 0 ? exactMaturityAmount : currentBalance;
+  const totalInterest = Math.max(0, maturityAmount - principal);
+
+  if (quarters.length > 0) {
+    quarters[quarters.length - 1].closingBalance = maturityAmount;
+    quarters[quarters.length - 1].cumulativeInterest = totalInterest;
+  }
+  if (timelineData.length > 0) {
+    timelineData[timelineData.length - 1].balance = maturityAmount;
+    timelineData[timelineData.length - 1].interestEarned = totalInterest;
+    if (isDaysMode) {
+      timelineData[timelineData.length - 1].period = `Day ${tenureDays}`;
+    }
+  }
+
   const effectiveAnnualYield = Number(((totalInterest / (principal * t)) * 100).toFixed(2));
   const estimatedTdsYear3 = fy3Interest > exemptionThreshold ? Math.round(fy3Interest * tdsRate) : 0;
-  const netMaturityWithTds = form15HSubmitted ? maturityAmount : maturityAmount - totalTds;
+  const netMaturityWithTds = form15HSubmitted ? maturityAmount : Math.max(principal, maturityAmount - totalTds);
 
   return {
     depositType: 'FD',
@@ -192,18 +233,18 @@ export function calculateRDYield(
   tenureMonths: number,
   age: number,
   form15HSubmitted: boolean = false,
-  panLinked: boolean = true
+  panLinked: boolean = true,
+  tenureDays?: number
 ): CalculationResult {
   const M = monthlyInstallment;
-  const n = tenureMonths;
+  const isDaysMode = tenureDays !== undefined && tenureDays > 0;
+  const n = isDaysMode ? Math.max(1, Math.round(tenureDays / 30.41)) : tenureMonths;
   const r = annualRate;
   const quartersCount = Math.max(1, Math.round(n / 3));
 
-  // Compute exact maturity value using RBI installment compounding formula
   let maturityAmount = 0;
   for (let k = 1; k <= n; k++) {
     const remainingMonths = n - k + 1;
-    // Quarterly compounding: (1 + r/400)^(remainingMonths / 3)
     const factor = Math.pow(1 + r / 400, remainingMonths / 3);
     maturityAmount += M * factor;
   }
@@ -212,7 +253,6 @@ export function calculateRDYield(
   const totalInvested = M * n;
   const totalInterest = Math.max(0, maturityAmount - totalInvested);
 
-  // Build quarter-by-quarter and timeline breakdown
   const quarters: QuarterData[] = [];
   const timelineData: TimelineDataPoint[] = [];
 
@@ -238,13 +278,11 @@ export function calculateRDYield(
     interestEarned: 0,
   });
 
-  // Calculate quarterly progression
   for (let q = 1; q <= quartersCount; q++) {
     const opening = runningBalance;
     const installmentsThisQuarter = Math.min(3, Math.max(0, n - (q - 1) * 3));
     const depositThisQuarter = installmentsThisQuarter * M;
 
-    // Compounded quarterly balance approximation for intermediate schedule
     const monthsElapsed = Math.min(q * 3, n);
     let interimTarget = 0;
     for (let k = 1; k <= monthsElapsed; k++) {
@@ -307,7 +345,6 @@ export function calculateRDYield(
     });
   }
 
-  // Ensure exact final match with closed formula
   if (quarters.length > 0) {
     quarters[quarters.length - 1].closingBalance = maturityAmount;
     quarters[quarters.length - 1].cumulativeInterest = totalInterest;
@@ -317,10 +354,10 @@ export function calculateRDYield(
     timelineData[timelineData.length - 1].interestEarned = totalInterest;
   }
 
-  const t = tenureMonths / 12;
+  const t = n / 12;
   const effectiveAnnualYield = Number(((totalInterest / (totalInvested * (t / 2))) * 100).toFixed(2));
   const estimatedTdsYear3 = fy3Interest > exemptionThreshold ? Math.round(fy3Interest * tdsRate) : 0;
-  const netMaturityWithTds = form15HSubmitted ? maturityAmount : maturityAmount - totalTds;
+  const netMaturityWithTds = form15HSubmitted ? maturityAmount : Math.max(totalInvested, maturityAmount - totalTds);
 
   return {
     depositType: 'RD',
@@ -350,10 +387,11 @@ export function calculateYield(
   age: number,
   form15HSubmitted: boolean = false,
   depositType: DepositType = 'FD',
-  panLinked: boolean = true
+  panLinked: boolean = true,
+  tenureDays?: number
 ): CalculationResult {
   if (depositType === 'RD') {
-    return calculateRDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked);
+    return calculateRDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked, tenureDays);
   }
-  return calculateFDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked);
+  return calculateFDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked, tenureDays);
 }

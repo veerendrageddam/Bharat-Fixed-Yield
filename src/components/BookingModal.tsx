@@ -33,7 +33,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
   const [dpdpConsent, setDpdpConsent] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
 
-  const rate = getEffectiveRate(bank, persona, persona.tenureMonths);
+  const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+  const rate = getEffectiveRate(bank, persona, persona.tenureMonths, tenureDays);
   const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
   const calc = calculateYield(
     depositAmount,
@@ -42,10 +43,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
     persona.age,
     persona.form15HSubmitted,
     persona.depositType,
-    persona.panLinked
+    persona.panLinked,
+    tenureDays
   );
 
   const referenceId = `BFY-${bank.name.substring(0, 3).toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
+
+  const tenureDisplay = persona.tenureUnit === 'days' && persona.tenureDays
+    ? `${persona.tenureDays} Days (${(persona.tenureDays / 365).toFixed(2)} Years)`
+    : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`;
 
   const handleCopySummary = () => {
     const summaryText = [
@@ -53,7 +59,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
       `Bank: ${bank.name}`,
       `Deposit Type: ${persona.depositType === 'RD' ? 'Recurring Deposit (RD)' : 'Fixed Deposit (FD)'}`,
       `Investment: ${persona.depositType === 'RD' ? `₹${formatINR(depositAmount)}/month` : `₹${formatINR(depositAmount)} lump sum`}`,
-      `Tenure: ${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`,
+      `Tenure: ${tenureDisplay}`,
       `Locked Rate: ${rate.toFixed(2)}% p.a.`,
       `Guaranteed Maturity: ₹${formatINR(calc.maturityAmount)}`,
       `DICGC Insured: Up to ₹5 Lakhs (100% Protected)`,
