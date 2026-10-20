@@ -19,6 +19,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 6: Custom % & Odd-Day Schemes** | Custom Rate Targets, 222D–1001D Schemes, RBI Odd-Day Math | `COMPLETED` | 100% | Completed |
 | **Phase 7: GitOps Automated Rate Pipeline** | Weekly GHA Cron, Live Bank Scraper, Decoupled `rates.json` | `COMPLETED` | 100% | Completed |
 | **Phase 8: Bank Consolidation & Zero-Hardcode Ingestion** | GoI 'One State One RRB', APGB & TGB Live Scrapers, Merged Banks Catalog | `COMPLETED` | 100% | Completed |
+| **Phase 9: Comprehensive Bank Expansion & Post Office RD/FD** | Axis, Union, Yes Bank, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Post Office POTD & PORD | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -199,6 +200,31 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 9: Comprehensive Bank Expansion & India Post Integration
+*Target Files*: [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`scripts/sync-rates.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sync-rates.ts), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/components/LeaderboardScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/LeaderboardScreen.tsx)
+
+- [x] **9.1 Top Private Sector Banks Integration** `[COMPLETED]`
+  - Added **Axis Bank** (7.10% 3Y, 7.20% 17M Special, CRISIL AAA).
+  - Added **IDFC FIRST Bank** (7.25% 3Y, 7.90% 500D Special, 7.75% 400D, CRISIL AA+).
+  - Added **Yes Bank** (7.25% 3Y, 7.75% 18M Special, CARE AA-).
+  - Added **Kotak Mahindra Bank** (7.00% 3Y, 7.40% 390D Active FD, CRISIL AAA).
+  - Added **IndusInd Bank** (7.25% 3Y, 7.75% 1Y7M & 2Y9M Special, CRISIL AA+).
+  - Added **Federal Bank** (7.00% 3Y, 7.40% 400D Special, CRISIL AA+).
+- [x] **9.2 Major Public Sector Banks Integration** `[COMPLETED]`
+  - Added **Union Bank of India** (7.30% 3Y, 7.40% 333D Union Samriddhi, Sovereign Safety).
+  - Added **Canara Bank** (6.80% 3Y, 7.25% 444D Special, Sovereign Safety).
+  - Added **Bank of India (BOI)** (6.50% 3Y, 7.30% 333D & 666D Star Dhan Vriddhi, Sovereign Safety).
+- [x] **9.3 India Post (Post Office Time Deposit & Recurring Deposit) Integration** `[COMPLETED]`
+  - Added **Post Office Time Deposit (India Post POTD)**: 1Y (6.90%), 2Y (7.00%), 3Y (7.10%), 5Y (7.50% Section 80C Tax Saver). 100% Direct Sovereign Guarantee under GoI Consolidated Fund without any ₹5L ceiling.
+  - Added **Post Office 5-Year Recurring Deposit (India Post PORD)**: 6.70% p.a. quarterly compounded with ₹100/mo minimum.
+  - Added `fdSupported` and `rdSupported` flags to filter pure RD or pure FD schemes appropriately when user toggles between deposit types.
+  - Added dedicated `post_office` category filter tab alongside SFB, Private, PSU, and RRB.
+- [x] **9.4 Leading Small Finance Banks Integration** `[COMPLETED]`
+  - Added **AU Small Finance Bank** (7.50% 3Y, 8.00% 24M Peak, CRISIL AA).
+  - Added **Ujjivan Small Finance Bank** (7.75% 3Y, 8.25% 15M Peak, CARE A+).
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -212,6 +238,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 6 | Implemented Custom Rate Target Modeling & Special Odd-Day Schemes (222D–1001D) | RBI fractional quarterly compounding, custom % slider/steppers, browser verified |
 | **2026-10-20** | Phase 7 | Built GitOps Automated Rate Pipeline with GHA Cron & Live Scraper | Live TGB rate verified, decoupled `rates.json`, weekly GHA cron, zero backend |
 | **2026-10-20** | Phase 8 | Zero-hardcode rate architecture, APGVB merger handling, APGB & TGB live scrapers | Populated rates.json purely via sync script, smart merger UI guidance, verified end-to-end |
+| **2026-10-20** | Phase 9 | Added Axis, Union, Yes, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Ujjivan, & India Post RD/FD | 31 active institutions, sovereign guarantee distinction, browser verified end-to-end |
 
 
 

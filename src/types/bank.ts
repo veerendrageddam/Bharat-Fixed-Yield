@@ -1,6 +1,6 @@
 export type DepositType = 'FD' | 'RD';
 export type CompoundingFrequency = 'quarterly' | 'monthly' | 'maturity';
-export type BankCategory = 'sfb' | 'private' | 'psu' | 'rrb' | 'taxsaver' | 'all';
+export type BankCategory = 'sfb' | 'private' | 'psu' | 'rrb' | 'post_office' | 'taxsaver' | 'all';
 export type CreditRating = 'AAA' | 'AA+' | 'AA' | 'A+' | 'A' | 'Sovereign';
 
 export interface SpecialScheme {
@@ -18,7 +18,7 @@ export interface BankData {
   rank: number;
   name: string;
   subTitle: string;
-  category: 'sfb' | 'private' | 'psu' | 'rrb';
+  category: 'sfb' | 'private' | 'psu' | 'rrb' | 'post_office';
   sponsorGovt?: string; // e.g. "Govt of AP & Canara Bank"
   badge: string;
   categoryTag: string;
@@ -40,12 +40,14 @@ export interface BankData {
   lockInDays: number;
   // Multi-tenure rate matrix: tenure in months -> annual interest rate %
   ratesByTenure?: Record<number, number>;
+  rdRatesByTenure?: Record<number, number>;
   // Geographic jurisdiction
   operatingStates?: string[];
   isPanIndia?: boolean;
   // Official banking portal deep-link for safe redirection
   portalUrl?: string;
   portalName?: string;
+  fdSupported?: boolean;
   rdSupported?: boolean;
   status?: 'active' | 'amalgamated';
   sourceUrl?: string;
@@ -56,7 +58,7 @@ export interface MergedBankInfo {
   id: string;
   name: string;
   status: 'amalgamated';
-  category: 'sfb' | 'private' | 'psu' | 'rrb';
+  category: 'sfb' | 'private' | 'psu' | 'rrb' | 'post_office';
   effectiveDate: string;
   rationale: string;
   successorBankIds: string[];

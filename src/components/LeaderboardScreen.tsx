@@ -48,9 +48,14 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
 
   // Filter banks based on category & sub-filters
   const filteredBanks = banks.filter((b) => {
+    if (persona.depositType === 'RD' && b.rdSupported === false) return false;
+    if (persona.depositType === 'FD' && b.fdSupported === false) return false;
+
     if (selectedCategory === 'sfb' && b.category !== 'sfb') return false;
+    if (selectedCategory === 'rrb' && b.category !== 'rrb') return false;
     if (selectedCategory === 'private' && b.category !== 'private') return false;
-    if (selectedCategory === 'psu' && b.category !== 'psu') return false;
+    if (selectedCategory === 'psu' && b.category !== 'psu' && b.category !== 'post_office') return false;
+    if (selectedCategory === 'post_office' && b.category !== 'post_office') return false;
     if (selectedCategory === 'taxsaver' && b.tenureMonths !== 60 && !b.badge.includes('Tax')) return false;
 
     if (minRatingFilter === 'AAA' && !b.rating.includes('AAA') && !b.rating.includes('Highest')) return false;
@@ -249,7 +254,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
           <div className="flex items-center gap-2 self-start md:self-auto">
             <span className="w-2.5 h-2.5 rounded-full bg-[#006c4a] dark:bg-[#10b981] animate-pulse" />
             <span className="text-xs font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              34 Scheduled Banks Monitored Daily
+              {banks.length} Scheduled Institutions Monitored Daily
             </span>
           </div>
         </div>
@@ -259,6 +264,17 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
           {/* Main Category Filter Tabs */}
           <div className="flex flex-wrap items-center gap-1.5" id="categoryPillGroup">
             <button
+              onClick={() => setSelectedCategory('all')}
+              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+                selectedCategory === 'all'
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+              }`}
+            >
+              <span>🌐</span>
+              <span>All ({banks.length})</span>
+            </button>
+            <button
               onClick={() => setSelectedCategory('sfb')}
               className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
                 selectedCategory === 'sfb'
@@ -267,7 +283,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
               }`}
             >
               <span>⚡</span>
-              <span>Highest Return (SFBs)</span>
+              <span>SFBs (Peak Yield)</span>
             </button>
             <button
               onClick={() => setSelectedCategory('private')}
@@ -278,7 +294,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
               }`}
             >
               <span>🏢</span>
-              <span>Top Scheduled Commercial (HDFC/ICICI)</span>
+              <span>Private Banks (HDFC, ICICI, Axis, IDFC, Yes)</span>
             </button>
             <button
               onClick={() => setSelectedCategory('psu')}
@@ -289,7 +305,18 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
               }`}
             >
               <span>🏛️</span>
-              <span>Public Sector Giants (SBI/PNB/BoB)</span>
+              <span>Public Sector (SBI, BoB, Union, Canara)</span>
+            </button>
+            <button
+              onClick={() => setSelectedCategory('post_office')}
+              className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 flex items-center gap-1.5 ${
+                selectedCategory === 'post_office'
+                  ? 'bg-slate-900 dark:bg-white text-white dark:text-slate-900 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+              }`}
+            >
+              <span>📮</span>
+              <span>India Post (Sovereign POTD & PORD)</span>
             </button>
             <button
               onClick={() => setSelectedCategory('taxsaver')}
@@ -300,7 +327,7 @@ export const LeaderboardScreen: React.FC<LeaderboardScreenProps> = ({
               }`}
             >
               <span>🛡️</span>
-              <span>Tax Saver (5-Yr Section 80C)</span>
+              <span>Tax Saver (80C)</span>
             </button>
           </div>
 

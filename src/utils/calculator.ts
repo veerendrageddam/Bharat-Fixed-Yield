@@ -39,6 +39,11 @@ export function getEffectiveRate(
   const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
   let rate = bank.baseRate;
 
+  // Use RD tenure rates if user selected RD and bank defines distinct RD rates
+  const ratesMatrix = (persona.depositType === 'RD' && bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
+    ? bank.rdRatesByTenure
+    : bank.ratesByTenure;
+
   // 1. Check if an odd-day special high-yield scheme matches (e.g. 222D, 399D, 400D, 444D, 555D, 1001D)
   if (effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
     // Exact or nearest special scheme within 10 days
@@ -50,14 +55,14 @@ export function getEffectiveRate(
     } else {
       // Approximate day count to months
       const approxMonths = Math.round(effectiveDays / 30.41);
-      if (bank.ratesByTenure && bank.ratesByTenure[approxMonths] !== undefined) {
-        rate = bank.ratesByTenure[approxMonths];
+      if (ratesMatrix && ratesMatrix[approxMonths] !== undefined) {
+        rate = ratesMatrix[approxMonths];
       }
     }
   } else {
     const targetTenure = tenureMonths ?? persona.tenureMonths;
-    if (bank.ratesByTenure && bank.ratesByTenure[targetTenure] !== undefined) {
-      rate = bank.ratesByTenure[targetTenure];
+    if (ratesMatrix && ratesMatrix[targetTenure] !== undefined) {
+      rate = ratesMatrix[targetTenure];
     }
   }
 

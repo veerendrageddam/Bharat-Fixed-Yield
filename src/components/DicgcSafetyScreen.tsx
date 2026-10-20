@@ -233,7 +233,7 @@ export const DicgcSafetyScreen: React.FC<DicgcSafetyScreenProps> = ({
                 <div className="flex items-center justify-between text-xs">
                   <span className="flex items-center gap-1 text-[#00714e] dark:text-[#a7f3d0] font-bold">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    &lt; ₹5L Insured Ceiling
+                    {item.bank.category === 'post_office' ? '100% Direct Sovereign Guarantee (No ₹5L Cap)' : '< ₹5L Insured Ceiling'}
                   </span>
                   <button
                     onClick={() => onSelectBankForInspection(item.bank)}

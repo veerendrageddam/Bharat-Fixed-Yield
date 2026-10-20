@@ -65,10 +65,12 @@ export const INITIAL_BANKS: BankData[] = Object.values(
     exitPenalty: b.exitPenalty ?? '0.50% Break Penalty',
     lockInDays: b.lockInDays ?? 7,
     ratesByTenure: parseTenureRates(b.ratesByTenure),
+    rdRatesByTenure: parseTenureRates(b.rdRatesByTenure),
     isPanIndia: b.isPanIndia ?? false,
     operatingStates: b.operatingStates ?? ['ALL'],
     portalUrl: b.portalUrl,
     portalName: b.portalName,
+    fdSupported: b.fdSupported ?? true,
     rdSupported: b.rdSupported ?? true,
     status: b.status ?? 'active',
     sourceUrl: b.sourceUrl,
@@ -78,12 +80,14 @@ export const INITIAL_BANKS: BankData[] = Object.values(
 /**
  * Section 80C Tax-Saver 5-Year Lock-in Derivative Banks
  */
-export const TAX_SAVER_BANKS: BankData[] = INITIAL_BANKS.map((b) => ({
-  ...b,
-  tenureYears: 5,
-  tenureMonths: 60,
-  badge: 'Section 80C Tax Saver',
-  categoryTag: '5-Year Non-Callable Lock-in',
-  baseRate: b.ratesByTenure?.[60] ?? Number((b.baseRate - 0.35).toFixed(2)),
-  notes: 'Eligible for tax deduction up to ₹1,50,000 under Section 80C. Mandatory non-callable 5-year lock-in.',
-}));
+export const TAX_SAVER_BANKS: BankData[] = INITIAL_BANKS
+  .filter((b) => b.fdSupported !== false)
+  .map((b) => ({
+    ...b,
+    tenureYears: 5,
+    tenureMonths: 60,
+    badge: 'Section 80C Tax Saver',
+    categoryTag: '5-Year Non-Callable Lock-in',
+    baseRate: b.ratesByTenure?.[60] ?? Number((b.baseRate - 0.35).toFixed(2)),
+    notes: 'Eligible for tax deduction up to ₹1,50,000 under Section 80C. Mandatory non-callable 5-year lock-in.',
+  }));

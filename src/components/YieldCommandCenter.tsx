@@ -171,10 +171,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         if (!matchesName && !matchesMergerSuccessor) return false;
       }
 
+      // Check deposit type compatibility (FD vs RD)
+      if (persona.depositType === 'RD' && b.rdSupported === false) return false;
+      if (persona.depositType === 'FD' && b.fdSupported === false) return false;
+
       if (selectedCategory === 'sfb' && b.category !== 'sfb') return false;
       if (selectedCategory === 'rrb' && b.category !== 'rrb') return false;
       if (selectedCategory === 'private' && b.category !== 'private') return false;
-      if (selectedCategory === 'psu' && b.category !== 'psu') return false;
+      if (selectedCategory === 'psu' && b.category !== 'psu' && b.category !== 'post_office') return false;
+      if (selectedCategory === 'post_office' && b.category !== 'post_office') return false;
       if (selectedCategory === 'taxsaver' && persona.tenureMonths !== 60 && !b.badge.includes('Tax')) return false;
 
       if (minRatingFilter === 'AAA' && !b.rating.includes('AAA') && !b.rating.includes('Highest')) return false;
@@ -234,6 +239,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     const sfbTop = stateFilteredBanks.filter(b => b.category === 'sfb')[0];
     const pvtTop = stateFilteredBanks.filter(b => b.category === 'private')[0];
     const psuTop = stateFilteredBanks.filter(b => b.category === 'psu')[0];
+    const postTop = stateFilteredBanks.filter(b => b.category === 'post_office')[0];
 
     const data: Array<{ name: string; rate: number; bank: string }> = [];
 
@@ -253,13 +259,18 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       },
       {
         name: 'Top Private',
-        rate: pvtTop ? getEffectiveRate(pvtTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.25,
+        rate: pvtTop ? getEffectiveRate(pvtTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.75,
         bank: pvtTop ? pvtTop.name.split(' ')[0] : 'Private',
       },
       {
         name: 'Top PSU',
-        rate: psuTop ? getEffectiveRate(psuTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.10,
+        rate: psuTop ? getEffectiveRate(psuTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.40,
         bank: psuTop ? psuTop.name.split(' ')[0] : 'PSU',
+      },
+      {
+        name: 'India Post',
+        rate: postTop ? getEffectiveRate(postTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.10,
+        bank: 'Sovereign PO',
       },
       {
         name: 'RBI Repo',
@@ -1174,9 +1185,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             {[
               { id: 'all', label: 'All Institutions' },
               { id: 'sfb', label: 'Small Finance Banks (Peak Yield)' },
+              { id: 'private', label: 'Private Banks (HDFC, ICICI, Axis, IDFC, Yes)' },
+              { id: 'psu', label: 'Public Sector (SBI, BoB, Union, Canara)' },
+              { id: 'post_office', label: 'India Post (Post Office RD & FD)' },
               { id: 'rrb', label: 'Regional Rural & State Banks' },
-              { id: 'private', label: 'Private Banks (CRISIL AAA)' },
-              { id: 'psu', label: 'Public Sector (Sovereign)' },
               { id: 'taxsaver', label: '5-Yr Tax Savers (80C)' },
             ].map((tab) => (
               <button
