@@ -84,7 +84,7 @@
       "operatingStates": [
         "ALL"
       ],
-      "portalUrl": "https://www.suryodaybank.com/",
+      "portalUrl": "https://www.suryoday.bank.in/",
       "portalName": "Suryoday NetBanking Portal",
       "rdSupported": true,
       "status": "active",
@@ -109,7 +109,7 @@
       "womenBonus": 0.1,
       "fdSupported": true,
       "lastVerified": "2026-10-20T14:01:55.186Z",
-      "sourceUrl": "https://www.suryodaybank.com/"
+      "sourceUrl": "https://www.suryoday.bank.in/"
     },
     "utkarsh-sfb": {
       "id": "utkarsh-sfb",
