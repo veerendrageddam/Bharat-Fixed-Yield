@@ -67,10 +67,21 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
 
         <div className="flex items-center gap-2.5">
           <button
-            onClick={() => setModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs"
+            onClick={() => comparedBanks.length >= 2 && setModalOpen(true)}
+            disabled={comparedBanks.length < 2}
+            title={comparedBanks.length < 2 ? 'Select at least 2 banks to compare' : 'Compare banks side-by-side'}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs ${
+              comparedBanks.length >= 2
+                ? 'bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white cursor-pointer'
+                : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60'
+            }`}
           >
             <span>Compare Side-by-Side</span>
+            {comparedBanks.length < 2 && (
+              <span className="text-[10px] font-normal opacity-80 ml-0.5">
+                (add {2 - comparedBanks.length} more)
+              </span>
+            )}
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
 

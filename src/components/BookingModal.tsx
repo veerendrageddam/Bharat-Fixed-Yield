@@ -24,6 +24,14 @@ interface BookingModalProps {
 }
 
 export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClose }) => {
+  // All hooks must be declared before any conditional returns (Rules of Hooks)
+  const [activeMode, setActiveMode] = useState<'direct_portal' | 'assisted_callback' | 'success'>('direct_portal');
+  const [copiedRef, setCopiedRef] = useState(false);
+  const [userName, setUserName] = useState('');
+  const [userPhone, setUserPhone] = useState('');
+  const [dpdpConsent, setDpdpConsent] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
+
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -35,13 +43,6 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
   }, [onClose]);
 
   if (!bank) return null;
-
-  const [activeMode, setActiveMode] = useState<'direct_portal' | 'assisted_callback' | 'success'>('direct_portal');
-  const [copiedRef, setCopiedRef] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [userPhone, setUserPhone] = useState('');
-  const [dpdpConsent, setDpdpConsent] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
 
   const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
   const rate = getEffectiveRate(bank, persona, persona.tenureMonths, tenureDays);

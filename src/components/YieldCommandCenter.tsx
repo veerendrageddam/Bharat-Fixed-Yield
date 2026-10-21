@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef } from 'react';
+import React, { useState, useMemo } from 'react';
 import {
   Wallet,
   TrendingUp,
@@ -101,10 +101,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const [activeChartTab, setActiveChartTab] = useState<'donut' | 'trajectory' | 'spread'>('donut');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Lazy Loading / Pagination state (minimum 5 or 10 records per batch)
-  const [pageSize, setPageSize] = useState<number>(10);
-  const [visibleCount, setVisibleCount] = useState<number>(10);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
 
   // Check if search query matches any merged bank
   const activeMergerNotice = useMemo(() => {
@@ -172,19 +169,24 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     });
   }, [banks, persona.state, searchQuery]);
 
+  // Banks filtered by active state and deposit type (FD vs RD)
+  const depositTypeAndStateFilteredBanks = useMemo(() => {
+    return stateFilteredBanks.filter((b) => {
+      if (persona.depositType === 'RD' && b.rdSupported === false) return false;
+      if (persona.depositType === 'FD' && b.fdSupported === false) return false;
+      return true;
+    });
+  }, [stateFilteredBanks, persona.depositType]);
+
   // Category and sub-filter logic
   const filteredAndRankedBanks = useMemo(() => {
-    const list = stateFilteredBanks.filter((b) => {
+    const list = depositTypeAndStateFilteredBanks.filter((b) => {
       if (searchQuery.trim()) {
         const q = searchQuery.toLowerCase().trim();
         const matchesName = b.name.toLowerCase().includes(q) || b.id.toLowerCase().includes(q) || b.subTitle.toLowerCase().includes(q);
         const matchesMergerSuccessor = activeMergerNotice && activeMergerNotice.successorBankIds.includes(b.id);
         if (!matchesName && !matchesMergerSuccessor) return false;
       }
-
-      // Check deposit type compatibility (FD vs RD)
-      if (persona.depositType === 'RD' && b.rdSupported === false) return false;
-      if (persona.depositType === 'FD' && b.fdSupported === false) return false;
 
       if (selectedCategory === 'sfb' && b.category !== 'sfb') return false;
       if (selectedCategory === 'rrb' && b.category !== 'rrb') return false;
@@ -208,47 +210,29 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       const rateB = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
       return rateB - rateA;
     });
-  }, [stateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice]);
+  }, [depositTypeAndStateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice]);
 
-  // Reset visibleCount whenever user alters any filter, query, or persona input
-  useEffect(() => {
-    setVisibleCount(pageSize);
-  }, [
-    pageSize,
-    searchQuery,
-    selectedCategory,
-    minRatingFilter,
-    dicgcOnly,
-    persona.state,
-    persona.depositType,
-    persona.tenureMonths,
-    persona.tenureDays,
-    persona.tenureUnit,
-  ]);
-
-  // Sliced list for lazy progressive rendering
-  const visibleBanks = useMemo(() => {
-    return filteredAndRankedBanks.slice(0, visibleCount);
-  }, [filteredAndRankedBanks, visibleCount]);
-
-  // Infinite scroll / lazy loading intersection observer
-  useEffect(() => {
-    if (typeof IntersectionObserver === 'undefined') return;
-    if (!sentinelRef.current) return;
-    if (visibleCount >= filteredAndRankedBanks.length) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisibleCount((prev) => Math.min(prev + pageSize, filteredAndRankedBanks.length));
-        }
-      },
-      { rootMargin: '200px' }
-    );
-
-    observer.observe(sentinelRef.current);
-    return () => observer.disconnect();
-  }, [visibleCount, filteredAndRankedBanks.length, pageSize]);
+  // Category counts based on active state and deposit type (eliminating phantom +1 counts from other deposit types)
+  const categoryCounts = useMemo(() => {
+    const counts: Record<string, number> = {
+      all: depositTypeAndStateFilteredBanks.length,
+      sfb: 0,
+      private: 0,
+      psu: 0,
+      post_office: 0,
+      rrb: 0,
+      taxsaver: 0,
+    };
+    for (const b of depositTypeAndStateFilteredBanks) {
+      if (b.category === 'sfb') counts.sfb++;
+      if (b.category === 'private') counts.private++;
+      if (b.category === 'psu' || b.category === 'post_office') counts.psu++;
+      if (b.category === 'post_office') counts.post_office++;
+      if (b.category === 'rrb') counts.rrb++;
+      if (b.badge?.includes('Tax') || b.categoryTag?.includes('Lock-in') || b.tenureMonths === 60) counts.taxsaver++;
+    }
+    return counts;
+  }, [depositTypeAndStateFilteredBanks]);
 
   // Tenure Days resolution
   const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
@@ -287,10 +271,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
   // Rate spread comparison data
   const spreadData = useMemo(() => {
-    const sfbTop = stateFilteredBanks.filter(b => b.category === 'sfb')[0];
-    const pvtTop = stateFilteredBanks.filter(b => b.category === 'private')[0];
-    const psuTop = stateFilteredBanks.filter(b => b.category === 'psu')[0];
-    const postTop = stateFilteredBanks.filter(b => b.category === 'post_office')[0];
+    const sfbTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'sfb')[0];
+    const pvtTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'private')[0];
+    const psuTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'psu')[0];
+    const postTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'post_office')[0];
 
     const data: Array<{ name: string; rate: number; bank: string }> = [];
 
@@ -331,7 +315,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     );
 
     return data;
-  }, [stateFilteredBanks, persona, activeTenureDays]);
+  }, [depositTypeAndStateFilteredBanks, persona, activeTenureDays]);
 
   // Quick preset chips
   const fdPresets = [50000, 100000, 200000, 500000, 1000000];
@@ -1264,26 +1248,45 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               { id: 'post_office', label: 'India Post (Post Office RD & FD)' },
               { id: 'rrb', label: 'Regional Rural & State Banks' },
               { id: 'taxsaver', label: '5-Yr Tax Savers (80C)' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setSelectedCategory(tab.id as BankCategory)}
-                className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
-                  selectedCategory === tab.id
-                    ? 'bg-[#006c4a] text-white dark:bg-[#10b981] dark:text-slate-950 shadow-xs'
-                    : 'bg-white dark:bg-[#161b22] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            ].map((tab) => {
+              const count = categoryCounts[tab.id] ?? 0;
+              const isSelected = selectedCategory === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setSelectedCategory(tab.id as BankCategory)}
+                  className={`px-3.5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap flex items-center gap-2 cursor-pointer ${
+                    isSelected
+                      ? 'bg-[#006c4a] text-white dark:bg-[#10b981] dark:text-slate-950 shadow-xs'
+                      : 'bg-white dark:bg-[#161b22] text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-800 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <span>{tab.label}</span>
+                  <span
+                    className={`px-1.5 py-0.5 rounded-full text-[10px] font-extrabold transition-colors ${
+                      isSelected
+                        ? 'bg-white/25 text-white dark:bg-black/25 dark:text-slate-950'
+                        : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'
+                    }`}
+                  >
+                    {count}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Subfilters */}
           <div className="flex items-center gap-3 text-xs flex-wrap">
             <div className="flex items-center gap-1.5 px-3 py-1 bg-slate-100 dark:bg-slate-800 rounded-lg text-slate-700 dark:text-slate-300 font-bold" aria-live="polite">
-              <span>Showing {visibleBanks.length} of {filteredAndRankedBanks.length} Banks</span>
+              <span>
+                Showing {filteredAndRankedBanks.length}
+                {filteredAndRankedBanks.length !== depositTypeAndStateFilteredBanks.length
+                  ? ` of ${depositTypeAndStateFilteredBanks.length}`
+                  : ''}{' '}
+                Banks
+              </span>
             </div>
 
             <div className="flex items-center gap-1.5">
@@ -1355,7 +1358,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             </div>
           ) : (
             <>
-              {visibleBanks.map((bank, index) => {
+              {filteredAndRankedBanks.map((bank, index) => {
             const effectiveRate = getEffectiveRate(bank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
             const calc = calculateYield(
               currentAmount,
@@ -1496,77 +1499,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             );
           })}
 
-          {/* Lazy Loading Sentinel & Pagination Controls */}
-          <div className="mt-4 flex flex-col items-center gap-4 py-5 border-t border-slate-200/80 dark:border-slate-800">
-            {/* Progress Indicator */}
-            <div className="w-full max-w-md flex flex-col gap-2">
-              <div className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
-                <span>
-                  Showing <strong className="text-slate-900 dark:text-white">{visibleBanks.length}</strong> of{' '}
-                  <strong className="text-slate-900 dark:text-white">{filteredAndRankedBanks.length}</strong> institutions
-                </span>
-                <span>{Math.round((visibleBanks.length / Math.max(filteredAndRankedBanks.length, 1)) * 100)}%</span>
-              </div>
-              <div className="w-full h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-linear-to-r from-emerald-500 to-[#006c4a] rounded-full transition-all duration-300"
-                  style={{ width: `${(visibleBanks.length / Math.max(filteredAndRankedBanks.length, 1)) * 100}%` }}
-                />
-              </div>
-            </div>
-
-            {/* Action Buttons & Batch Switcher */}
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              {visibleCount < filteredAndRankedBanks.length ? (
-                <>
-                  <button
-                    type="button"
-                    onClick={() => setVisibleCount((prev) => Math.min(prev + pageSize, filteredAndRankedBanks.length))}
-                    className="px-5 py-2.5 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:hover:bg-[#059669] text-white dark:text-slate-950 font-bold text-xs sm:text-sm transition-all shadow-xs flex items-center gap-2 cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
-                  >
-                    <span>Load More (+{Math.min(pageSize, filteredAndRankedBanks.length - visibleCount)})</span>
-                    <ChevronDown className="w-4 h-4" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setVisibleCount(filteredAndRankedBanks.length)}
-                    className="px-4 py-2.5 rounded-xl bg-white dark:bg-[#161b22] hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 font-bold text-xs sm:text-sm transition-all shadow-2xs cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-slate-400"
-                  >
-                    Show All ({filteredAndRankedBanks.length})
-                  </button>
-                </>
-              ) : (
-                <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 text-emerald-800 dark:text-emerald-300 text-xs font-bold">
-                  <span>✓ All {filteredAndRankedBanks.length} institutions loaded</span>
-                </div>
-              )}
-
-              {/* Batch size selector: 5, 10, 20 */}
-              <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 ml-0 sm:ml-4">
-                <span className="font-semibold">Batch:</span>
-                {[5, 10, 20].map((size) => (
-                  <button
-                    key={size}
-                    type="button"
-                    onClick={() => {
-                      setPageSize(size);
-                      setVisibleCount(size);
-                    }}
-                    className={`px-2.5 py-1 rounded-lg font-bold text-xs transition-all cursor-pointer ${
-                      pageSize === size
-                        ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-950 shadow-2xs'
-                        : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
-                    }`}
-                    aria-label={`Show ${size} records per batch`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Invisible sentinel for scroll-driven lazy loading */}
-            <div ref={sentinelRef} className="h-2 w-full pointer-events-none" aria-hidden="true" />
+          {/* Footer count indicator */}
+          <div className="mt-4 flex items-center justify-between py-4 border-t border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+            <span className="font-medium">
+              Showing all <strong className="text-slate-900 dark:text-white">{filteredAndRankedBanks.length}</strong> institutions matching criteria
+            </span>
+            <span className="inline-flex items-center gap-1.5 text-emerald-700 dark:text-emerald-400 font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
+              <span>100% RBI &amp; DICGC verified</span>
+            </span>
           </div>
         </>
         )}

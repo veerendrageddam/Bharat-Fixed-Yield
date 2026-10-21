@@ -69,31 +69,33 @@ describe('YieldCommandCenter Component UI, Accessibility & Search Interactions',
     expect(searchInput).toHaveValue('');
   });
 
-  it('renders progressive lazy loading with initial batch of 10 and supports Load More & Batch switching', () => {
+  it('renders all filtered institutions directly with category count badges and full transparency', () => {
     // Render with all-india persona to ensure full dataset
     const panIndiaPersona: UserPersona = { ...mockPersona, state: 'All India (Pan-India)' };
     render(<YieldCommandCenter {...defaultProps} persona={panIndiaPersona} />);
 
-    // Check header counter
-    expect(screen.getByText(/Showing 10 of/i)).toBeInTheDocument();
+    // Check header counter shows full count directly without batch slicing
+    expect(screen.getByText(/Showing \d+ Banks/i)).toBeInTheDocument();
 
-    // Check progress and Load More button
-    const loadMoreBtn = screen.getByRole('button', { name: /Load More/i });
-    expect(loadMoreBtn).toBeInTheDocument();
+    // Verify representative mock banks are rendered in the DOM
+    expect(screen.getByText('Unity Small Finance Bank')).toBeInTheDocument();
+    expect(screen.getByText(/State Bank of India/i)).toBeInTheDocument();
+    expect(screen.getByText('HDFC Bank')).toBeInTheDocument();
 
-    // Click Load More (+10) -> should increase visible count to 20
-    fireEvent.click(loadMoreBtn);
-    expect(screen.getByText(/Showing 20 of/i)).toBeInTheDocument();
+    // Verify footer summary is present with 100% verified status
+    expect(screen.getByText(/institutions matching criteria/i)).toBeInTheDocument();
+    expect(screen.getByText(/100% RBI & DICGC verified/i)).toBeInTheDocument();
 
-    // Switch batch size to 5
-    const batch5Btn = screen.getByRole('button', { name: /Show 5 records per batch/i });
-    fireEvent.click(batch5Btn);
-    expect(screen.getByText(/Showing 5 of/i)).toBeInTheDocument();
+    // Switch to Small Finance Banks category
+    const sfbCategoryBtn = screen.getByRole('button', { name: /Small Finance Banks/i });
+    fireEvent.click(sfbCategoryBtn);
 
-    // Click Show All
-    const showAllBtn = screen.getByRole('button', { name: /Show All/i });
-    fireEvent.click(showAllBtn);
-    expect(screen.getByText(/All \d+ institutions loaded/i)).toBeInTheDocument();
+    // After filtering by category, counter shows subset of total
+    expect(screen.getByText(/Showing \d+ of \d+ Banks/i)).toBeInTheDocument();
+
+    // Unity SFB should remain visible, SBI should not match SFB category
+    expect(screen.getByText('Unity Small Finance Bank')).toBeInTheDocument();
+    expect(screen.queryByText('State Bank of India (Amrit Vrishti)')).not.toBeInTheDocument();
   });
 });
 
