@@ -34,10 +34,19 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
 }) => {
   const [form15HSubmitted, setForm15HSubmitted] = useState<boolean>(persona.form15HSubmitted);
 
-  const effectiveRate = getEffectiveRate(bank, persona);
-  const calc = calculateYield(persona.principal, effectiveRate, persona.tenureMonths, persona.age, form15HSubmitted);
+  const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
+  const effectiveRate = getEffectiveRate(bank, persona, persona.tenureMonths);
+  const calc = calculateYield(
+    depositAmount,
+    effectiveRate,
+    persona.tenureMonths,
+    persona.age,
+    form15HSubmitted,
+    persona.depositType,
+    persona.panLinked
+  );
 
-  // CSV Exporter for 12 quarters
+  // CSV Exporter
   const handleExportCSV = () => {
     let csvContent = 'data:text/csv;charset=utf-8,';
     csvContent += 'Quarter,Date,Opening Balance,Interest Earned,Cumulative Interest,Closing Balance,TDS Status\n';

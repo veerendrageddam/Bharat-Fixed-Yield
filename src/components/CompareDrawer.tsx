@@ -20,7 +20,21 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setModalOpen(false);
+      }
+    };
+    if (modalOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [modalOpen]);
+
   if (comparedBanks.length === 0) return null;
+
+  const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
 
   return (
     <>
@@ -53,10 +67,21 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
 
         <div className="flex items-center gap-2.5">
           <button
-            onClick={() => setModalOpen(true)}
-            className="px-4 py-2 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs"
+            onClick={() => comparedBanks.length >= 2 && setModalOpen(true)}
+            disabled={comparedBanks.length < 2}
+            title={comparedBanks.length < 2 ? 'Select at least 2 banks to compare' : 'Compare banks side-by-side'}
+            className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all flex items-center gap-1.5 shadow-xs ${
+              comparedBanks.length >= 2
+                ? 'bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white cursor-pointer'
+                : 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60'
+            }`}
           >
             <span>Compare Side-by-Side</span>
+            {comparedBanks.length < 2 && (
+              <span className="text-[10px] font-normal opacity-80 ml-0.5">
+                (add {2 - comparedBanks.length} more)
+              </span>
+            )}
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
 
@@ -87,13 +112,14 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                   Head-to-Head Bank Rate Comparison
                 </h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-                  Based on ₹{formatINR(persona.principal)} for {persona.tenureMonths} Months ({persona.age >= 60 ? 'Senior Citizen' : 'General'})
+                  Based on {persona.depositType === 'RD' ? `₹${formatINR(depositAmount)}/mo RD` : `₹${formatINR(depositAmount)} FD`} for {persona.tenureMonths} Months ({persona.age >= 60 ? 'Senior Citizen' : 'General'})
                 </p>
               </div>
 
               <button
                 onClick={() => setModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center"
+                className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+                aria-label="Close comparison modal"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -123,7 +149,8 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Applied Interest Rate</td>
                     {comparedBanks.map((b) => {
-                      const rate = getEffectiveRate(b, persona);
+                      const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+                      const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
                       return (
                         <td key={b.id} className="py-3 px-4 text-base font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
                           {rate.toFixed(2)}% p.a.
@@ -132,10 +159,24 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
+                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Total Invested</td>
+                    {comparedBanks.map((b) => {
+                      const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+                      const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
+                      return (
+                        <td key={b.id} className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-300 tabular-nums">
+                          ₹{formatINR(calc.totalInvested)}
+                        </td>
+                      );
+                    })}
+                  </tr>
+                  <tr>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Gross Maturity</td>
                     {comparedBanks.map((b) => {
-                      const rate = getEffectiveRate(b, persona);
-                      const calc = calculateYield(persona.principal, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted);
+                      const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+                      const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
                       return (
                         <td key={b.id} className="py-3 px-4 font-bold text-slate-900 dark:text-white tabular-nums">
                           ₹{formatINR(calc.maturityAmount)}
@@ -146,8 +187,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Total Interest Gain</td>
                     {comparedBanks.map((b) => {
-                      const rate = getEffectiveRate(b, persona);
-                      const calc = calculateYield(persona.principal, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted);
+                      const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+                      const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
                       return (
                         <td key={b.id} className="py-3 px-4 font-semibold text-[#006c4a] dark:text-[#10b981] tabular-nums">
                           +₹{formatINR(calc.totalInterest)}
@@ -158,8 +200,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                   <tr>
                     <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Effective Annual Yield</td>
                     {comparedBanks.map((b) => {
-                      const rate = getEffectiveRate(b, persona);
-                      const calc = calculateYield(persona.principal, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted);
+                      const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
+                      const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
                       return (
                         <td key={b.id} className="py-3 px-4 text-slate-700 dark:text-slate-300 tabular-nums">
                           {calc.effectiveAnnualYield}% (Compounded)
@@ -212,7 +255,7 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                           }}
                           className="w-full py-2 px-3 rounded-lg bg-[#006c4a] hover:bg-[#005137] text-white font-bold text-xs transition-colors"
                         >
-                          Invest / Open FD
+                          Book via Bank Portal
                         </button>
                       </td>
                     ))}

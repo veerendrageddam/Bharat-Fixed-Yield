@@ -10,6 +10,18 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
   const [email, setEmail] = useState('investor@bharatyield.in');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
 
   return (
@@ -17,6 +29,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/70 backdrop-blur-xs"
       role="dialog"
       aria-modal="true"
+      aria-labelledby="signin-modal-title"
       onClick={onClose}
     >
       <div
@@ -29,7 +42,7 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
               <User className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
+              <h3 id="signin-modal-title" className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
                 Investor Portal Access
               </h3>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -40,7 +53,8 @@ export const SignInModal: React.FC<SignInModalProps> = ({ isOpen, onClose }) => 
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+            aria-label="Close modal"
           >
             <X className="w-4 h-4" />
           </button>

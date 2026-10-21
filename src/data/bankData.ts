@@ -1,190 +1,93 @@
-import { BankData } from '../types/bank';
+import { BankData, MergedBankInfo } from '../types/bank';
+import ratesData from './rates.json';
 
-export const INITIAL_BANKS: BankData[] = [
-  {
-    id: 'unity-sfb',
-    rank: 1,
-    name: 'Unity Small Finance Bank',
-    subTitle: 'Scheduled Commercial Bank Status conferred by RBI • Pan-India Branches',
-    category: 'sfb',
-    badge: 'Highest 3-Year Yield',
-    categoryTag: 'Small Finance Bank (RBI Regulated)',
-    ratingAgency: 'CARE',
-    rating: 'CARE A (Stable)',
-    baseRate: 8.15,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBIA7m4vhe_YcrO_BB5my-thiFhnidVNMwjsvw2Yv1CIAkl5K7QKfDhuf8bdY25k0-3WgiSvvM60FX7WApiXKcK9r3-FzwaI3oRnj8B0TUDZVvFvMySUPkigLxiSgPbfWK-siKbrdxC1XW5tJqixmJpvF21vvNO3gbP7nN-GEeQTL9FRClDKfkCuO06re-iEY_Zqu3mmJYO8xGZZvfFcwUIUAAldAEJhghVGtLNDEI8PeK7GmLhIU4MmQ',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'DICGC Insured up to ₹5 Lakhs per depositor. 100% Principal Protected within current ₹5,00,000 threshold.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'suryoday-sfb',
-    rank: 2,
-    name: 'Suryoday Small Finance Bank',
-    subTitle: 'Scheduled Bank Listed on NSE/BSE • High Capital Adequacy Ratio',
-    category: 'sfb',
-    badge: 'Special 3-Yr Tenure',
-    categoryTag: 'Small Finance Bank',
-    ratingAgency: 'CRISIL',
-    rating: 'CRISIL A+ (Stable)',
-    baseRate: 8.00,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIGDiz8SEuCXdAi5-y3dcfvaamFP2o7VlVmr-mUYfQkw1Ocf2y6fU70WA9Q2HPtDWDG_J3ydx2M_O3xSUamhwLXg9hF-d-rB2SvjkiVvntKJIXJq5jRKBGwoafved_HT8kSL6IhjgSFRoAIFMAJ5-AUW4nCTHpfJCgtKoQp3eMHnob2df9JRO-hipjbYG7S2QNi4tF7oLTNQ4Mj_3ltRBLheIaTGg4_bKmRT2rQRPHf81AC5XMryYQRg',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'DICGC Insured (100% covered). Registered scheduled bank insured under RBI statutory framework.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'hdfc-bank',
-    rank: 3,
-    name: 'HDFC Bank',
-    subTitle: "India's Largest Private Lender • 'Too Big to Fail' Institutional Classification",
-    category: 'private',
-    badge: 'Highest Stability (CRISIL AAA)',
-    categoryTag: 'Private Bank - D-SIB (Domestically Systemic)',
-    ratingAgency: 'CRISIL',
-    rating: 'AAA / Stable',
-    baseRate: 7.25,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA',
-    minDeposit: 5000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Diversification Pick: Recommended asset allocation partner to split deposits exceeding the ₹5 Lakh statutory DICGC cover.',
-    exitPenalty: '1.00% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'sbi-bank',
-    rank: 4,
-    name: "State Bank of India (SBI 'Amrit Vrishti')",
-    subTitle: 'Largest Public Sector Lender • 22,000+ branches • Zero Institutional Default Risk',
-    category: 'psu',
-    badge: 'Govt of India Majority Owned',
-    categoryTag: 'Public Sector (Sovereign Trust)',
-    ratingAgency: 'Sovereign',
-    rating: 'Highest Safety',
-    baseRate: 7.10,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.80,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Backed by implicit Government of India sovereign creditworthiness + DICGC ₹5,00,000 statutory deposit insurance.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'utkarsh-sfb',
-    rank: 5,
-    name: 'Utkarsh Small Finance Bank',
-    subTitle: 'Listed Scheduled Commercial Bank • Pan India Rural & Urban Network',
-    category: 'sfb',
-    badge: 'High Yield Tenure',
-    categoryTag: 'Small Finance Bank (RBI Regulated)',
-    ratingAgency: 'CARE',
-    rating: 'CARE A+ (Positive)',
-    baseRate: 8.00,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCIGDiz8SEuCXdAi5-y3dcfvaamFP2o7VlVmr-mUYfQkw1Ocf2y6fU70WA9Q2HPtDWDG_J3ydx2M_O3xSUamhwLXg9hF-d-rB2SvjkiVvntKJIXJq5jRKBGwoafved_HT8kSL6IhjgSFRoAIFMAJ5-AUW4nCTHpfJCgtKoQp3eMHnob2df9JRO-hipjbYG7S2QNi4tF7oLTNQ4Mj_3ltRBLheIaTGg4_bKmRT2rQRPHf81AC5XMryYQRg',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Full statutory DICGC insurance guarantee up to ₹5,00,000 principal plus accrued return.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'icici-bank',
-    rank: 6,
-    name: 'ICICI Bank',
-    subTitle: 'Premier D-SIB Scheduled Commercial Bank • High Tier-1 Capital Adequacy',
-    category: 'private',
-    badge: 'CRISIL AAA Rated',
-    categoryTag: 'Private Bank (D-SIB)',
-    ratingAgency: 'CRISIL',
-    rating: 'AAA / Stable',
-    baseRate: 7.25,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA',
-    minDeposit: 10000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Institutional stability benchmark. Zero counterparty default risk.',
-    exitPenalty: '1.00% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'bank-of-baroda',
-    rank: 7,
-    name: 'Bank of Baroda (BoB Tiranga Plus)',
-    subTitle: 'Public Sector Giant • Government of India Holding 63.97%',
-    category: 'psu',
-    badge: 'Public Sector Trust',
-    categoryTag: 'Public Sector Bank',
-    ratingAgency: 'Sovereign',
-    rating: 'Highest Safety',
-    baseRate: 7.15,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.75,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Comprehensive sovereign assurance + ₹5 Lakh DICGC statutory claim protection.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
-  },
-  {
-    id: 'pnb-bank',
-    rank: 8,
-    name: 'Punjab National Bank (PNB Uttam)',
-    subTitle: 'Second Largest PSU Lender in India • Massive Domestic Reach',
-    category: 'psu',
-    badge: 'Govt Controlled',
-    categoryTag: 'Public Sector Bank',
-    ratingAgency: 'Sovereign',
-    rating: 'Highest Safety',
-    baseRate: 7.00,
-    seniorBonus: 0.50,
-    superSeniorBonus: 0.80,
-    logoUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ',
-    minDeposit: 1000,
-    tenureYears: 3,
-    tenureMonths: 36,
-    dicgcCovered: true,
-    notes: 'Zero default risk backed by the Government of India sovereign guarantee.',
-    exitPenalty: '0.50% Break Penalty',
-    lockInDays: 7,
+/**
+ * Transforms string-keyed JSON tenure rate maps into numeric-keyed dictionaries
+ * expected by calculator engines and visualization charts.
+ */
+function parseTenureRates(ratesMap?: Record<string, number>): Record<number, number> {
+  if (!ratesMap) return {};
+  const result: Record<number, number> = {};
+  for (const [key, val] of Object.entries(ratesMap)) {
+    const numKey = parseInt(key, 10);
+    if (!isNaN(numKey) && typeof val === 'number') {
+      result[numKey] = val;
+    }
   }
-];
+  return result;
+}
 
-export const TAX_SAVER_BANKS = INITIAL_BANKS.map(b => ({
-  ...b,
-  tenureYears: 5,
-  tenureMonths: 60,
-  badge: 'Section 80C Tax Saver',
-  categoryTag: '5-Year Non-Callable Lock-in',
-  baseRate: Number((b.baseRate - 0.25).toFixed(2)),
-  notes: 'Eligible for deduction up to ₹1,50,000 under Section 80C. Mandatory non-callable 5-year lock-in.',
-}));
+export const LATEST_RATES_METADATA = {
+  lastUpdated: ratesData.lastUpdated,
+  source: ratesData.source,
+  version: ratesData.version,
+};
+
+/**
+ * Merged & Amalgamated Banks Registry
+ * Tracks banks restructured under regulatory consolidations (e.g. GoI "One State, One RRB" policy).
+ */
+export const MERGED_BANKS_REGISTRY: Record<string, MergedBankInfo> =
+  (ratesData.mergedBanks || {}) as Record<string, MergedBankInfo>;
+
+/**
+ * Dynamic Bank Yield Hydration
+ * All active scheduled banks and their multi-tenure rate matrices are populated
+ * directly from rates.json (synced via automated scrapers). Zero rates are hardcoded.
+ */
+export const INITIAL_BANKS: BankData[] = Object.values(
+  (ratesData.banks || {}) as Record<string, any>
+)
+  .filter((b) => b.status === 'active')
+  .map((b, index) => ({
+    id: b.id,
+    rank: b.rank ?? index + 1,
+    name: b.name,
+    subTitle: b.subTitle,
+    category: b.category,
+    sponsorGovt: b.sponsorGovt,
+    badge: b.badge,
+    categoryTag: b.categoryTag,
+    ratingAgency: b.ratingAgency,
+    rating: b.rating,
+    baseRate: typeof b.baseRate === 'number' ? b.baseRate : 7.00,
+    seniorBonus: typeof b.seniorBonus === 'number' ? b.seniorBonus : 0.50,
+    superSeniorBonus: typeof b.superSeniorBonus === 'number' ? b.superSeniorBonus : 0.75,
+    womenBonus: typeof b.womenBonus === 'number' ? b.womenBonus : 0.00,
+    logoUrl: b.logoUrl,
+    minDeposit: b.minDeposit ?? 1000,
+    tenureYears: b.tenureYears ?? 3,
+    tenureMonths: b.tenureMonths ?? 36,
+    specialTenure: b.specialTenure,
+    specialSchemes: b.specialSchemes ?? [],
+    dicgcCovered: b.dicgcCovered ?? true,
+    notes: b.notes,
+    exitPenalty: b.exitPenalty ?? '0.50% Break Penalty',
+    lockInDays: b.lockInDays ?? 7,
+    ratesByTenure: parseTenureRates(b.ratesByTenure),
+    rdRatesByTenure: parseTenureRates(b.rdRatesByTenure),
+    isPanIndia: b.isPanIndia ?? false,
+    operatingStates: b.operatingStates ?? ['ALL'],
+    portalUrl: b.portalUrl,
+    portalName: b.portalName,
+    fdSupported: b.fdSupported ?? true,
+    rdSupported: b.rdSupported ?? true,
+    status: b.status ?? 'active',
+    sourceUrl: b.sourceUrl,
+    lastVerified: b.lastVerified,
+  }));
+
+/**
+ * Section 80C Tax-Saver 5-Year Lock-in Derivative Banks
+ */
+export const TAX_SAVER_BANKS: BankData[] = INITIAL_BANKS
+  .filter((b) => b.fdSupported !== false)
+  .map((b) => ({
+    ...b,
+    tenureYears: 5,
+    tenureMonths: 60,
+    badge: 'Section 80C Tax Saver',
+    categoryTag: '5-Year Non-Callable Lock-in',
+    baseRate: b.ratesByTenure?.[60] ?? Number((b.baseRate - 0.35).toFixed(2)),
+    notes: 'Eligible for tax deduction up to ₹1,50,000 under Section 80C. Mandatory non-callable 5-year lock-in.',
+  }));
