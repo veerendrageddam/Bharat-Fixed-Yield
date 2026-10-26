@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-20T14:01:56.480Z",
+  "lastUpdated": "2026-10-26T07:14:56.637Z",
   "version": "2.1.0",
   "source": "RBI Scheduled Bank Disclosures & Official Rate Cards",
   "banks": {
@@ -59,7 +59,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "fdSupported": true,
-      "lastVerified": "2026-10-20T14:01:55.185Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.unitybank.co.in/"
     },
     "suryoday-sfb": {
@@ -84,7 +84,7 @@
       "operatingStates": [
         "ALL"
       ],
-      "portalUrl": "https://www.suryoday.bank.in/",
+      "portalUrl": "https://www.suryodaybank.com/",
       "portalName": "Suryoday NetBanking Portal",
       "rdSupported": true,
       "status": "active",
@@ -108,8 +108,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "sourceUrl": "https://www.suryoday.bank.in/"
+      "lastVerified": "2026-10-26T07:14:50.360Z",
+      "sourceUrl": "https://www.suryodaybank.com/"
     },
     "utkarsh-sfb": {
       "id": "utkarsh-sfb",
@@ -162,7 +162,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.utkarsh.bank/"
     },
     "equitas-sfb": {
@@ -216,7 +216,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.equitasbank.com/"
     },
     "au-sfb": {
@@ -270,7 +270,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.aubank.in/"
     },
     "ujjivan-sfb": {
@@ -324,7 +324,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.ujjivansfb.in/"
     },
     "hdfc-bank": {
@@ -366,7 +366,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://netbanking.hdfcbank.com/"
     },
     "icici-bank": {
@@ -408,7 +408,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.icicibank.com/"
     },
     "axis-bank": {
@@ -463,7 +463,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.axisbank.com/"
     },
     "kotak-bank": {
@@ -517,7 +517,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.kotak.com/"
     },
     "idfc-first-bank": {
@@ -572,7 +572,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.idfcfirstbank.com/"
     },
     "indusind-bank": {
@@ -626,7 +626,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.indusind.com/"
     },
     "yes-bank": {
@@ -680,7 +680,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.yesbank.in/"
     },
     "federal-bank": {
@@ -729,7 +729,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.federalbank.co.in/"
     },
     "sbi-bank": {
@@ -784,7 +784,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.onlinesbi.sbi/"
     },
     "bank-of-baroda": {
@@ -838,7 +838,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.360Z",
       "sourceUrl": "https://www.bankofbaroda.in/"
     },
     "pnb-bank": {
@@ -892,7 +892,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.pnbindia.in/"
     },
     "union-bank": {
@@ -947,7 +947,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.unionbankofindia.co.in/"
     },
     "canara-bank": {
@@ -996,7 +996,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://canarabank.com/"
     },
     "bank-of-india": {
@@ -1050,7 +1050,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://bankofindia.co.in/"
     },
     "saraswat-bank": {
@@ -1095,7 +1095,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.saraswatbank.com/"
     },
     "post-office-potd": {
@@ -1160,7 +1160,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.indiapost.gov.in/"
     },
     "post-office-pord": {
@@ -1215,7 +1215,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.indiapost.gov.in/"
     },
     "apgb-bank": {
@@ -1266,7 +1266,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-20T14:01:56.479Z"
+      "lastVerified": "2026-10-26T07:14:56.636Z"
     },
     "tgb-bank": {
       "id": "tgb-bank",
@@ -1333,7 +1333,7 @@
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-20T14:01:55.824Z"
+      "lastVerified": "2026-10-26T07:14:54.264Z"
     },
     "kgb-bank": {
       "id": "kgb-bank",
@@ -1375,7 +1375,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://keralagbank.com/"
     },
     "kagb-bank": {
@@ -1418,7 +1418,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://karnatakagraminbank.com/"
     },
     "mgb-bank": {
@@ -1461,7 +1461,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://mahagramin.bank.in/"
     },
     "bggb-bank": {
@@ -1504,7 +1504,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://ggb.bank.in/"
     },
     "aryavart-bank": {
@@ -1547,7 +1547,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://aryavart-rrb.com/"
     },
     "jkgb-bank": {
@@ -1591,7 +1591,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "lastVerified": "2026-10-26T07:14:50.361Z",
       "sourceUrl": "https://www.jkgb.in/"
     }
   },
@@ -1651,7 +1651,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.unitybank.co.in/",
-      "lastVerified": "2026-10-20T14:01:55.185Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "suryoday-sfb": {
       "baseRate": 8,
@@ -1674,7 +1674,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.suryodaybank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "utkarsh-sfb": {
       "baseRate": 8,
@@ -1702,7 +1702,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.utkarsh.bank/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "equitas-sfb": {
       "baseRate": 7.9,
@@ -1730,7 +1730,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.equitasbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "au-sfb": {
       "baseRate": 7.5,
@@ -1758,7 +1758,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.aubank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "ujjivan-sfb": {
       "baseRate": 7.75,
@@ -1786,7 +1786,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.ujjivansfb.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "hdfc-bank": {
       "baseRate": 7.25,
@@ -1802,7 +1802,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://netbanking.hdfcbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "icici-bank": {
       "baseRate": 7.25,
@@ -1818,7 +1818,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.icicibank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "axis-bank": {
       "baseRate": 7.1,
@@ -1847,7 +1847,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.axisbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "kotak-bank": {
       "baseRate": 7,
@@ -1875,7 +1875,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.kotak.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "idfc-first-bank": {
       "baseRate": 7.25,
@@ -1904,7 +1904,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.idfcfirstbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "indusind-bank": {
       "baseRate": 7.25,
@@ -1932,7 +1932,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.indusind.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "yes-bank": {
       "baseRate": 7.25,
@@ -1960,7 +1960,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.yesbank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "federal-bank": {
       "baseRate": 7,
@@ -1983,7 +1983,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.federalbank.co.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "sbi-bank": {
       "baseRate": 7.1,
@@ -2012,7 +2012,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.onlinesbi.sbi/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "bank-of-baroda": {
       "baseRate": 7.15,
@@ -2040,7 +2040,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.bankofbaroda.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.360Z"
     },
     "pnb-bank": {
       "baseRate": 7.05,
@@ -2068,7 +2068,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.pnbindia.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "union-bank": {
       "baseRate": 7.3,
@@ -2097,7 +2097,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.unionbankofindia.co.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "canara-bank": {
       "baseRate": 6.8,
@@ -2120,7 +2120,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://canarabank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "bank-of-india": {
       "baseRate": 6.5,
@@ -2148,7 +2148,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://bankofindia.co.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "saraswat-bank": {
       "baseRate": 7.6,
@@ -2164,7 +2164,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.saraswatbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "post-office-potd": {
       "baseRate": 7.1,
@@ -2203,7 +2203,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "post-office-pord": {
       "baseRate": 6.7,
@@ -2232,7 +2232,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "apgb-bank": {
       "baseRate": 6.65,
@@ -2255,7 +2255,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-20T14:01:56.479Z"
+      "lastVerified": "2026-10-26T07:14:56.636Z"
     },
     "tgb-bank": {
       "baseRate": 6.5,
@@ -2295,7 +2295,7 @@
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-20T14:01:55.824Z"
+      "lastVerified": "2026-10-26T07:14:54.264Z"
     },
     "kgb-bank": {
       "baseRate": 7.6,
@@ -2311,7 +2311,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://keralagbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "kagb-bank": {
       "baseRate": 7.5,
@@ -2327,7 +2327,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://karnatakagraminbank.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "mgb-bank": {
       "baseRate": 7.5,
@@ -2343,7 +2343,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://mahagramin.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "bggb-bank": {
       "baseRate": 7.45,
@@ -2359,7 +2359,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://ggb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "aryavart-bank": {
       "baseRate": 7.5,
@@ -2375,7 +2375,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://aryavart-rrb.com/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     },
     "jkgb-bank": {
       "baseRate": 7.5,
@@ -2391,7 +2391,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.jkgb.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z"
+      "lastVerified": "2026-10-26T07:14:50.361Z"
     }
   }
 }
