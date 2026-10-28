@@ -1,7 +1,7 @@
 {
-  "lastUpdated": "2026-10-26T07:14:56.637Z",
-  "version": "2.1.0",
-  "source": "RBI Scheduled Bank Disclosures & Official Rate Cards",
+  "lastUpdated": "2026-10-28T04:57:38.982Z",
+  "version": "2.2.0",
+  "source": "RBI Scheduled Bank Disclosures, MoF Gazettes & Official Rate Cards",
   "banks": {
     "unity-sfb": {
       "id": "unity-sfb",
@@ -59,8 +59,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "fdSupported": true,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.unitybank.co.in/"
+      "lastVerified": "2026-10-28T04:32:01.387Z",
+      "sourceUrl": "https://www.unitybank.co.in/",
+      "verificationStatus": "baseline_verified"
     },
     "suryoday-sfb": {
       "id": "suryoday-sfb",
@@ -84,7 +85,7 @@
       "operatingStates": [
         "ALL"
       ],
-      "portalUrl": "https://www.suryodaybank.com/",
+      "portalUrl": "https://www.suryoday.bank.in/",
       "portalName": "Suryoday NetBanking Portal",
       "rdSupported": true,
       "status": "active",
@@ -108,8 +109,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.suryodaybank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.suryoday.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "utkarsh-sfb": {
       "id": "utkarsh-sfb",
@@ -162,8 +164,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.utkarsh.bank/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.utkarsh.bank/",
+      "verificationStatus": "baseline_verified"
     },
     "equitas-sfb": {
       "id": "equitas-sfb",
@@ -216,8 +219,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.equitasbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.equitasbank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "au-sfb": {
       "id": "au-sfb",
@@ -270,8 +274,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.aubank.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.aubank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "ujjivan-sfb": {
       "id": "ujjivan-sfb",
@@ -324,8 +329,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.ujjivansfb.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.ujjivansfb.in/",
+      "verificationStatus": "baseline_verified"
     },
     "hdfc-bank": {
       "id": "hdfc-bank",
@@ -366,8 +372,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://netbanking.hdfcbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://netbanking.hdfcbank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "icici-bank": {
       "id": "icici-bank",
@@ -408,8 +415,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.icicibank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.icicibank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "axis-bank": {
       "id": "axis-bank",
@@ -463,8 +471,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.axisbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.axisbank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "kotak-bank": {
       "id": "kotak-bank",
@@ -517,8 +526,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.kotak.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.kotak.com/",
+      "verificationStatus": "baseline_verified"
     },
     "idfc-first-bank": {
       "id": "idfc-first-bank",
@@ -572,8 +582,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.idfcfirstbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.idfcfirstbank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "indusind-bank": {
       "id": "indusind-bank",
@@ -626,8 +637,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.indusind.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.indusind.com/",
+      "verificationStatus": "baseline_verified"
     },
     "yes-bank": {
       "id": "yes-bank",
@@ -680,8 +692,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.yesbank.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.yesbank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "federal-bank": {
       "id": "federal-bank",
@@ -729,8 +742,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.federalbank.co.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.federalbank.co.in/",
+      "verificationStatus": "baseline_verified"
     },
     "sbi-bank": {
       "id": "sbi-bank",
@@ -784,8 +798,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.onlinesbi.sbi/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.onlinesbi.sbi/",
+      "verificationStatus": "baseline_verified"
     },
     "bank-of-baroda": {
       "id": "bank-of-baroda",
@@ -838,8 +853,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-26T07:14:50.360Z",
-      "sourceUrl": "https://www.bankofbaroda.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.bankofbaroda.in/",
+      "verificationStatus": "baseline_verified"
     },
     "pnb-bank": {
       "id": "pnb-bank",
@@ -892,8 +908,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.pnbindia.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.pnbindia.in/",
+      "verificationStatus": "baseline_verified"
     },
     "union-bank": {
       "id": "union-bank",
@@ -947,8 +964,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.unionbankofindia.co.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.unionbankofindia.co.in/",
+      "verificationStatus": "baseline_verified"
     },
     "canara-bank": {
       "id": "canara-bank",
@@ -996,8 +1014,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://canarabank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://canarabank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "bank-of-india": {
       "id": "bank-of-india",
@@ -1050,8 +1069,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://bankofindia.co.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://bankofindia.co.in/",
+      "verificationStatus": "baseline_verified"
     },
     "saraswat-bank": {
       "id": "saraswat-bank",
@@ -1095,8 +1115,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.saraswatbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.saraswatbank.com/",
+      "verificationStatus": "baseline_verified"
     },
     "post-office-potd": {
       "id": "post-office-potd",
@@ -1160,8 +1181,9 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.indiapost.gov.in/"
+      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
       "id": "post-office-pord",
@@ -1215,8 +1237,9 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.indiapost.gov.in/"
+      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
       "id": "apgb-bank",
@@ -1266,7 +1289,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-26T07:14:56.636Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "tgb-bank": {
       "id": "tgb-bank",
@@ -1306,16 +1330,16 @@
       "specialTenure": "1000 Days TGB Sahasra (7.50%)",
       "specialSchemes": [
         {
-          "name": "444-DDD Special",
-          "days": 444,
-          "rate": 7.4,
-          "badge": "Special 444D"
-        },
-        {
           "name": "TGB Sahasra",
           "days": 1000,
           "rate": 7.5,
           "badge": "Peak RRB 7.50%"
+        },
+        {
+          "name": "444-DDD Special",
+          "days": 444,
+          "rate": 7.4,
+          "badge": "Special 444D"
         },
         {
           "name": "RD Lakhpati (36M RD)",
@@ -1333,7 +1357,8 @@
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-26T07:14:54.264Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "kgb-bank": {
       "id": "kgb-bank",
@@ -1358,7 +1383,7 @@
       "operatingStates": [
         "Kerala"
       ],
-      "portalUrl": "https://keralagbank.com/",
+      "portalUrl": "https://kgb.bank.in/",
       "portalName": "KGB Digital Portal",
       "fdSupported": true,
       "rdSupported": true,
@@ -1375,8 +1400,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://keralagbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://kgb.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "kagb-bank": {
       "id": "kagb-bank",
@@ -1401,7 +1427,7 @@
       "operatingStates": [
         "Karnataka"
       ],
-      "portalUrl": "https://karnatakagraminbank.com/",
+      "portalUrl": "https://karnatakagb.bank.in/",
       "portalName": "KaGB NetBanking",
       "fdSupported": true,
       "rdSupported": true,
@@ -1418,8 +1444,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://karnatakagraminbank.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://karnatakagb.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "mgb-bank": {
       "id": "mgb-bank",
@@ -1461,8 +1488,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://mahagramin.bank.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://mahagramin.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "bggb-bank": {
       "id": "bggb-bank",
@@ -1504,8 +1532,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://ggb.bank.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://ggb.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "aryavart-bank": {
       "id": "aryavart-bank",
@@ -1530,7 +1559,7 @@
       "operatingStates": [
         "Uttar Pradesh"
       ],
-      "portalUrl": "https://aryavart-rrb.com/",
+      "portalUrl": "https://upgb.bank.in/",
       "portalName": "Aryavart Bank Portal",
       "fdSupported": true,
       "rdSupported": true,
@@ -1547,8 +1576,9 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://aryavart-rrb.com/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://upgb.bank.in/",
+      "verificationStatus": "baseline_verified"
     },
     "jkgb-bank": {
       "id": "jkgb-bank",
@@ -1574,7 +1604,7 @@
         "Jammu and Kashmir",
         "Ladakh"
       ],
-      "portalUrl": "https://www.jkgb.in/",
+      "portalUrl": "https://www.jkgrameen.bank.in/",
       "portalName": "JKGB Digital Banking",
       "fdSupported": true,
       "rdSupported": true,
@@ -1591,8 +1621,366 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "specialSchemes": [],
-      "lastVerified": "2026-10-26T07:14:50.361Z",
-      "sourceUrl": "https://www.jkgb.in/"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "sourceUrl": "https://www.jkgrameen.bank.in/",
+      "verificationStatus": "baseline_verified"
+    },
+    "dbgb-bank": {
+      "id": "dbgb-bank",
+      "rank": 32,
+      "name": "Dakshin Bihar Gramin Bank (DBGB)",
+      "subTitle": "Leading RRB of Bihar • Sponsored by Punjab National Bank & Govt of Bihar",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Bihar & PNB",
+      "badge": "Bihar Premier RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Headquartered in Patna. Serving 20 districts of South Bihar. Full statutory DICGC insurance guarantee up to ₹5 Lakhs per depositor.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Bihar"
+      ],
+      "portalUrl": "https://bgb.bank.in/",
+      "portalName": "DBGB Official Banking Portal",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.25,
+        "36": 7.5,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.65%)",
+      "specialSchemes": [
+        {
+          "name": "DBGB Samriddhi 400D",
+          "days": 400,
+          "rate": 7.65,
+          "badge": "Peak RRB 7.65%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://bgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "ogb-bank": {
+      "id": "ogb-bank",
+      "rank": 33,
+      "name": "Odisha Gramya Bank (OGB)",
+      "subTitle": "Premier Rural Bank of Odisha • Sponsored by Indian Overseas Bank & Govt of Odisha",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Odisha & IOB",
+      "badge": "Odisha State RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Bhubaneswar HQ • Serving all 13 coastal & central Odisha districts. 100% DICGC insured up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Odisha"
+      ],
+      "portalUrl": "https://odishabank.bank.in/",
+      "portalName": "OGB NetBanking",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.3,
+        "36": 7.5,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.60%)",
+      "specialSchemes": [
+        {
+          "name": "OGB Pragati 444D",
+          "days": 444,
+          "rate": 7.6,
+          "badge": "Peak RRB 7.60%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://odishabank.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "rmgb-bank": {
+      "id": "rmgb-bank",
+      "rank": 34,
+      "name": "Rajasthan Marudhara Gramin Bank (RMGB)",
+      "subTitle": "Unified RRB of Rajasthan • Sponsored by State Bank of India & Govt of Rajasthan",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Rajasthan & SBI",
+      "badge": "Rajasthan Premier RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Jodhpur HQ • Extensive branch coverage across 15 Rajasthan districts. Insured by DICGC up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Rajasthan"
+      ],
+      "portalUrl": "https://www.rgb.bank.in/",
+      "portalName": "RMGB Official Portal",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.4,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.2,
+        "36": 7.4,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.50%)",
+      "specialSchemes": [
+        {
+          "name": "RMGB Maru 444D",
+          "days": 444,
+          "rate": 7.5,
+          "badge": "Special 444D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.rgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "bgvb-bank": {
+      "id": "bgvb-bank",
+      "rank": 35,
+      "name": "Bangiya Gramin Vikash Bank (BGVB)",
+      "subTitle": "Largest RRB in West Bengal • Sponsored by Punjab National Bank & Govt of WB",
+      "category": "rrb",
+      "sponsorGovt": "Govt of West Bengal & PNB",
+      "badge": "West Bengal Premier RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Berhampore HQ • Serving 12 districts of West Bengal. Full statutory DICGC insurance guarantee up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "West Bengal"
+      ],
+      "portalUrl": "https://www.wbgb.bank.in/",
+      "portalName": "BGVB Banking Portal",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.3,
+        "36": 7.5,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.60%)",
+      "specialSchemes": [
+        {
+          "name": "BGVB Samriddhi 400D",
+          "days": 400,
+          "rate": 7.6,
+          "badge": "Peak RRB 7.60%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.wbgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "agvb-bank": {
+      "id": "agvb-bank",
+      "rank": 36,
+      "name": "Assam Gramin Vikash Bank (AGVB)",
+      "subTitle": "Apex RRB of Assam & North-East • Sponsored by Punjab National Bank & Govt of Assam",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Assam & PNB",
+      "badge": "Assam & NE Premier RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Guwahati HQ • Over 450 branches across Assam. 100% DICGC principal protection up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Assam"
+      ],
+      "portalUrl": "https://agvb.bank.in/",
+      "portalName": "AGVB Official Portal",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.45,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.25,
+        "36": 7.45,
+        "60": 6.7
+      },
+      "specialTenure": "444 Days (7.55%)",
+      "specialSchemes": [
+        {
+          "name": "AGVB Rongali 444D",
+          "days": 444,
+          "rate": 7.55,
+          "badge": "Special 444D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://agvb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "tngb-bank": {
+      "id": "tngb-bank",
+      "rank": 37,
+      "name": "Tamil Nadu Grama Bank (TNGB)",
+      "subTitle": "Unified RRB of Tamil Nadu • Sponsored by Indian Bank & Govt of Tamil Nadu",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Tamil Nadu & Indian Bank",
+      "badge": "Tamil Nadu State RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Salem HQ • Over 650 branches across 32 districts of Tamil Nadu. DICGC insured up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Tamil Nadu"
+      ],
+      "portalUrl": "https://tngb.bank.in/",
+      "portalName": "TNGB NetBanking",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.15,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.65%)",
+      "specialSchemes": [
+        {
+          "name": "TNGB Thangam 444D",
+          "days": 444,
+          "rate": 7.65,
+          "badge": "Peak RRB 7.65%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://tngb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "mgb-mp-bank": {
+      "id": "mgb-mp-bank",
+      "rank": 38,
+      "name": "Madhyanchal Gramin Bank",
+      "subTitle": "Leading RRB of Madhya Pradesh • Sponsored by State Bank of India & Govt of MP",
+      "category": "rrb",
+      "sponsorGovt": "Govt of Madhya Pradesh & SBI",
+      "badge": "Central India RRB",
+      "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+      "ratingAgency": "Sovereign",
+      "rating": "Highest Safety",
+      "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+      "minDeposit": 1000,
+      "tenureYears": 3,
+      "tenureMonths": 36,
+      "dicgcCovered": true,
+      "notes": "Sagar HQ • Extensive rural and semi-urban banking network across Madhya Pradesh. Insured by DICGC up to ₹5,00,000.",
+      "exitPenalty": "0.50% Break Penalty",
+      "lockInDays": 7,
+      "isPanIndia": false,
+      "operatingStates": [
+        "Madhya Pradesh"
+      ],
+      "portalUrl": "https://mpgb.bank.in/",
+      "portalName": "MGB MP Portal",
+      "fdSupported": true,
+      "rdSupported": true,
+      "status": "active",
+      "baseRate": 7.45,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.2,
+        "36": 7.45,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.55%)",
+      "specialSchemes": [
+        {
+          "name": "MGB MP Utkarsh 400D",
+          "days": 400,
+          "rate": 7.55,
+          "badge": "Special 400D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://mpgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
     }
   },
   "mergedBanks": {
@@ -1651,7 +2039,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.unitybank.co.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.387Z",
+      "verificationStatus": "baseline_verified"
     },
     "suryoday-sfb": {
       "baseRate": 8,
@@ -1673,8 +2062,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://www.suryodaybank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "sourceUrl": "https://www.suryoday.bank.in/",
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "utkarsh-sfb": {
       "baseRate": 8,
@@ -1702,7 +2092,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.utkarsh.bank/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "equitas-sfb": {
       "baseRate": 7.9,
@@ -1730,7 +2121,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.equitasbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "au-sfb": {
       "baseRate": 7.5,
@@ -1758,7 +2150,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.aubank.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "ujjivan-sfb": {
       "baseRate": 7.75,
@@ -1786,7 +2179,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.ujjivansfb.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "hdfc-bank": {
       "baseRate": 7.25,
@@ -1802,7 +2196,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://netbanking.hdfcbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "icici-bank": {
       "baseRate": 7.25,
@@ -1818,7 +2213,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.icicibank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "axis-bank": {
       "baseRate": 7.1,
@@ -1847,7 +2243,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.axisbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "kotak-bank": {
       "baseRate": 7,
@@ -1875,7 +2272,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.kotak.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "idfc-first-bank": {
       "baseRate": 7.25,
@@ -1904,7 +2302,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.idfcfirstbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "indusind-bank": {
       "baseRate": 7.25,
@@ -1932,7 +2331,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.indusind.com/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "yes-bank": {
       "baseRate": 7.25,
@@ -1960,7 +2360,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.yesbank.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "federal-bank": {
       "baseRate": 7,
@@ -1983,7 +2384,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://www.federalbank.co.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "sbi-bank": {
       "baseRate": 7.1,
@@ -2012,7 +2414,8 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.onlinesbi.sbi/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "bank-of-baroda": {
       "baseRate": 7.15,
@@ -2040,7 +2443,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.bankofbaroda.in/",
-      "lastVerified": "2026-10-26T07:14:50.360Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "pnb-bank": {
       "baseRate": 7.05,
@@ -2068,7 +2472,8 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.pnbindia.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "union-bank": {
       "baseRate": 7.3,
@@ -2097,7 +2502,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.unionbankofindia.co.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "canara-bank": {
       "baseRate": 6.8,
@@ -2120,7 +2526,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://canarabank.com/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "bank-of-india": {
       "baseRate": 6.5,
@@ -2148,7 +2555,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://bankofindia.co.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "saraswat-bank": {
       "baseRate": 7.6,
@@ -2164,7 +2572,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "sourceUrl": "https://www.saraswatbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "post-office-potd": {
       "baseRate": 7.1,
@@ -2202,8 +2611,9 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "sourceUrl": "https://www.indiapost.gov.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
       "baseRate": 6.7,
@@ -2231,8 +2641,9 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "sourceUrl": "https://www.indiapost.gov.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
       "baseRate": 6.65,
@@ -2255,7 +2666,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-26T07:14:56.636Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "tgb-bank": {
       "baseRate": 6.5,
@@ -2268,16 +2680,16 @@
       "specialTenure": "1000 Days TGB Sahasra (7.50%)",
       "specialSchemes": [
         {
-          "name": "444-DDD Special",
-          "days": 444,
-          "rate": 7.4,
-          "badge": "Special 444D"
-        },
-        {
           "name": "TGB Sahasra",
           "days": 1000,
           "rate": 7.5,
           "badge": "Peak RRB 7.50%"
+        },
+        {
+          "name": "444-DDD Special",
+          "days": 444,
+          "rate": 7.4,
+          "badge": "Special 444D"
         },
         {
           "name": "RD Lakhpati (36M RD)",
@@ -2295,7 +2707,8 @@
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-26T07:14:54.264Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "kgb-bank": {
       "baseRate": 7.6,
@@ -2310,8 +2723,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://keralagbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://kgb.bank.in/",
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "kagb-bank": {
       "baseRate": 7.5,
@@ -2326,8 +2740,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://karnatakagraminbank.com/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://karnatakagb.bank.in/",
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "mgb-bank": {
       "baseRate": 7.5,
@@ -2343,7 +2758,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://mahagramin.bank.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "bggb-bank": {
       "baseRate": 7.45,
@@ -2359,7 +2775,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://ggb.bank.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "aryavart-bank": {
       "baseRate": 7.5,
@@ -2374,8 +2791,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://aryavart-rrb.com/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://upgb.bank.in/",
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
     },
     "jkgb-bank": {
       "baseRate": 7.5,
@@ -2390,8 +2808,177 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://www.jkgb.in/",
-      "lastVerified": "2026-10-26T07:14:50.361Z"
+      "sourceUrl": "https://www.jkgrameen.bank.in/",
+      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "dbgb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.25,
+        "36": 7.5,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.65%)",
+      "specialSchemes": [
+        {
+          "name": "DBGB Samriddhi 400D",
+          "days": 400,
+          "rate": 7.65,
+          "badge": "Peak RRB 7.65%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://bgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "ogb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.3,
+        "36": 7.5,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.60%)",
+      "specialSchemes": [
+        {
+          "name": "OGB Pragati 444D",
+          "days": 444,
+          "rate": 7.6,
+          "badge": "Peak RRB 7.60%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://odishabank.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "rmgb-bank": {
+      "baseRate": 7.4,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.2,
+        "36": 7.4,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.50%)",
+      "specialSchemes": [
+        {
+          "name": "RMGB Maru 444D",
+          "days": 444,
+          "rate": 7.5,
+          "badge": "Special 444D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.rgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "bgvb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.1,
+        "24": 7.3,
+        "36": 7.5,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.60%)",
+      "specialSchemes": [
+        {
+          "name": "BGVB Samriddhi 400D",
+          "days": 400,
+          "rate": 7.6,
+          "badge": "Peak RRB 7.60%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://www.wbgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "agvb-bank": {
+      "baseRate": 7.45,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.25,
+        "36": 7.45,
+        "60": 6.7
+      },
+      "specialTenure": "444 Days (7.55%)",
+      "specialSchemes": [
+        {
+          "name": "AGVB Rongali 444D",
+          "days": 444,
+          "rate": 7.55,
+          "badge": "Special 444D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://agvb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "tngb-bank": {
+      "baseRate": 7.5,
+      "ratesByTenure": {
+        "12": 7.15,
+        "24": 7.35,
+        "36": 7.5,
+        "60": 6.8
+      },
+      "specialTenure": "444 Days (7.65%)",
+      "specialSchemes": [
+        {
+          "name": "TNGB Thangam 444D",
+          "days": 444,
+          "rate": 7.65,
+          "badge": "Peak RRB 7.65%"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://tngb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
+    },
+    "mgb-mp-bank": {
+      "baseRate": 7.45,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7.2,
+        "36": 7.45,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.55%)",
+      "specialSchemes": [
+        {
+          "name": "MGB MP Utkarsh 400D",
+          "days": 400,
+          "rate": 7.55,
+          "badge": "Special 400D"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "sourceUrl": "https://mpgb.bank.in/",
+      "lastVerified": "2026-10-20T14:01:55.186Z",
+      "verificationStatus": "baseline_verified"
     }
   }
 }

@@ -75,6 +75,7 @@ export const INITIAL_BANKS: BankData[] = Object.values(
     status: b.status ?? 'active',
     sourceUrl: b.sourceUrl,
     lastVerified: b.lastVerified,
+    verificationStatus: b.verificationStatus ?? 'baseline_verified',
   }));
 
 /**

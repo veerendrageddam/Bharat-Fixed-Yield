@@ -79,7 +79,7 @@ describe('YieldCommandCenter Component UI, Accessibility & Search Interactions',
 
     // Verify representative mock banks are rendered in the DOM
     expect(screen.getByText('Unity Small Finance Bank')).toBeInTheDocument();
-    expect(screen.getByText(/State Bank of India/i)).toBeInTheDocument();
+    expect(screen.getByText(/State Bank of India \(SBI/i)).toBeInTheDocument();
     expect(screen.getByText('HDFC Bank')).toBeInTheDocument();
 
     // Verify footer summary is present with 100% verified status
