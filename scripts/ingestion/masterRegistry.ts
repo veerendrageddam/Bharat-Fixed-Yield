@@ -1,0 +1,1981 @@
+import { BankMasterDefinition, MergedBankInfo } from './types';
+
+/**
+ * Central Bank Master Registry
+ * Baseline catalog for all RBI-regulated Scheduled Banks, RRBs, and Small Savings Schemes.
+ */
+export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
+  "unity-sfb": {
+    "id": "unity-sfb",
+    "rank": 1,
+    "name": "Unity Small Finance Bank",
+    "subTitle": "Scheduled Commercial Bank Status conferred by RBI • Pan-India Branches",
+    "category": "sfb",
+    "badge": "Highest Yield (Up to 8.90%)",
+    "categoryTag": "Small Finance Bank (RBI Regulated)",
+    "ratingAgency": "CARE",
+    "rating": "CARE A (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBIA7m4vhe_YcrO_BB5my-thiFhnidVNMwjsvw2Yv1CIAkl5K7QKfDhuf8bdY25k0-3WgiSvvM60FX7WApiXKcK9r3-FzwaI3oRnj8B0TUDZVvFvMySUPkigLxiSgPbfWK-siKbrdxC1XW5tJqixmJpvF21vvNO3gbP7nN-GEeQTL9FRClDKfkCuO06re-iEY_Zqu3mmJYO8xGZZvfFcwUIUAAldAEJhghVGtLNDEI8PeK7GmLhIU4MmQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "DICGC Insured up to ₹5 Lakhs per depositor. 100% Principal Protected within current ₹5,00,000 threshold.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.unitybank.co.in/",
+    "portalName": "Unity SFB Digital Portal",
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 8.15,
+    "ratesByTenure": {
+      "12": 7.85,
+      "24": 8,
+      "36": 8.15,
+      "60": 7.75
+    },
+    "specialTenure": "1001 Days (8.40%)",
+    "specialSchemes": [
+      {
+        "name": "Unity Shrestha",
+        "days": 1001,
+        "rate": 8.4,
+        "badge": "Peak SFB 8.40%"
+      },
+      {
+        "name": "Unity 501D",
+        "days": 501,
+        "rate": 8.25
+      },
+      {
+        "name": "Unity 701D",
+        "days": 701,
+        "rate": 8.35
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "fdSupported": true,
+    "lastVerified": "2026-10-28T04:32:01.387Z",
+    "sourceUrl": "https://www.unitybank.co.in/"
+  },
+  "suryoday-sfb": {
+    "id": "suryoday-sfb",
+    "rank": 2,
+    "name": "Suryoday Small Finance Bank",
+    "subTitle": "Scheduled Bank Listed on NSE/BSE • High Capital Adequacy Ratio (30%+)",
+    "category": "sfb",
+    "badge": "Special High-Yield Tenure",
+    "categoryTag": "Small Finance Bank",
+    "ratingAgency": "CRISIL",
+    "rating": "CRISIL A+ (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCIGDiz8SEuCXdAi5-y3dcfvaamFP2o7VlVmr-mUYfQkw1Ocf2y6fU70WA9Q2HPtDWDG_J3ydx2M_O3xSUamhwLXg9hF-d-rB2SvjkiVvntKJIXJq5jRKBGwoafved_HT8kSL6IhjgSFRoAIFMAJ5-AUW4nCTHpfJCgtKoQp3eMHnob2df9JRO-hipjbYG7S2QNi4tF7oLTNQ4Mj_3ltRBLheIaTGg4_bKmRT2rQRPHf81AC5XMryYQRg",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "DICGC Insured (100% covered). Registered scheduled bank insured under RBI statutory framework.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.suryoday.bank.in/",
+    "portalName": "Suryoday NetBanking Portal",
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 8,
+    "ratesByTenure": {
+      "12": 7.75,
+      "24": 8.1,
+      "36": 8,
+      "60": 7.5
+    },
+    "specialTenure": "2 Years 2 Days (8.25%)",
+    "specialSchemes": [
+      {
+        "name": "Suryoday 2Y2D",
+        "days": 732,
+        "rate": 8.25,
+        "badge": "Special 732D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "fdSupported": true,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.suryoday.bank.in/"
+  },
+  "utkarsh-sfb": {
+    "id": "utkarsh-sfb",
+    "rank": 3,
+    "name": "Utkarsh Small Finance Bank",
+    "subTitle": "Listed Scheduled Commercial Bank • Extensive Rural & Urban Network",
+    "category": "sfb",
+    "badge": "Top Tier SFB",
+    "categoryTag": "Small Finance Bank (RBI Regulated)",
+    "ratingAgency": "CARE",
+    "rating": "CARE A+ (Positive)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCIGDiz8SEuCXdAi5-y3dcfvaamFP2o7VlVmr-mUYfQkw1Ocf2y6fU70WA9Q2HPtDWDG_J3ydx2M_O3xSUamhwLXg9hF-d-rB2SvjkiVvntKJIXJq5jRKBGwoafved_HT8kSL6IhjgSFRoAIFMAJ5-AUW4nCTHpfJCgtKoQp3eMHnob2df9JRO-hipjbYG7S2QNi4tF7oLTNQ4Mj_3ltRBLheIaTGg4_bKmRT2rQRPHf81AC5XMryYQRg",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Full statutory DICGC insurance guarantee up to ₹5,00,000 principal plus accrued return.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.utkarsh.bank/",
+    "portalName": "Utkarsh Digital Banking",
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 8,
+    "ratesByTenure": {
+      "12": 7.75,
+      "24": 8,
+      "36": 8,
+      "60": 7.5
+    },
+    "specialTenure": "1500 Days (8.25%)",
+    "specialSchemes": [
+      {
+        "name": "Utkarsh 1500D",
+        "days": 1500,
+        "rate": 8.25,
+        "badge": "Long Term High Yield"
+      },
+      {
+        "name": "Utkarsh 777D",
+        "days": 777,
+        "rate": 8.15
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "fdSupported": true,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.utkarsh.bank/"
+  },
+  "equitas-sfb": {
+    "id": "equitas-sfb",
+    "rank": 4,
+    "name": "Equitas Small Finance Bank",
+    "subTitle": "Leading Pan-India Small Finance Lender • Seamless Selfe Digital FD",
+    "category": "sfb",
+    "badge": "Instant Digital Onboarding",
+    "categoryTag": "Small Finance Bank",
+    "ratingAgency": "CRISIL",
+    "rating": "CRISIL AA- (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBIA7m4vhe_YcrO_BB5my-thiFhnidVNMwjsvw2Yv1CIAkl5K7QKfDhuf8bdY25k0-3WgiSvvM60FX7WApiXKcK9r3-FzwaI3oRnj8B0TUDZVvFvMySUPkigLxiSgPbfWK-siKbrdxC1XW5tJqixmJpvF21vvNO3gbP7nN-GEeQTL9FRClDKfkCuO06re-iEY_Zqu3mmJYO8xGZZvfFcwUIUAAldAEJhghVGtLNDEI8PeK7GmLhIU4MmQ",
+    "minDeposit": 5000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "100% paperless FD opening via video KYC. Insured by DICGC for ₹5 Lakhs.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.equitasbank.com/",
+    "portalName": "Equitas Selfe FD Portal",
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.9,
+    "ratesByTenure": {
+      "12": 7.6,
+      "24": 7.8,
+      "36": 7.9,
+      "60": 7.25
+    },
+    "specialTenure": "444 Days (8.15%)",
+    "specialSchemes": [
+      {
+        "name": "Equitas 444D",
+        "days": 444,
+        "rate": 8.15,
+        "badge": "Special 444 Days"
+      },
+      {
+        "name": "Equitas 888D",
+        "days": 888,
+        "rate": 8.05
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "fdSupported": true,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.equitasbank.com/"
+  },
+  "au-sfb": {
+    "id": "au-sfb",
+    "rank": 5,
+    "name": "AU Small Finance Bank",
+    "subTitle": "India's Largest Small Finance Bank • Scheduled Commercial Status • CRISIL AA Rated",
+    "category": "sfb",
+    "badge": "Largest SFB (Up to 8.00%)",
+    "categoryTag": "Small Finance Bank (RBI Regulated)",
+    "ratingAgency": "CRISIL",
+    "rating": "CRISIL AA (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuBIA7m4vhe_YcrO_BB5my-thiFhnidVNMwjsvw2Yv1CIAkl5K7QKfDhuf8bdY25k0-3WgiSvvM60FX7WApiXKcK9r3-FzwaI3oRnj8B0TUDZVvFvMySUPkigLxiSgPbfWK-siKbrdxC1XW5tJqixmJpvF21vvNO3gbP7nN-GEeQTL9FRClDKfkCuO06re-iEY_Zqu3mmJYO8xGZZvfFcwUIUAAldAEJhghVGtLNDEI8PeK7GmLhIU4MmQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Largest SFB in India with over 1,000 banking touchpoints. Fully insured under RBI statutory framework by DICGC up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.aubank.in/",
+    "portalName": "AU 0101 Digital Banking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.25,
+      "24": 8,
+      "36": 7.5,
+      "60": 7.25
+    },
+    "specialTenure": "24 Months (8.00%)",
+    "specialSchemes": [
+      {
+        "name": "AU 24M Peak",
+        "days": 730,
+        "rate": 8,
+        "badge": "Peak SFB 8.00%"
+      },
+      {
+        "name": "AU 18M Special",
+        "days": 545,
+        "rate": 7.75
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.aubank.in/"
+  },
+  "ujjivan-sfb": {
+    "id": "ujjivan-sfb",
+    "rank": 6,
+    "name": "Ujjivan Small Finance Bank",
+    "subTitle": "Nationwide Scheduled Bank • Robust Retail Deposit Base • High Capital Adequacy",
+    "category": "sfb",
+    "badge": "High-Yield SFB (8.25%)",
+    "categoryTag": "Small Finance Bank (RBI Regulated)",
+    "ratingAgency": "CARE",
+    "rating": "CARE A+ (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuCIGDiz8SEuCXdAi5-y3dcfvaamFP2o7VlVmr-mUYfQkw1Ocf2y6fU70WA9Q2HPtDWDG_J3ydx2M_O3xSUamhwLXg9hF-d-rB2SvjkiVvntKJIXJq5jRKBGwoafved_HT8kSL6IhjgSFRoAIFMAJ5-AUW4nCTHpfJCgtKoQp3eMHnob2df9JRO-hipjbYG7S2QNi4tF7oLTNQ4Mj_3ltRBLheIaTGg4_bKmRT2rQRPHf81AC5XMryYQRg",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "DICGC Insured up to ₹5 Lakhs per depositor. Instant digital paperless booking.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.ujjivansfb.in/",
+    "portalName": "Ujjivan NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.75,
+    "ratesByTenure": {
+      "12": 7.75,
+      "24": 8,
+      "36": 7.75,
+      "60": 7.2
+    },
+    "specialTenure": "15 Months (8.25%)",
+    "specialSchemes": [
+      {
+        "name": "Ujjivan 15M Peak",
+        "days": 456,
+        "rate": 8.25,
+        "badge": "Peak SFB 8.25%"
+      },
+      {
+        "name": "Ujjivan 80 Weeks",
+        "days": 560,
+        "rate": 8
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.ujjivansfb.in/"
+  },
+  "hdfc-bank": {
+    "id": "hdfc-bank",
+    "rank": 7,
+    "name": "HDFC Bank",
+    "subTitle": "India's Largest Private Lender • 'Too Big to Fail' Institutional Classification",
+    "category": "private",
+    "badge": "Highest Stability (CRISIL AAA)",
+    "categoryTag": "Private Bank - D-SIB (Domestically Systemic)",
+    "ratingAgency": "CRISIL",
+    "rating": "AAA / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 5000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Diversification Pick: Recommended asset allocation partner to split deposits exceeding the ₹5 Lakh statutory DICGC cover.",
+    "exitPenalty": "1.00% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://netbanking.hdfcbank.com/",
+    "portalName": "HDFC NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.25,
+    "ratesByTenure": {
+      "12": 6.9,
+      "24": 7.15,
+      "36": 7.25,
+      "60": 7
+    },
+    "specialTenure": "55 Months (7.40%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://netbanking.hdfcbank.com/"
+  },
+  "icici-bank": {
+    "id": "icici-bank",
+    "rank": 8,
+    "name": "ICICI Bank",
+    "subTitle": "Premier D-SIB Scheduled Commercial Bank • High Tier-1 Capital Adequacy",
+    "category": "private",
+    "badge": "CRISIL AAA Rated",
+    "categoryTag": "Private Bank (D-SIB)",
+    "ratingAgency": "CRISIL",
+    "rating": "AAA / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 10000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Institutional stability benchmark. Zero counterparty default risk.",
+    "exitPenalty": "1.00% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.icicibank.com/",
+    "portalName": "ICICI iMobile / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.25,
+    "ratesByTenure": {
+      "12": 6.85,
+      "24": 7.1,
+      "36": 7.25,
+      "60": 7
+    },
+    "specialTenure": "15 Months (7.25%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.icicibank.com/"
+  },
+  "axis-bank": {
+    "id": "axis-bank",
+    "rank": 9,
+    "name": "Axis Bank",
+    "subTitle": "India's 3rd Largest Private Sector Bank • D-SIB Partner • High Retail Stability",
+    "category": "private",
+    "badge": "Top 3 Private Lender (CRISIL AAA)",
+    "categoryTag": "Private Bank (CRISIL AAA)",
+    "ratingAgency": "CRISIL",
+    "rating": "AAA / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 5000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Ranked among India's top 3 private lenders. Fully protected under RBI statutory framework & DICGC ₹5 Lakh deposit insurance guarantee.",
+    "exitPenalty": "1.00% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.axisbank.com/",
+    "portalName": "Axis Mobile / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.1,
+    "ratesByTenure": {
+      "12": 6.7,
+      "24": 7.1,
+      "36": 7.1,
+      "60": 7
+    },
+    "specialTenure": "17 Months Special (7.20%)",
+    "specialSchemes": [
+      {
+        "name": "Axis 17M Special",
+        "days": 515,
+        "rate": 7.2,
+        "badge": "Peak Axis 7.20%"
+      },
+      {
+        "name": "Axis 5Y Tax Saver",
+        "days": 1825,
+        "rate": 7,
+        "badge": "Sec 80C Tax Saver"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.axisbank.com/"
+  },
+  "kotak-bank": {
+    "id": "kotak-bank",
+    "rank": 10,
+    "name": "Kotak Mahindra Bank",
+    "subTitle": "India's 4th Largest Private Lender • Pristine Asset Quality • Zero Legacy Debt",
+    "category": "private",
+    "badge": "CRISIL AAA Rated",
+    "categoryTag": "Private Bank (CRISIL AAA)",
+    "ratingAgency": "CRISIL",
+    "rating": "AAA / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 5000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Tier-1 capital benchmark with industry-leading capital adequacy. DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "1.00% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.kotak.com/",
+    "portalName": "Kotak811 / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.15,
+      "36": 7,
+      "60": 6.2
+    },
+    "specialTenure": "390 Days Active FD (7.40%)",
+    "specialSchemes": [
+      {
+        "name": "Kotak 390D Special",
+        "days": 390,
+        "rate": 7.4,
+        "badge": "Peak Kotak 7.40%"
+      },
+      {
+        "name": "Kotak 23M Special",
+        "days": 700,
+        "rate": 7.3
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.kotak.com/"
+  },
+  "idfc-first-bank": {
+    "id": "idfc-first-bank",
+    "rank": 11,
+    "name": "IDFC FIRST Bank",
+    "subTitle": "Modern Tech-Driven Scheduled Commercial Bank • Monthly Interest Payout Option",
+    "category": "private",
+    "badge": "Monthly Interest Payout Leader",
+    "categoryTag": "Private Bank (CRISIL AA+)",
+    "ratingAgency": "CRISIL",
+    "rating": "AA+ / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 10000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Customer-first features: choice of monthly interest credit, zero premature penalty for senior citizens, and full DICGC ₹5 Lakh coverage.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.idfcfirstbank.com/",
+    "portalName": "IDFC FIRST Mobile Banking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.25,
+    "ratesByTenure": {
+      "12": 6.5,
+      "24": 7.5,
+      "36": 7.25,
+      "60": 7
+    },
+    "specialTenure": "500 Days Peak Return (7.90%)",
+    "specialSchemes": [
+      {
+        "name": "IDFC 500D Peak",
+        "days": 500,
+        "rate": 7.9,
+        "badge": "Peak 500D 7.90%"
+      },
+      {
+        "name": "IDFC 400D Special",
+        "days": 400,
+        "rate": 7.75,
+        "badge": "Special 400D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.idfcfirstbank.com/"
+  },
+  "indusind-bank": {
+    "id": "indusind-bank",
+    "rank": 12,
+    "name": "IndusInd Bank",
+    "subTitle": "Premier Scheduled Private Lender • Industry-Leading Private Sector FD Yields",
+    "category": "private",
+    "badge": "Highest Private Bank Yield (7.75%)",
+    "categoryTag": "Private Bank (CRISIL AA+)",
+    "ratingAgency": "CRISIL",
+    "rating": "AA+ / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 10000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Consistently provides top tier yields among large private banks. DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "1.00% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.indusind.com/",
+    "portalName": "IndusNet / IndusMobile",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.25,
+    "ratesByTenure": {
+      "12": 7.75,
+      "24": 7.75,
+      "36": 7.25,
+      "60": 7.25
+    },
+    "specialTenure": "1 Year 7 Months (7.75%)",
+    "specialSchemes": [
+      {
+        "name": "IndusInd 1Y7M",
+        "days": 575,
+        "rate": 7.75,
+        "badge": "Peak Private 7.75%"
+      },
+      {
+        "name": "IndusInd 2Y9M",
+        "days": 1000,
+        "rate": 7.75
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.indusind.com/"
+  },
+  "yes-bank": {
+    "id": "yes-bank",
+    "rank": 13,
+    "name": "Yes Bank",
+    "subTitle": "Reconstituted Scheduled Commercial Bank • Backed by SBI Consortium • High Digital Yield",
+    "category": "private",
+    "badge": "High-Yield Private Bank (7.75%)",
+    "categoryTag": "Private Bank (CARE AA-)",
+    "ratingAgency": "CARE",
+    "rating": "CARE AA- / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 10000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Institutional turnaround supported by India's major banking consortium led by SBI. Covered by DICGC ₹5,00,000 statutory deposit guarantee.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.yesbank.in/",
+    "portalName": "YES Online / IRIS App",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.25,
+    "ratesByTenure": {
+      "12": 7.25,
+      "24": 7.5,
+      "36": 7.25,
+      "60": 7.25
+    },
+    "specialTenure": "18 Months Special (7.75%)",
+    "specialSchemes": [
+      {
+        "name": "Yes 18M Special",
+        "days": 540,
+        "rate": 7.75,
+        "badge": "Peak Private 7.75%"
+      },
+      {
+        "name": "Yes 12M Peak",
+        "days": 365,
+        "rate": 7.25
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.yesbank.in/"
+  },
+  "federal-bank": {
+    "id": "federal-bank",
+    "rank": 14,
+    "name": "Federal Bank",
+    "subTitle": "Premier Private Scheduled Bank • CRISIL AA+ Rated • Strong Retail & NRI Deposit Base",
+    "category": "private",
+    "badge": "CRISIL AA+ Rated",
+    "categoryTag": "Private Bank (CRISIL AA+)",
+    "ratingAgency": "CRISIL",
+    "rating": "AA+ / Stable",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuA06GO7WTXghB8mBjS9lDy_L3TGaDdcXnLp38DaiHOkGX6dhcn1u4OgDow4C0366pzf1RuISxu-BFBqJLYIfwv3JNdtrR_khMYFbtzsbGfJiZjkk_zIQv0gH_qU8h_dQdyt1fDoPAI-FBGqOZyOlcIK3wSWnlPBiLwSd5QCVO-GgOGG6oNkIP6OfN63s8JB9_gpiGSkKU44gJvGh9QZZHEvgc1I-mmT5ejoVb2e9KIGOvq54KbfatCjfA",
+    "minDeposit": 5000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Established in 1931 with strong retail presence across India. DICGC statutory cover up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.federalbank.co.in/",
+    "portalName": "FedNet / FedMobile",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7,
+    "ratesByTenure": {
+      "12": 6.8,
+      "24": 7.05,
+      "36": 7,
+      "60": 6.6
+    },
+    "specialTenure": "400 Days Federal Special (7.40%)",
+    "specialSchemes": [
+      {
+        "name": "Federal 400D",
+        "days": 400,
+        "rate": 7.4,
+        "badge": "Peak Federal 7.40%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.federalbank.co.in/"
+  },
+  "sbi-bank": {
+    "id": "sbi-bank",
+    "rank": 15,
+    "name": "State Bank of India (SBI 'Amrit Vrishti')",
+    "subTitle": "Largest Public Sector Lender • 22,000+ branches • Zero Institutional Default Risk",
+    "category": "psu",
+    "badge": "Govt of India Majority Owned",
+    "categoryTag": "Public Sector (Sovereign Trust)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Backed by implicit Government of India sovereign creditworthiness + DICGC ₹5,00,000 statutory deposit insurance.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.onlinesbi.sbi/",
+    "portalName": "SBI YONO / OnlineSBI Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.1,
+    "ratesByTenure": {
+      "12": 6.8,
+      "24": 7,
+      "36": 7.1,
+      "60": 6.9
+    },
+    "specialTenure": "444 Days Amrit Vrishti (7.25%)",
+    "specialSchemes": [
+      {
+        "name": "SBI 'Amrit Vrishti'",
+        "days": 444,
+        "rate": 7.25,
+        "badge": "SBI Flagship Scheme"
+      },
+      {
+        "name": "SBI 'Amrit Kalash'",
+        "days": 400,
+        "rate": 7.1,
+        "badge": "Limited 400D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.8,
+    "womenBonus": 0.15,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.onlinesbi.sbi/"
+  },
+  "bank-of-baroda": {
+    "id": "bank-of-baroda",
+    "rank": 16,
+    "name": "Bank of Baroda (BoB Tiranga Plus)",
+    "subTitle": "Public Sector Giant • Government of India Holding 63.97%",
+    "category": "psu",
+    "badge": "Public Sector Trust",
+    "categoryTag": "Public Sector Bank",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Comprehensive sovereign assurance + ₹5 Lakh DICGC statutory claim protection.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.bankofbaroda.in/",
+    "portalName": "bob World / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.15,
+    "ratesByTenure": {
+      "12": 6.85,
+      "24": 7.05,
+      "36": 7.15,
+      "60": 6.8
+    },
+    "specialTenure": "399 Days BoB Tiranga (7.25%)",
+    "specialSchemes": [
+      {
+        "name": "BoB Tiranga Plus",
+        "days": 399,
+        "rate": 7.25,
+        "badge": "Special 399D"
+      },
+      {
+        "name": "BoB Monsoon Dhamaka",
+        "days": 333,
+        "rate": 7.15
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.bankofbaroda.in/"
+  },
+  "pnb-bank": {
+    "id": "pnb-bank",
+    "rank": 17,
+    "name": "Punjab National Bank (PNB Uttam)",
+    "subTitle": "Second Largest PSU Lender in India • Massive Domestic Reach",
+    "category": "psu",
+    "badge": "Govt Controlled",
+    "categoryTag": "Public Sector Bank",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Zero default risk backed by the Government of India sovereign guarantee.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.pnbindia.in/",
+    "portalName": "PNB ONE Digital App",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.05,
+    "ratesByTenure": {
+      "12": 6.8,
+      "24": 7,
+      "36": 7.05,
+      "60": 6.75
+    },
+    "specialTenure": "400 Days PNB Uttam (7.25%)",
+    "specialSchemes": [
+      {
+        "name": "PNB Uttam",
+        "days": 400,
+        "rate": 7.25,
+        "badge": "High Yield 400D"
+      },
+      {
+        "name": "PNB 300D Special",
+        "days": 300,
+        "rate": 7.05
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.8,
+    "womenBonus": 0.15,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.pnbindia.in/"
+  },
+  "union-bank": {
+    "id": "union-bank",
+    "rank": 18,
+    "name": "Union Bank of India (Union Samriddhi)",
+    "subTitle": "5th Largest Public Sector Bank • Government of India Holding 74.76% • 8,500+ Branches",
+    "category": "psu",
+    "badge": "Top 5 PSU Lender (7.40%)",
+    "categoryTag": "Public Sector Bank (Govt Owned)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Zero default risk backed by Government of India sovereign majority holding + DICGC ₹5,00,000 statutory deposit insurance.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.unionbankofindia.co.in/",
+    "portalName": "Union Vyom App / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.3,
+    "ratesByTenure": {
+      "12": 6.75,
+      "24": 7,
+      "36": 7.3,
+      "60": 6.5
+    },
+    "specialTenure": "333 Days Union Samriddhi (7.40%)",
+    "specialSchemes": [
+      {
+        "name": "Union Samriddhi",
+        "days": 333,
+        "rate": 7.4,
+        "badge": "Flagship 333D 7.40%"
+      },
+      {
+        "name": "Union 399D Special",
+        "days": 399,
+        "rate": 7.25,
+        "badge": "Special 399D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.unionbankofindia.co.in/"
+  },
+  "canara-bank": {
+    "id": "canara-bank",
+    "rank": 19,
+    "name": "Canara Bank (Canara 444)",
+    "subTitle": "Major Public Sector Bank • Government of India Holding 62.93% • 9,500+ Branches",
+    "category": "psu",
+    "badge": "Top 4 PSU Bank",
+    "categoryTag": "Public Sector Bank (Govt Owned)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Sovereign-backed public sector giant and sponsor of regional rural banks nationwide. Fully covered under DICGC ₹5 Lakh scheme.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://canarabank.com/",
+    "portalName": "Canara ai1 / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 6.8,
+    "ratesByTenure": {
+      "12": 6.85,
+      "24": 6.85,
+      "36": 6.8,
+      "60": 6.7
+    },
+    "specialTenure": "444 Days Canara Special (7.25%)",
+    "specialSchemes": [
+      {
+        "name": "Canara 444D",
+        "days": 444,
+        "rate": 7.25,
+        "badge": "Special 444D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://canarabank.com/"
+  },
+  "bank-of-india": {
+    "id": "bank-of-india",
+    "rank": 20,
+    "name": "Bank of India (BOI Star Dhan)",
+    "subTitle": "Historic Public Sector Institution • Government of India Holding 73.38% • 5,100+ Branches",
+    "category": "psu",
+    "badge": "Star Dhan Vriddhi Special",
+    "categoryTag": "Public Sector Bank",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Government of India sovereign majority ownership. DICGC statutory cover up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://bankofindia.co.in/",
+    "portalName": "BOI Omni Neo / NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 6.5,
+    "ratesByTenure": {
+      "12": 6.8,
+      "24": 6.75,
+      "36": 6.5,
+      "60": 6
+    },
+    "specialTenure": "333 Days Star Dhan Vriddhi (7.30%)",
+    "specialSchemes": [
+      {
+        "name": "BOI Star Dhan 333D",
+        "days": 333,
+        "rate": 7.3,
+        "badge": "Special 333D"
+      },
+      {
+        "name": "BOI Star Dhan 666D",
+        "days": 666,
+        "rate": 7.3
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://bankofindia.co.in/"
+  },
+  "saraswat-bank": {
+    "id": "saraswat-bank",
+    "rank": 21,
+    "name": "Saraswat Co-operative Bank",
+    "subTitle": "India's Largest Scheduled Urban Co-op Bank • Century of Trust",
+    "category": "psu",
+    "badge": "Scheduled Co-op Leader",
+    "categoryTag": "Scheduled Urban Co-op Bank (RBI Regulated)",
+    "ratingAgency": "CRISIL",
+    "rating": "CRISIL A+ (Stable)",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Fully covered by DICGC insurance. Operating in Maharashtra, Goa, Karnataka, and Gujarat.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Maharashtra",
+      "Goa",
+      "Karnataka",
+      "Gujarat"
+    ],
+    "portalUrl": "https://www.saraswatbank.com/",
+    "portalName": "Saraswat NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.6,
+    "ratesByTenure": {
+      "12": 7.4,
+      "24": 7.75,
+      "36": 7.6,
+      "60": 7.15
+    },
+    "specialTenure": "2 Years (7.75%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.1,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.saraswatbank.com/"
+  },
+  "post-office-potd": {
+    "id": "post-office-potd",
+    "rank": 22,
+    "name": "Post Office Time Deposit (India Post POTD)",
+    "subTitle": "India Post, Ministry of Communications, Govt of India • 1,55,000+ Post Offices Nationwide",
+    "category": "post_office",
+    "badge": "100% Direct Sovereign Guarantee (No ₹5L Limit)",
+    "categoryTag": "India Post (Sovereign Small Savings)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign / Absolute Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Direct Government of India sovereign guarantee under National Savings Schemes (Consolidated Fund of India). Unlike banks where DICGC covers up to ₹5,00,000, Post Office deposits are 100% backed by the Central Government without any upper limit. Compounded quarterly, interest payable annually. 5-year deposit qualifies for Section 80C tax deduction.",
+    "exitPenalty": "Premature withdrawal allowed after 6 months at PO Savings interest (4.00%)",
+    "lockInDays": 180,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.indiapost.gov.in/",
+    "portalName": "India Post / DakPay e-Banking",
+    "fdSupported": true,
+    "rdSupported": false,
+    "status": "active",
+    "baseRate": 7.1,
+    "ratesByTenure": {
+      "12": 6.9,
+      "24": 7,
+      "36": 7.1,
+      "60": 7.5
+    },
+    "specialTenure": "5-Year Tax Saver POTD (7.50%)",
+    "specialSchemes": [
+      {
+        "name": "5-Year POTD (Tax Saver)",
+        "days": 1825,
+        "rate": 7.5,
+        "badge": "Sec 80C Sovereign 7.50%"
+      },
+      {
+        "name": "3-Year POTD",
+        "days": 1095,
+        "rate": 7.1,
+        "badge": "Govt 3-Year 7.10%"
+      },
+      {
+        "name": "2-Year POTD",
+        "days": 730,
+        "rate": 7
+      },
+      {
+        "name": "1-Year POTD",
+        "days": 365,
+        "rate": 6.9
+      }
+    ],
+    "seniorBonus": 0,
+    "superSeniorBonus": 0,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.indiapost.gov.in/"
+  },
+  "post-office-pord": {
+    "id": "post-office-pord",
+    "rank": 23,
+    "name": "Post Office 5-Year Recurring Deposit (PORD)",
+    "subTitle": "National Savings Recurring Deposit Scheme • Department of Posts, Govt of India",
+    "category": "post_office",
+    "badge": "Sovereign 5-Year RD (6.70% Compounded Quarterly)",
+    "categoryTag": "India Post (Sovereign Small Savings)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign / Absolute Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 100,
+    "tenureYears": 5,
+    "tenureMonths": 60,
+    "dicgcCovered": true,
+    "notes": "Flagship 5-year monthly installment recurring deposit backed 100% by the Government of India sovereign guarantee. Quarterly compounding. Deposit from ₹100/month with zero ceiling. Premature closure permitted after 3 years.",
+    "exitPenalty": "Closure after 3 years pays Post Office Savings Account rate",
+    "lockInDays": 1095,
+    "isPanIndia": true,
+    "operatingStates": [
+      "ALL"
+    ],
+    "portalUrl": "https://www.indiapost.gov.in/",
+    "portalName": "India Post / DakPay e-Banking",
+    "fdSupported": false,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 6.7,
+    "ratesByTenure": {
+      "12": 6.7,
+      "24": 6.7,
+      "36": 6.7,
+      "60": 6.7
+    },
+    "rdRatesByTenure": {
+      "12": 6.7,
+      "24": 6.7,
+      "36": 6.7,
+      "60": 6.7
+    },
+    "specialTenure": "5-Year Mandatory Maturity (6.70%)",
+    "specialSchemes": [
+      {
+        "name": "Post Office 5-Year RD",
+        "days": 1825,
+        "rate": 6.7,
+        "badge": "Sovereign 5Y RD 6.70%"
+      }
+    ],
+    "seniorBonus": 0,
+    "superSeniorBonus": 0,
+    "womenBonus": 0,
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.indiapost.gov.in/"
+  },
+  "apgb-bank": {
+    "id": "apgb-bank",
+    "rank": 24,
+    "name": "Andhra Pradesh Grameena Bank (APGB)",
+    "subTitle": "State-Sponsored Scheduled Bank • Govt of India, Canara Bank & Govt of AP",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Andhra Pradesh & Canara Bank",
+    "badge": "AP State Unified RRB (DICGC Covered)",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign / High Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Brodipet Guntur HQ • Consolidated under GoI One State One RRB (amalgamating AP branches of APGVB, Andhra Pragathi Grameena Bank, CGGB, and Saptagiri Grameena Bank). 100% DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Andhra Pradesh"
+    ],
+    "portalUrl": "https://apgb.bank.in/",
+    "portalName": "APGB Official Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 6.65,
+    "ratesByTenure": {
+      "12": 7,
+      "24": 6.65,
+      "36": 6.65,
+      "60": 6.65
+    },
+    "specialTenure": "1 Year (7.00%)",
+    "specialSchemes": [
+      {
+        "name": "APGB 1 Year Term",
+        "days": 365,
+        "rate": 7,
+        "badge": "Peak RRB 7.00%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
+    "lastVerified": "2026-10-28T04:32:01.388Z"
+  },
+  "tgb-bank": {
+    "id": "tgb-bank",
+    "rank": 25,
+    "name": "Telangana Grameena Bank (TGB)",
+    "subTitle": "State-Sponsored Scheduled Commercial Bank • Govt of India, SBI & Govt of Telangana",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Telangana & SBI",
+    "badge": "Telangana State Unified RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Hyderabad HQ • Serving all 33 Telangana districts incorporating erstwhile APGVB Telangana branches. Full statutory DICGC insurance guarantee up to ₹5 Lakhs per depositor.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Telangana"
+    ],
+    "portalUrl": "https://tgb.bank.in/deposit-interest-rates",
+    "portalName": "Telangana Grameena Bank Official Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 6.5,
+    "ratesByTenure": {
+      "12": 6.45,
+      "24": 6.45,
+      "36": 6.5,
+      "60": 7
+    },
+    "specialTenure": "1000 Days TGB Sahasra (7.50%)",
+    "specialSchemes": [
+      {
+        "name": "TGB Sahasra",
+        "days": 1000,
+        "rate": 7.5,
+        "badge": "Peak RRB 7.50%"
+      },
+      {
+        "name": "444-DDD Special",
+        "days": 444,
+        "rate": 7.4,
+        "badge": "Special 444D"
+      },
+      {
+        "name": "RD Lakhpati (36M RD)",
+        "days": 1095,
+        "rate": 7.5,
+        "badge": "High Yield RD"
+      },
+      {
+        "name": "RD Nethanna Podupu (24M RD)",
+        "days": 730,
+        "rate": 6.45
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.5,
+    "womenBonus": 0,
+    "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
+    "lastVerified": "2026-10-28T04:32:01.388Z"
+  },
+  "kgb-bank": {
+    "id": "kgb-bank",
+    "rank": 26,
+    "name": "Kerala Gramin Bank (KGB)",
+    "subTitle": "India's Largest Regional Rural Bank • Govt of India, Canara Bank & Govt of Kerala",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Kerala & Canara Bank",
+    "badge": "Kerala State Sponsored",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "630+ Branches across all 14 Kerala districts. Fully DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Kerala"
+    ],
+    "portalUrl": "https://kgb.bank.in/",
+    "portalName": "KGB Digital Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.6,
+    "ratesByTenure": {
+      "12": 7.2,
+      "24": 7.45,
+      "36": 7.6,
+      "60": 7.1
+    },
+    "specialTenure": "444 Days KGB Special (7.75%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://kgb.bank.in/"
+  },
+  "kagb-bank": {
+    "id": "kagb-bank",
+    "rank": 27,
+    "name": "Karnataka Grameena Bank (KaGB)",
+    "subTitle": "State-Sponsored Scheduled Bank • Govt of India, Canara Bank & Govt of Karnataka",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Karnataka & Canara Bank",
+    "badge": "Karnataka State Unified RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Ballari HQ • Consolidated under GoI One State One RRB (amalgamating KaGB and KVGB). Protected under DICGC statutory guarantee.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Karnataka"
+    ],
+    "portalUrl": "https://karnatakagb.bank.in/",
+    "portalName": "KaGB NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.35,
+      "36": 7.5,
+      "60": 7
+    },
+    "specialTenure": "555 Days KaGB Golden (7.65%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://karnatakagb.bank.in/"
+  },
+  "mgb-bank": {
+    "id": "mgb-bank",
+    "rank": 28,
+    "name": "Maharashtra Gramin Bank (MGB)",
+    "subTitle": "Sponsored by Bank of Maharashtra & Govt of Maharashtra • Pan-Maharashtra Network",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Maharashtra & Bank of Maharashtra",
+    "badge": "Maharashtra State Unified RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Chhatrapati Sambhajinagar HQ • Unified under GoI One State One RRB (amalgamating Maharashtra Gramin Bank and Vidarbha Konkan Gramin Bank). DICGC insured up to ₹5,00,000 per depositor.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Maharashtra"
+    ],
+    "portalUrl": "https://mahagramin.bank.in/",
+    "portalName": "MGB NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.35,
+      "36": 7.5,
+      "60": 7
+    },
+    "specialTenure": "444 Days Maha Special (7.60%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://mahagramin.bank.in/"
+  },
+  "bggb-bank": {
+    "id": "bggb-bank",
+    "rank": 29,
+    "name": "Gujarat Gramin Bank (GGB)",
+    "subTitle": "Amalgamated RRB • Sponsored by Bank of Baroda & Govt of Gujarat",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Gujarat & Bank of Baroda",
+    "badge": "Gujarat State Unified RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Vadodara HQ • Consolidated under GoI One State One RRB (amalgamating Baroda Gujarat Gramin Bank and Saurashtra Gramin Bank). 740+ Branches in Gujarat. Insured by DICGC up to ₹5 Lakhs.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Gujarat"
+    ],
+    "portalUrl": "https://ggb.bank.in/",
+    "portalName": "Gujarat Gramin Bank Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.45,
+    "ratesByTenure": {
+      "12": 7.05,
+      "24": 7.3,
+      "36": 7.45,
+      "60": 6.95
+    },
+    "specialTenure": "399 Days Gujarat Gramin (7.55%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://ggb.bank.in/"
+  },
+  "aryavart-bank": {
+    "id": "aryavart-bank",
+    "rank": 30,
+    "name": "Aryavart Bank (Uttar Pradesh)",
+    "subTitle": "Sponsored by Bank of India & Govt of Uttar Pradesh • 1,360+ Branches in UP",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Uttar Pradesh & Bank of India",
+    "badge": "UP State Sponsored",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Lucknow HQ • Largest RRB in Uttar Pradesh. Fully covered by DICGC ₹5 Lakh statutory deposit insurance.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Uttar Pradesh"
+    ],
+    "portalUrl": "https://upgb.bank.in/",
+    "portalName": "Aryavart Bank Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.35,
+      "36": 7.5,
+      "60": 7
+    },
+    "specialTenure": "444 Days Aryavart Special (7.65%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.8,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://upgb.bank.in/"
+  },
+  "jkgb-bank": {
+    "id": "jkgb-bank",
+    "rank": 31,
+    "name": "J&K Grameen Bank (JKGB)",
+    "subTitle": "Sponsored by J&K Bank & Govt of UT of J&K and Ladakh",
+    "category": "rrb",
+    "sponsorGovt": "Govt of UT of J&K and J&K Bank",
+    "badge": "J&K & Ladakh UT Sponsored",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Sovereign Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Jammu HQ • Serving Jammu, Kashmir, and Ladakh. Insured up to ₹5,00,000 by DICGC.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Jammu and Kashmir",
+      "Ladakh"
+    ],
+    "portalUrl": "https://www.jkgrameen.bank.in/",
+    "portalName": "JKGB Digital Banking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.35,
+      "36": 7.5,
+      "60": 6.95
+    },
+    "specialTenure": "400 Days JKGB Amrit (7.60%)",
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.8,
+    "womenBonus": 0.15,
+    "specialSchemes": [],
+    "lastVerified": "2026-10-28T04:32:01.388Z",
+    "sourceUrl": "https://www.jkgrameen.bank.in/"
+  },
+  "dbgb-bank": {
+    "id": "dbgb-bank",
+    "rank": 32,
+    "name": "Dakshin Bihar Gramin Bank (DBGB)",
+    "subTitle": "Leading RRB of Bihar • Sponsored by Punjab National Bank & Govt of Bihar",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Bihar & PNB",
+    "badge": "Bihar Premier RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Headquartered in Patna. Serving 20 districts of South Bihar. Full statutory DICGC insurance guarantee up to ₹5 Lakhs per depositor.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Bihar"
+    ],
+    "portalUrl": "https://bgb.bank.in/",
+    "portalName": "DBGB Official Banking Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7,
+      "24": 7.25,
+      "36": 7.5,
+      "60": 6.75
+    },
+    "specialTenure": "400 Days (7.65%)",
+    "specialSchemes": [
+      {
+        "name": "DBGB Samriddhi 400D",
+        "days": 400,
+        "rate": 7.65,
+        "badge": "Peak RRB 7.65%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://bgb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "ogb-bank": {
+    "id": "ogb-bank",
+    "rank": 33,
+    "name": "Odisha Gramya Bank (OGB)",
+    "subTitle": "Premier Rural Bank of Odisha • Sponsored by Indian Overseas Bank & Govt of Odisha",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Odisha & IOB",
+    "badge": "Odisha State RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Bhubaneswar HQ • Serving all 13 coastal & central Odisha districts. 100% DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Odisha"
+    ],
+    "portalUrl": "https://odishabank.bank.in/",
+    "portalName": "OGB NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.3,
+      "36": 7.5,
+      "60": 6.8
+    },
+    "specialTenure": "444 Days (7.60%)",
+    "specialSchemes": [
+      {
+        "name": "OGB Pragati 444D",
+        "days": 444,
+        "rate": 7.6,
+        "badge": "Peak RRB 7.60%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://odishabank.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "rmgb-bank": {
+    "id": "rmgb-bank",
+    "rank": 34,
+    "name": "Rajasthan Marudhara Gramin Bank (RMGB)",
+    "subTitle": "Unified RRB of Rajasthan • Sponsored by State Bank of India & Govt of Rajasthan",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Rajasthan & SBI",
+    "badge": "Rajasthan Premier RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Jodhpur HQ • Extensive branch coverage across 15 Rajasthan districts. Insured by DICGC up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Rajasthan"
+    ],
+    "portalUrl": "https://www.rgb.bank.in/",
+    "portalName": "RMGB Official Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.4,
+    "ratesByTenure": {
+      "12": 7,
+      "24": 7.2,
+      "36": 7.4,
+      "60": 6.8
+    },
+    "specialTenure": "444 Days (7.50%)",
+    "specialSchemes": [
+      {
+        "name": "RMGB Maru 444D",
+        "days": 444,
+        "rate": 7.5,
+        "badge": "Special 444D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://www.rgb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "bgvb-bank": {
+    "id": "bgvb-bank",
+    "rank": 35,
+    "name": "Bangiya Gramin Vikash Bank (BGVB)",
+    "subTitle": "Largest RRB in West Bengal • Sponsored by Punjab National Bank & Govt of WB",
+    "category": "rrb",
+    "sponsorGovt": "Govt of West Bengal & PNB",
+    "badge": "West Bengal Premier RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Berhampore HQ • Serving 12 districts of West Bengal. Full statutory DICGC insurance guarantee up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "West Bengal"
+    ],
+    "portalUrl": "https://www.wbgb.bank.in/",
+    "portalName": "BGVB Banking Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.1,
+      "24": 7.3,
+      "36": 7.5,
+      "60": 6.75
+    },
+    "specialTenure": "400 Days (7.60%)",
+    "specialSchemes": [
+      {
+        "name": "BGVB Samriddhi 400D",
+        "days": 400,
+        "rate": 7.6,
+        "badge": "Peak RRB 7.60%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://www.wbgb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "agvb-bank": {
+    "id": "agvb-bank",
+    "rank": 36,
+    "name": "Assam Gramin Vikash Bank (AGVB)",
+    "subTitle": "Apex RRB of Assam & North-East • Sponsored by Punjab National Bank & Govt of Assam",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Assam & PNB",
+    "badge": "Assam & NE Premier RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Guwahati HQ • Over 450 branches across Assam. 100% DICGC principal protection up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Assam"
+    ],
+    "portalUrl": "https://agvb.bank.in/",
+    "portalName": "AGVB Official Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.45,
+    "ratesByTenure": {
+      "12": 7,
+      "24": 7.25,
+      "36": 7.45,
+      "60": 6.7
+    },
+    "specialTenure": "444 Days (7.55%)",
+    "specialSchemes": [
+      {
+        "name": "AGVB Rongali 444D",
+        "days": 444,
+        "rate": 7.55,
+        "badge": "Special 444D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://agvb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "tngb-bank": {
+    "id": "tngb-bank",
+    "rank": 37,
+    "name": "Tamil Nadu Grama Bank (TNGB)",
+    "subTitle": "Unified RRB of Tamil Nadu • Sponsored by Indian Bank & Govt of Tamil Nadu",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Tamil Nadu & Indian Bank",
+    "badge": "Tamil Nadu State RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Salem HQ • Over 650 branches across 32 districts of Tamil Nadu. DICGC insured up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Tamil Nadu"
+    ],
+    "portalUrl": "https://tngb.bank.in/",
+    "portalName": "TNGB NetBanking",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.5,
+    "ratesByTenure": {
+      "12": 7.15,
+      "24": 7.35,
+      "36": 7.5,
+      "60": 6.8
+    },
+    "specialTenure": "444 Days (7.65%)",
+    "specialSchemes": [
+      {
+        "name": "TNGB Thangam 444D",
+        "days": 444,
+        "rate": 7.65,
+        "badge": "Peak RRB 7.65%"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://tngb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  },
+  "mgb-mp-bank": {
+    "id": "mgb-mp-bank",
+    "rank": 38,
+    "name": "Madhyanchal Gramin Bank",
+    "subTitle": "Leading RRB of Madhya Pradesh • Sponsored by State Bank of India & Govt of MP",
+    "category": "rrb",
+    "sponsorGovt": "Govt of Madhya Pradesh & SBI",
+    "badge": "Central India RRB",
+    "categoryTag": "Regional Rural Bank (Govt Sponsored)",
+    "ratingAgency": "Sovereign",
+    "rating": "Highest Safety",
+    "logoUrl": "https://lh3.googleusercontent.com/aida-public/AB6AXuD8aqYCTG5aiSmCceJmfQOSi4-qKvZZcER6bXP9Y3EyhELqvVM1uw-WYX9SkLmxj2Fc_5aT4usGgdRbfiCM77S0foVudGKRF7Qunx7l77mWOEHO7HUzvrq6nCSs4NTwQILJvVIDzxjop1_zG4mtJ4HfTpwhDHJCvJRz9qjBCma6BmKgyWXsoBCintb1Jk-Lyxv_kMEKG_mOvgg5jpufPeGa4d5q0n8zXUqUQN7kzdP5ru2YcHSPtQu6YQ",
+    "minDeposit": 1000,
+    "tenureYears": 3,
+    "tenureMonths": 36,
+    "dicgcCovered": true,
+    "notes": "Sagar HQ • Extensive rural and semi-urban banking network across Madhya Pradesh. Insured by DICGC up to ₹5,00,000.",
+    "exitPenalty": "0.50% Break Penalty",
+    "lockInDays": 7,
+    "isPanIndia": false,
+    "operatingStates": [
+      "Madhya Pradesh"
+    ],
+    "portalUrl": "https://mpgb.bank.in/",
+    "portalName": "MGB MP Portal",
+    "fdSupported": true,
+    "rdSupported": true,
+    "status": "active",
+    "baseRate": 7.45,
+    "ratesByTenure": {
+      "12": 7,
+      "24": 7.2,
+      "36": 7.45,
+      "60": 6.75
+    },
+    "specialTenure": "400 Days (7.55%)",
+    "specialSchemes": [
+      {
+        "name": "MGB MP Utkarsh 400D",
+        "days": 400,
+        "rate": 7.55,
+        "badge": "Special 400D"
+      }
+    ],
+    "seniorBonus": 0.5,
+    "superSeniorBonus": 0.75,
+    "womenBonus": 0.15,
+    "sourceUrl": "https://mpgb.bank.in/",
+    "lastVerified": "2026-10-20T14:01:55.186Z",
+    "verificationStatus": "baseline_verified"
+  }
+};
+
+export const MERGED_BANKS_CATALOG: Record<string, MergedBankInfo> = {
+  "apgvb-bank": {
+    "id": "apgvb-bank",
+    "name": "Andhra Pradesh Grameena Vikas Bank (APGVB)",
+    "status": "amalgamated",
+    "category": "rrb",
+    "effectiveDate": "2025-01-01 (Telangana) / 2025-05-01 (Andhra Pradesh)",
+    "rationale": "Amalgamated under Ministry of Finance 'One State, One RRB' policy",
+    "successorBankIds": [
+      "apgb-bank",
+      "tgb-bank"
+    ],
+    "successorBankNames": [
+      "Andhra Pradesh Grameena Bank (APGB)",
+      "Telangana Grameena Bank (TGB)"
+    ],
+    "notice": "Andhra Pradesh Grameena Vikas Bank (APGVB) was bifurcated: its 493 branches in Telangana merged into Telangana Grameena Bank (TGB), and its branches in Andhra Pradesh amalgamated into Andhra Pradesh Grameena Bank (APGB).",
+    "formerOperatingStates": [
+      "Andhra Pradesh",
+      "Telangana"
+    ],
+    "sourceNotice": "Government of India Gazette Notification on RRB Amalgamation"
+  }
+};

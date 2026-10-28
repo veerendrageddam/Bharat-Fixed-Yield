@@ -2,6 +2,12 @@ export type DepositType = 'FD' | 'RD';
 export type CompoundingFrequency = 'quarterly' | 'monthly' | 'maturity';
 export type BankCategory = 'sfb' | 'private' | 'psu' | 'rrb' | 'post_office' | 'taxsaver' | 'all';
 export type CreditRating = 'AAA' | 'AA+' | 'AA' | 'A+' | 'A' | 'Sovereign';
+export type RateVerificationStatus =
+  | 'live_synced'
+  | 'official_gazette'
+  | 'baseline_verified'
+  | 'fetch_failed'
+  | 'stale';
 
 export interface SpecialScheme {
   name: string;
@@ -52,6 +58,7 @@ export interface BankData {
   status?: 'active' | 'amalgamated';
   sourceUrl?: string;
   lastVerified?: string;
+  verificationStatus?: RateVerificationStatus;
 }
 
 export interface MergedBankInfo {

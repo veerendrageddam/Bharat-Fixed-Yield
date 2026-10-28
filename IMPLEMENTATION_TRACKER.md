@@ -21,6 +21,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 8: Bank Consolidation & Zero-Hardcode Ingestion** | GoI 'One State One RRB', APGB & TGB Live Scrapers, Merged Banks Catalog | `COMPLETED` | 100% | Completed |
 | **Phase 9: Comprehensive Bank Expansion & Post Office RD/FD** | Axis, Union, Yes Bank, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Post Office POTD & PORD | `COMPLETED` | 100% | Completed |
 | **Phase 10: UI/UX Engineering & Vitest Test Suite** | WCAG 2.1 AA Focus Rings, Modal Escape Dismissal, Empty States, 30 Unit Tests | `COMPLETED` | 100% | Completed |
+| **Phase 11: Decoupled Multi-Tier Rate Ingestion & Nationwide Coverage** | Strategy Pattern Adapters, Delta Merging, 10 Scrapers, 38 Banks (All States) | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -269,6 +270,38 @@ Status: **Production Ready (Phase 1–5 Complete)**
     - Accessible manual controls for non-scrolling / keyboard users: "Load More (+N)" button, "Show All (N)" button, and progress bar with percentage indicator.
     - Instant filter reactivity: automatically resets visible bank count to the selected batch size whenever search queries, categories, or ratings change.
     - Added unit test in `YieldCommandCenter.test.tsx` verifying initial 10-record slice, load more increment, batch switching to 5, and full dataset expansion. All 31 tests passing.
+
+---
+
+### Phase 11: Decoupled Multi-Tier Rate Ingestion Architecture & Nationwide Coverage
+*Target Files*: [`scripts/sync-rates.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sync-rates.ts), [`scripts/ingestion/types.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/types.ts), [`scripts/ingestion/validator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/validator.ts), [`scripts/ingestion/http.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/http.ts), [`scripts/ingestion/masterRegistry.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/masterRegistry.ts), [`scripts/ingestion/engine.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/engine.ts), [`scripts/ingestion/adapters/`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts)
+
+- [x] **11.1 Elimination of Monolithic Scraper & SOLID Adapter Architecture** `[COMPLETED]`
+  - Replaced 1600-line monolith `scripts/sync-rates.ts` with a modular architecture following the Strategy and Adapter patterns.
+  - Implemented `BankRateAdapter` interface standardizing bank rate scrapers under uniform contracts.
+  - Built reusable parsing helpers in `cheerioHelper.ts` eliminating repetitive table and tenure extraction code.
+- [x] **11.2 Fix False-Positive Verification (`lastVerified` Spoofing Bug)** `[COMPLETED]`
+  - Removed unconditional timestamp mutation that previously marked all 31 banks as verified on every run.
+  - `lastVerified` and `verificationStatus` (`live_synced` | `official_gazette` | `baseline_verified` | `fetch_failed`) now accurately reflect whether a live network verification actually succeeded.
+- [x] **11.3 True Delta Merging Engine** `[COMPLETED]`
+  - Prior verified rates from `src/data/rates.json` are preserved during ingestion runs; transient network blips or sandbox blocks retain previously verified rates rather than wiping them with hardcoded fallback constants.
+- [x] **11.4 High-Yield SFB Scrapers & India Post MoF Gazette Handler** `[COMPLETED]`
+  - Added dedicated live rate adapters for top yield leaders: Unity SFB (1001D @ 8.40%), Suryoday SFB (732D @ 8.25%), Utkarsh SFB (1500D @ 8.25%), Equitas SFB (444D @ 8.15%), AU SFB, and Ujjivan SFB.
+  - Implemented Ministry of Finance quarterly Gazette adapter for India Post POTD and PORD.
+- [x] **11.5 Complete Nationwide Regional Rural Bank (RRB) Expansion** `[COMPLETED]`
+  - Expanded catalog from 31 to 38 institutions by adding premier RRBs for missing regions:
+    - **Bihar**: Dakshin Bihar Gramin Bank (`dbgb-bank`, Sponsor: PNB)
+    - **Odisha**: Odisha Gramya Bank (`ogb-bank`, Sponsor: IOB)
+    - **Rajasthan**: Rajasthan Marudhara Gramin Bank (`rmgb-bank`, Sponsor: SBI)
+    - **West Bengal**: Bangiya Gramin Vikash Bank (`bgvb-bank`, Sponsor: PNB)
+    - **Assam / NE**: Assam Gramin Vikash Bank (`agvb-bank`, Sponsor: PNB)
+    - **Tamil Nadu**: Tamil Nadu Grama Bank (`tngb-bank`, Sponsor: Indian Bank)
+    - **Madhya Pradesh**: Madhyanchal Gramin Bank (`mgb-mp-bank`, Sponsor: SBI)
+  - Every citizen across all major zones of Bharat now has local RRB choices in addition to Pan-India PSUs and SFBs.
+- [x] **11.6 CI/CD Telemetry & Comprehensive Unit Tests** `[COMPLETED]`
+  - Automated Markdown summary reporting to `$GITHUB_STEP_SUMMARY` tracking live-synced, verified identical, baseline, and failed banks.
+  - Added unit test suite in `scripts/ingestion/validator.test.ts` verifying rate safety bounds (3.0%–11.5%), parsing, and scheme sanitization.
+  - All 35 unit tests pass in ~1s; clean TypeScript check (`tsc --noEmit`) and Vite production build in ~2.1s.
 
 ---
 
