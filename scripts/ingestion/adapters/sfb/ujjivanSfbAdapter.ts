@@ -6,11 +6,17 @@ import { extractStandardTenureRates } from '../cheerioHelper';
 export const ujjivanSfbAdapter: BankRateAdapter = {
   bankId: 'ujjivan-sfb',
   bankName: 'Ujjivan Small Finance Bank',
-  sourceUrl: 'https://www.ujjivansfb.in/interest-rates',
+  sourceUrl: 'https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits',
   category: 'sfb',
 
   async fetchRates(): Promise<ScrapedRateResult | null> {
-    const res = await fetchWithResilience(this.sourceUrl);
+    const res = await fetchWithResilience(this.sourceUrl, {
+      fallbackUrls: [
+        'https://www.ujjivansfb.in/interest-rates',
+        'https://www.ujjivansfb.in/',
+      ],
+      timeoutMs: 12000,
+    });
     if (!res.ok) {
       console.warn(`[Ujjivan SFB] HTTP Error: ${res.error}`);
       return null;

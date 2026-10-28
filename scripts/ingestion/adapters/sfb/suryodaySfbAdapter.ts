@@ -6,11 +6,17 @@ import { extractStandardTenureRates } from '../cheerioHelper';
 export const suryodaySfbAdapter: BankRateAdapter = {
   bankId: 'suryoday-sfb',
   bankName: 'Suryoday Small Finance Bank',
-  sourceUrl: 'https://www.suryoday.bank.in/',
+  sourceUrl: 'https://suryoday.bank.in/p/fixed-deposit',
   category: 'sfb',
 
   async fetchRates(): Promise<ScrapedRateResult | null> {
-    const res = await fetchWithResilience(this.sourceUrl);
+    const res = await fetchWithResilience(this.sourceUrl, {
+      fallbackUrls: [
+        'https://suryoday.bank.in/',
+        'https://www.suryoday.bank.in/',
+      ],
+      timeoutMs: 12000,
+    });
     if (!res.ok) {
       console.warn(`[Suryoday SFB] HTTP Error: ${res.error}`);
       return null;

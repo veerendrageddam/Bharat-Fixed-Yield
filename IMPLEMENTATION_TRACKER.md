@@ -22,6 +22,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 9: Comprehensive Bank Expansion & Post Office RD/FD** | Axis, Union, Yes Bank, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Post Office POTD & PORD | `COMPLETED` | 100% | Completed |
 | **Phase 10: UI/UX Engineering & Vitest Test Suite** | WCAG 2.1 AA Focus Rings, Modal Escape Dismissal, Empty States, 30 Unit Tests | `COMPLETED` | 100% | Completed |
 | **Phase 11: Decoupled Multi-Tier Rate Ingestion & Nationwide Coverage** | Strategy Pattern Adapters, Delta Merging, 10 Scrapers, 38 Banks (All States) | `COMPLETED` | 100% | Completed |
+| **Phase 12: Ingestion Resilience Hardening & Commercial Bank Expansion** | Resilient `.bank.in` Endpoints, Fallback URLs, Axis/HDFC/ICICI/SBI Live Adapters | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -305,6 +306,30 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 12: Ingestion Resilience Hardening, Commercial Bank Expansion & Alternative Feeds
+*Target Files*: [`scripts/ingestion/http.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/http.ts), [`scripts/ingestion/adapters/sfb/`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/sfb/), [`scripts/ingestion/adapters/commercial/`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/commercial/), [`scripts/ingestion/adapters/index.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/index.ts)
+
+- [x] **12.1 Resilient HTTP Client with Multi-URL Fallback & Modern Browser Hints** `[COMPLETED]`
+  - Enhanced `fetchWithResilience` in `http.ts` with Chromium 130 + India locale headers, `sec-ch-ua` client hints, and automatic `fallbackUrls` traversal.
+  - Mitigates Cloudflare/Akamai bot blocking and protects against single-point URL deprecations.
+- [x] **12.2 Resolution of SFB 404, 403 & Fetch Failures (.bank.in Domain Migration)** `[COMPLETED]`
+  - **Unity SFB**: Updated endpoint from deprecated `.co.in/interest-rates.html` to `https://theunitybank.com/` with fallbacks to `https://unity.bank.in/`.
+  - **Suryoday SFB**: Replaced root homepage scraping with dedicated product page `https://suryoday.bank.in/p/fixed-deposit`.
+  - **Equitas SFB**: Updated from legacy `.com` to official `https://www.equitas.bank.in/personal-banking/investments/fixed-deposits`.
+  - **AU SFB**: Upgraded to `https://www.au.bank.in/interest-rates` with explicit `Referer` headers to mitigate Cloudflare WAF 403s.
+  - **Ujjivan SFB**: Updated to official `https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits`.
+- [x] **12.3 Expansion of Live Adapters to Premier Commercial Banks (14 Active Live Adapters)** `[COMPLETED]`
+  - Added **Axis Bank Live Adapter** (`axisBankAdapter.ts`): tracks 17M Special (7.20%) and standard tenures.
+  - Added **HDFC Bank Live Adapter** (`hdfcBankAdapter.ts`): tracks 55M Special (7.40%) and standard tenures.
+  - Added **ICICI Bank Live Adapter** (`iciciBankAdapter.ts`): tracks 15M Special (7.25%) and standard tenures.
+  - Added **SBI Live Adapter** (`sbiBankAdapter.ts`): tracks Amrit Vrishti (444D @ 7.25%), Amrit Kalash (400D @ 7.10%), and standard tenures.
+  - Registered all 4 commercial adapters in `ACTIVE_BANK_ADAPTERS` under Open-Closed Principle (OCP).
+- [x] **12.4 Deep Architectural Evaluation of Alternatives to Web Scraping** `[COMPLETED]`
+  - Analyzed RBI DBIE, RBI Account Aggregator (AA), Open Banking Developer Portals, FinTech B2B APIs (Setu/Stable Money), Internal Unauthenticated CMS/JSON APIs, and Official MoF Gazette feeds.
+  - Architected the 5-Tier Production Hybrid Strategy for nationwide deposit yield ingestion.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -321,6 +346,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 9 | Added Axis, Union, Yes, IDFC First, Kotak, IndusInd, Canara, BOI, Federal, AU, Ujjivan, & India Post RD/FD | 31 active institutions, sovereign guarantee distinction, browser verified end-to-end |
 | **2026-10-20** | Phase 10 | UI/UX engineering audit, WCAG 2.1 AA focus rings, modal escape dismissal, empty state, Vitest test suite | 31 tests passing in <900ms, skip link, accessible labels, empty state with filter reset |
 | **2026-10-20** | Phase 10.7 | Set default state to "All India (Pan-India)" & added lazy loading (5/10/20 batching) | Initial 10 records, IntersectionObserver infinite scroll + manual buttons, 31 passing tests |
+| **2026-10-28** | Phase 12 | Ingestion resilience hardening, .bank.in domain fixes, Axis/HDFC/ICICI/SBI live adapters | 14 live adapters, fallback URLs, resilient browser headers, all 35 tests passing |
 
 
 

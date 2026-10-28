@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28T04:57:38.982Z",
+  "lastUpdated": "2026-10-28T05:48:29.139Z",
   "version": "2.2.0",
   "source": "RBI Scheduled Bank Disclosures, MoF Gazettes & Official Rate Cards",
   "banks": {
@@ -1181,7 +1181,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "lastVerified": "2026-10-28T05:48:29.137Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "verificationStatus": "official_gazette"
     },
@@ -1237,7 +1237,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "lastVerified": "2026-10-28T05:48:29.139Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "verificationStatus": "official_gazette"
     },
@@ -2612,7 +2612,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "lastVerified": "2026-10-28T05:48:29.137Z",
       "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
@@ -2642,7 +2642,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "lastVerified": "2026-10-28T05:48:29.139Z",
       "verificationStatus": "official_gazette"
     },
     "apgb-bank": {

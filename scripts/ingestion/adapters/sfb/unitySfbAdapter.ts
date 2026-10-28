@@ -6,11 +6,18 @@ import { parsePercent, isValidRate } from '../../validator';
 export const unitySfbAdapter: BankRateAdapter = {
   bankId: 'unity-sfb',
   bankName: 'Unity Small Finance Bank',
-  sourceUrl: 'https://www.unitybank.co.in/interest-rates.html',
+  sourceUrl: 'https://theunitybank.com/',
   category: 'sfb',
 
   async fetchRates(): Promise<ScrapedRateResult | null> {
-    const res = await fetchWithResilience(this.sourceUrl);
+    const res = await fetchWithResilience(this.sourceUrl, {
+      fallbackUrls: [
+        'https://unity.bank.in/',
+        'https://www.unitybank.co.in/',
+        'https://www.unitybank.co.in/interest-rates.html',
+      ],
+      timeoutMs: 12000,
+    });
     if (!res.ok) {
       console.warn(`[Unity SFB] HTTP Error: ${res.error}`);
       return null;
