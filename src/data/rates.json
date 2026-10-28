@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-28T04:57:38.982Z",
+  "lastUpdated": "2026-10-28T05:30:50.558Z",
   "version": "2.2.0",
   "source": "RBI Scheduled Bank Disclosures, MoF Gazettes & Official Rate Cards",
   "banks": {
@@ -164,9 +164,9 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.utkarsh.bank/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-28T05:30:25.524Z",
+      "sourceUrl": "https://www.utkarsh.bank/interest-rates",
+      "verificationStatus": "live_synced"
     },
     "equitas-sfb": {
       "id": "equitas-sfb",
@@ -1181,7 +1181,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "lastVerified": "2026-10-28T05:30:49.541Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "verificationStatus": "official_gazette"
     },
@@ -1237,7 +1237,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "lastVerified": "2026-10-28T05:30:50.557Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "verificationStatus": "official_gazette"
     },
@@ -1289,8 +1289,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-28T05:30:20.024Z",
+      "verificationStatus": "live_synced"
     },
     "tgb-bank": {
       "id": "tgb-bank",
@@ -1345,20 +1345,21 @@
           "name": "RD Lakhpati (36M RD)",
           "days": 1095,
           "rate": 7.5,
-          "badge": "High Yield RD"
+          "badge": "High Yield Recurring"
         },
         {
-          "name": "RD Nethanna Podupu (24M RD)",
-          "days": 730,
-          "rate": 6.45
+          "name": "TGB Mahila Samriddhi",
+          "days": 700,
+          "rate": 7.4,
+          "badge": "Special Women Scheme"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-28T05:30:17.418Z",
+      "verificationStatus": "live_synced"
     },
     "kgb-bank": {
       "id": "kgb-bank",
@@ -2091,9 +2092,9 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://www.utkarsh.bank/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://www.utkarsh.bank/interest-rates",
+      "lastVerified": "2026-10-28T05:30:25.524Z",
+      "verificationStatus": "live_synced"
     },
     "equitas-sfb": {
       "baseRate": 7.9,
@@ -2612,7 +2613,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-28T04:57:38.979Z",
+      "lastVerified": "2026-10-28T05:30:49.541Z",
       "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
@@ -2642,7 +2643,7 @@
       "superSeniorBonus": 0,
       "womenBonus": 0,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-28T04:57:38.981Z",
+      "lastVerified": "2026-10-28T05:30:50.557Z",
       "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
@@ -2666,8 +2667,8 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-28T05:30:20.024Z",
+      "verificationStatus": "live_synced"
     },
     "tgb-bank": {
       "baseRate": 6.5,
@@ -2695,20 +2696,21 @@
           "name": "RD Lakhpati (36M RD)",
           "days": 1095,
           "rate": 7.5,
-          "badge": "High Yield RD"
+          "badge": "High Yield Recurring"
         },
         {
-          "name": "RD Nethanna Podupu (24M RD)",
-          "days": 730,
-          "rate": 6.45
+          "name": "TGB Mahila Samriddhi",
+          "days": 700,
+          "rate": 7.4,
+          "badge": "Special Women Scheme"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-28T05:30:17.418Z",
+      "verificationStatus": "live_synced"
     },
     "kgb-bank": {
       "baseRate": 7.6,
