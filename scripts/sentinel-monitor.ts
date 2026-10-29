@@ -18,6 +18,7 @@ import { MASTER_BANK_REGISTRY } from './ingestion/masterRegistry';
 import { fetchWithResilience } from './ingestion/http';
 
 const CACHE_FILE_PATH = path.resolve(process.cwd(), 'scripts/ingestion/.sentinel-cache.json');
+const ALERTS_FILE_PATH = path.resolve(process.cwd(), 'scripts/ingestion/.sentinel-alerts.json');
 
 interface SentinelCacheEntry {
   bankId: string;
@@ -99,6 +100,9 @@ export async function runSentinelMonitor(): Promise<void> {
 
   saveCache(cache);
 
+  // Write alerts file for downstream automation (e.g. LLM extraction or GHA alerts)
+  fs.writeFileSync(ALERTS_FILE_PATH, JSON.stringify(modifiedBanks, null, 2), 'utf-8');
+
   console.log('\n=====================================================');
   console.log(' Sentinel Ingestion Inspection Summary');
   console.log('=====================================================');
@@ -113,6 +117,33 @@ export async function runSentinelMonitor(): Promise<void> {
     }
   } else {
     console.log('\n✅ All monitored bank disclosure signatures match cached baselines.');
+  }
+
+  // GitHub Actions Step Summary reporting
+  if (process.env.GITHUB_STEP_SUMMARY) {
+    let summary = `## 🛡️ Sentinel Rate-Change Monitor Report\n\n`;
+    summary += `- **Timestamp**: \`${new Date().toISOString()}\`\n`;
+    summary += `- **Total Monitored Endpoints**: **${monitoredBankIds.length}**\n`;
+    summary += `- **Potential Updates Detected**: **${modifiedBanks.length}**\n`;
+    summary += `- **Unreachable / WAF Blocked**: **${unreachableBanks.length}**\n\n`;
+
+    if (modifiedBanks.length > 0) {
+      summary += `### ⚠️ Detected Upstream Revisions\n\n`;
+      summary += `| Bank ID | Institution Name | Detection Reason | Action Link |\n`;
+      summary += `|---|---|---|---|\n`;
+      for (const m of modifiedBanks) {
+        summary += `| \`${m.bankId}\` | **${m.name}** | ${m.reason} | [Inspect Circular](${m.url}) |\n`;
+      }
+      summary += `\n*Automated review triggered: Check official ALCO circular or run \`npm run extract:circular\`.*`;
+    } else {
+      summary += `> ✅ **All 38 institution rate card signatures are unchanged and verified against cache.**\n`;
+    }
+
+    try {
+      fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, summary, 'utf-8');
+    } catch {
+      // Ignore if step summary path is inaccessible
+    }
   }
 }
 

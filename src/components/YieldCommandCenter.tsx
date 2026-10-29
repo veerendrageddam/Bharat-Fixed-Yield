@@ -31,7 +31,8 @@ import {
   Flame,
   Check,
   Search,
-  X
+  X,
+  Flag
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -82,6 +83,7 @@ interface YieldCommandCenterProps {
   comparedBankIds: string[];
   onToggleCompare: (bank: BankData) => void;
   onNavigateTab: (tab: string) => void;
+  onReportRate?: (bank: BankData) => void;
 }
 
 export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
@@ -93,6 +95,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   comparedBankIds,
   onToggleCompare,
   onNavigateTab,
+  onReportRate,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<BankCategory>('all');
   const [minRatingFilter, setMinRatingFilter] = useState<string>('all');
@@ -1455,6 +1458,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                             <span>Official Rate Card</span>
                             <ExternalLink className="w-3 h-3" />
                           </a>
+                        </>
+                      )}
+                      {onReportRate && (
+                        <>
+                          <span>•</span>
+                          <button
+                            type="button"
+                            onClick={() => onReportRate(bank)}
+                            className="text-slate-500 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 font-semibold text-[11px] transition-colors"
+                            title="Report rate revision or notice board photo"
+                          >
+                            <Flag className="w-3 h-3" />
+                            <span>Report Revision</span>
+                          </button>
                         </>
                       )}
                     </div>

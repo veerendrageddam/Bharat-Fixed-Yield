@@ -1,0 +1,70 @@
+name: Sentinel Bank Rate Change Monitor
+
+on:
+  schedule:
+    # Run Tuesdays and Thursdays at 04:00 UTC (09:30 AM IST) - aligned with bank ALCO updates
+    - cron: '0 4 * * 2,4'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Reason for manual sentinel check (e.g. RBI MPC Announcement)'
+        required: false
+        default: 'RBI MPC Rate Decision / Manual Trigger'
+
+concurrency:
+  group: sentinel-rate-check
+  cancel-in-progress: true
+
+jobs:
+  sentinel-check:
+    name: Inspect Bank Disclosure Signatures
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Sentinel Rate Monitor
+        run: npm run monitor:sentinel
+
+      - name: Check for Rate Alerts & Notify
+        id: alert_check
+        run: |
+          if [ -f scripts/ingestion/.sentinel-alerts.json ]; then
+            ALERT_COUNT=$(node -e "const a = JSON.parse(require('fs').readFileSync('scripts/ingestion/.sentinel-alerts.json', 'utf-8')); console.log(a.length);")
+            echo "alerts_found=$ALERT_COUNT" >> "$GITHUB_OUTPUT"
+            if [ "$ALERT_COUNT" -gt 0 ]; then
+              echo "::warning::Sentinel detected $ALERT_COUNT rate card revision(s) upstream!"
+            else
+              echo "No rate card signature changes detected."
+            fi
+          else
+            echo "alerts_found=0" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Commit Updated Sentinel Signature Cache
+        run: |
+          if [[ -n $(git status -s scripts/ingestion/.sentinel-cache.json) ]]; then
+            echo "Updating sentinel signature cache..."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add scripts/ingestion/.sentinel-cache.json
+            git commit -m "chore(sentinel): update bank disclosure signature cache [skip ci]"
+            git push
+            echo "Successfully updated sentinel cache."
+          else
+            echo "No signature cache changes to commit."
+          fi
+
