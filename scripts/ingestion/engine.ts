@@ -278,7 +278,8 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
     if (!activeAdapterBankIds.has(id)) {
       preservedBaselineCount++;
       const isPostOffice = bank.category === 'post_office';
-      const status: RateVerificationStatus = isPostOffice ? 'official_gazette' : 'baseline_verified';
+      const status: RateVerificationStatus =
+        bank.verificationStatus ?? (isPostOffice ? 'official_gazette' : 'circular_verified');
       bank.verificationStatus = status;
       ratesRecord[id].verificationStatus = status;
 

@@ -53,23 +53,8 @@ export async function runSentinelMonitor(): Promise<void> {
   const modifiedBanks: { bankId: string; name: string; url: string; reason: string }[] = [];
   const unreachableBanks: { bankId: string; name: string; error: string }[] = [];
 
-  // Monitor top premier commercial, SFB, and sovereign endpoints
-  const monitoredBankIds = [
-    'sbi-bank',
-    'hdfc-bank',
-    'icici-bank',
-    'axis-bank',
-    'kotak-bank',
-    'pnb-bank',
-    'bank-of-baroda',
-    'unity-sfb',
-    'suryoday-sfb',
-    'equitas-sfb',
-    'au-sfb',
-    'post-office-potd',
-    'apgb-bank',
-    'tgb-bank',
-  ];
+  // Dynamically monitor all registered institutions across SFB, Private, PSU, Post Office, and RRBs
+  const monitoredBankIds = Object.keys(MASTER_BANK_REGISTRY);
 
   for (const bankId of monitoredBankIds) {
     const bank = MASTER_BANK_REGISTRY[bankId];

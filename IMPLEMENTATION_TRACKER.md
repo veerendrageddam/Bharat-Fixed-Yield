@@ -370,6 +370,10 @@ Status: **Production Ready (Phase 1–5 Complete)**
 - [x] **13.7 Comprehensive Unit Tests & CI Verification (40 Passing Tests in <1.2s)** `[COMPLETED]`
   - Added test suite in `scripts/ingestion/circularEngine.test.ts` (5 tests covering validation, safety bounds, atomic diffing, and audit completeness).
   - All 40 unit tests pass in 1.10s; clean TypeScript check (`tsc --noEmit`) and Vite production build in 2.15s.
+- [x] **13.8 100% Institution Ingestion & Sentinel Tracking (All 38 Banks Monitored)** `[COMPLETED]`
+  - Closed the 24-bank tracking void by provisioning [`circularAdapterFactory.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/circularAdapterFactory.ts) and registering all 38 institutions into `ACTIVE_BANK_ADAPTERS` in [`adapters/index.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/adapters/index.ts).
+  - Updated `scripts/sentinel-monitor.ts` to dynamically monitor all 38 registered institutions across SFB, Private, PSU, Post Office, and RRBs.
+  - Zero banks are left as unmonitored baselines: `runIngestionEngine()` executes 38 adapters with delta verification.
 
 ---
 
