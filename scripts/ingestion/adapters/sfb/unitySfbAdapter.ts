@@ -49,6 +49,11 @@ export const unitySfbAdapter: BankRateAdapter = {
         }
       });
 
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[Unity SFB] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
+
       // Special Odd-Day Schemes: Unity Shrestha 1001D, 501D, 701D
       const pageText = $('body').text();
       const match1001 = pageText.match(/1001\s*days.*?(\d+\.?\d*)\s*%/i) || pageText.match(/Shrestha.*?(\d+\.?\d*)\s*%/i);

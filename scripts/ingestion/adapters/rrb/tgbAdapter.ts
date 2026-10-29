@@ -42,6 +42,11 @@ export const tgbAdapter: BankRateAdapter = {
         }
       });
 
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[TGB] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
+
       // Scan for promotional odd-day scheme cards / text
       const pageText = $('body').text();
 

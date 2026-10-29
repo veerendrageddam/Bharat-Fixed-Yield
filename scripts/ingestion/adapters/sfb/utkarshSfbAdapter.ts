@@ -20,6 +20,11 @@ export const utkarshSfbAdapter: BankRateAdapter = {
       const $ = cheerio.load(res.text);
       const { ratesByTenure, seniorBonus, superSeniorBonus } = extractStandardTenureRates($);
 
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[Utkarsh SFB] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
+
       const baseRate = ratesByTenure['36'] ?? 8.00;
 
       return {

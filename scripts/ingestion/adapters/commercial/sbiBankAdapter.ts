@@ -27,6 +27,12 @@ export const sbiBankAdapter: BankRateAdapter = {
       const $ = cheerio.load(res.text);
       const { ratesByTenure, seniorBonus, superSeniorBonus } = extractStandardTenureRates($);
 
+      // Verify that at least 2 tenure buckets were genuinely extracted from the live DOM
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[SBI Bank] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
+
       const specialSchemes: SpecialScheme[] = [];
       const pageText = $('body').text();
 

@@ -74,6 +74,10 @@ export const INITIAL_BANKS: BankData[] = Object.values(
     rdSupported: b.rdSupported ?? true,
     status: b.status ?? 'active',
     sourceUrl: b.sourceUrl,
+    circularUrl: b.circularUrl,
+    effectiveDate: b.effectiveDate,
+    callable: b.callable ?? true,
+    retailCapCr: b.retailCapCr ?? 3,
     lastVerified: b.lastVerified,
     verificationStatus: b.verificationStatus ?? 'baseline_verified',
   }));

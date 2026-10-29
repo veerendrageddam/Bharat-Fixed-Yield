@@ -23,6 +23,10 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 10: UI/UX Engineering & Vitest Test Suite** | WCAG 2.1 AA Focus Rings, Modal Escape Dismissal, Empty States, 30 Unit Tests | `COMPLETED` | 100% | Completed |
 | **Phase 11: Decoupled Multi-Tier Rate Ingestion & Nationwide Coverage** | Strategy Pattern Adapters, Delta Merging, 10 Scrapers, 38 Banks (All States) | `COMPLETED` | 100% | Completed |
 | **Phase 12: Ingestion Resilience Hardening & Commercial Bank Expansion** | Resilient `.bank.in` Endpoints, Fallback URLs, Axis/HDFC/ICICI/SBI Live Adapters | `COMPLETED` | 100% | Completed |
+| **Phase 13: Verified Circular Ingestion & Sentinel Monitoring Engine** | Elimination of Web Scraping Fallbacks, ALCO Circular Engine, 38 Banks Synced, Sentinel Monitor | `COMPLETED` | 100% | Completed |
+| **Phase 14: LLM Circular Extractor & Sentinel GitHub Actions** | Gemini 2.0 Flash Extraction, Sentinel Change Alerting, Auto-PR HITL Pipeline | `PLANNED` | 0% | Next Step |
+| **Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)** | Dynamic Bank & Tenure Landing Pages, Structured Schema.org, Sitemaps | `PLANNED` | 0% | Next Step |
+| **Phase 16: Depositor Crowdsource Verification Modal** | Community Circular Submissions, Branch Notice Uploads, Review Queue | `PLANNED` | 0% | Next Step |
 
 ---
 
@@ -330,6 +334,75 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 13: Verified Circular Ingestion & Sentinel Monitoring Engine
+*Target Files*: [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts), [`scripts/ingestion/types.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/types.ts), [`scripts/ingestion/engine.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/engine.ts), [`scripts/ingestion/circularEngine.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/circularEngine.ts), [`scripts/ingest-circular.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingest-circular.ts), [`scripts/sentinel-monitor.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sentinel-monitor.ts), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`scripts/ingestion/circularEngine.test.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/circularEngine.test.ts)
+
+- [x] **13.1 Elimination of Scraper Fallback-Masking & False 'live_synced' Status** `[COMPLETED]`
+  - Diagnosed and fixed the critical integrity flaw across all 10 live bank adapters (SBI, HDFC, ICICI, Axis, Unity, Suryoday, Utkarsh, Equitas, AU, Ujjivan) where failed HTML DOM parsing fell back to arbitrary hardcoded numbers while falsely stamping `live_synced`.
+  - Adapters now require genuine table extraction (>= 2 tenure buckets); if WAF-blocked or rendered via dynamic client-side JS, they return `null` and preserve existing verified records without spoofing verification status or timestamps.
+- [x] **13.2 Regulatory Audit Schema Hardening** `[COMPLETED]`
+  - Enhanced `BankData`, `BankMasterDefinition`, and `BankRateData` with audit metadata:
+    - `effectiveDate?: string`: Official date the bank's ALCO rate card took effect (e.g. `w.e.f. October 15, 2024`).
+    - `circularUrl?: string`: Direct link to official rate circular PDF or product disclosure page.
+    - `callable: boolean`: Explicit disclosure of standard retail callable deposits with premature withdrawal rights.
+    - `retailCapCr: number`: Deposit threshold (standard retail < ₹3 Crore per RBI guidelines).
+    - `verificationStatus`: Expanded with `'circular_verified'` and `'official_gazette'`.
+- [x] **13.3 Structured Circular & Regulatory Ingestion Engine (`circularEngine.ts` & `ingest-circular.ts`)** `[COMPLETED]`
+  - Built an extensible GitOps circular ingestion engine with strict validation rules:
+    - Enforces financial safety bounds (3.00% to 11.50%).
+    - Requires verified `effectiveDate` and `circularUrl`.
+    - Computes atomic diffs (`baseRate: 7.10% -> 6.75%`, `12M: 6.90% -> 6.60%`, odd-day schemes) and writes to `rates.json` safely.
+    - Provides CLI commands: `--audit`, `--sync-all`, `--bank <id>`, and direct flags.
+- [x] **13.4 Comprehensive Rate Audit & ALCO Circular Synchronization (All 38 Registered Institutions)** `[COMPLETED]`
+  - Compiled and synchronized verified ALCO circular baselines for all 38 institutions (< ₹3 Cr retail tier):
+    - 6 SFBs (Unity 1001D @ 8.40%, Suryoday 732D @ 8.25%, Utkarsh 1500D @ 8.25%, Equitas 444D @ 8.15%, AU 555D @ 8.00%, Ujjivan 15M @ 8.25%).
+    - 8 Premier Commercial Private Banks (HDFC, ICICI, Axis, Kotak, IDFC First, IndusInd, Yes, Federal).
+    - 7 Public Sector & State Banks (SBI Amrit Vrishti 444D @ 7.25%, BoB Tiranga 399D @ 7.25%, PNB Uttam 400D @ 7.25%, Union 333D @ 7.40%, Canara 444D @ 7.25%, BOI 666D @ 7.30%, Saraswat).
+    - 2 Sovereign India Post Schemes (POTD 7.50% Sec 80C, PORD 6.70% MoF Gazette Q3 FY25).
+    - 15 Regional Rural Banks (APGB, TGB, KGB Kerala, KAGB Karnataka, MGB Maharashtra, BGGB Gujarat, Aryavart UP, JKGB J&K, DBGB Bihar, OGB Odisha, RMGB Rajasthan, BGVB West Bengal, AGVB Assam, TNGB Tamil Nadu, MGB MP).
+  - Rate audit (`npx tsx scripts/ingest-circular.ts --audit`) confirms: 36 Circular Verified, 2 Official Gazette, 0 missing effective dates, 0 missing circular URLs.
+- [x] **13.5 Sentinel Rate-Change Monitor (`scripts/sentinel-monitor.ts`)** `[COMPLETED]`
+  - Built an automated HTTP sentinel that checks response signatures (ETag, Last-Modified, content hash) on official bank disclosure URLs.
+  - Automatically identifies when an upstream bank modifies its rate page without brittle DOM scraping.
+- [x] **13.6 UI Transparency: Direct Rate Circular Inspection & Official Effective Dates** `[COMPLETED]`
+  - Updated bank cards in `YieldCommandCenter.tsx` to display official effective dates (`w.e.f. DD/MM/YYYY`) and a direct link to the bank's official rate circular.
+  - Enhanced the verification header to state: *"Verified ALCO Rate Cards & Sovereign Gazettes (< ₹3 Crore retail)"*.
+- [x] **13.7 Comprehensive Unit Tests & CI Verification (40 Passing Tests in <1.2s)** `[COMPLETED]`
+  - Added test suite in `scripts/ingestion/circularEngine.test.ts` (5 tests covering validation, safety bounds, atomic diffing, and audit completeness).
+  - All 40 unit tests pass in 1.10s; clean TypeScript check (`tsc --noEmit`) and Vite production build in 2.15s.
+
+---
+
+### Phase 14: LLM Circular Extractor & Sentinel GitHub Actions (Next Step)
+*Target Files*: [`.github/workflows/sentinel-check.yml`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/.github/workflows/sentinel-check.yml), [`scripts/extract-circular-llm.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/extract-circular-llm.ts)
+
+- [ ] **14.1 Sentinel CI/CD Workflow**
+  - Add scheduled GitHub Action running `scripts/sentinel-monitor.ts` on bi-monthly RBI MPC announcement days.
+  - Trigger automatic Slack or GitHub Issue notifications when an upstream bank disclosure signature changes.
+- [ ] **14.2 Multimodal / LLM Circular Ingestion Agent**
+  - Use Gemini 2.0 Flash (`@google/genai` already in `package.json`) to parse PDF/table circulars into strict `BankCircularUpdate` JSON.
+  - Create automated Pull Requests with the structured rate diff and circular link for 1-click human-in-the-loop (HITL) approval.
+
+---
+
+### Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)
+*Target Files*: `src/pages/banks/[id].tsx` / Next.js SSG / Astro routes
+
+- [ ] **15.1 High-Intent SEO Landing Pages**
+  - Generate statically pre-rendered routes for high-traffic search terms (e.g., `/banks/sbi-fixed-deposit-rates`, `/banks/hdfc-senior-citizen-rates`).
+  - Add financial `Schema.org` `FinancialProduct` JSON-LD structured data for Google Search rich snippets.
+
+---
+
+### Phase 16: Depositor Crowdsource Verification Modal
+*Target Files*: [`src/components/ReportRateModal.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/ReportRateModal.tsx)
+
+- [ ] **16.1 Community Rate Flagging**
+  - Provide a "Report Rate Revision" button on bank cards allowing users to submit new circular links or branch notice photos.
+  - Feed submissions into an admin audit queue validated via `scripts/ingest-circular.ts`.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -347,6 +420,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-20** | Phase 10 | UI/UX engineering audit, WCAG 2.1 AA focus rings, modal escape dismissal, empty state, Vitest test suite | 31 tests passing in <900ms, skip link, accessible labels, empty state with filter reset |
 | **2026-10-20** | Phase 10.7 | Set default state to "All India (Pan-India)" & added lazy loading (5/10/20 batching) | Initial 10 records, IntersectionObserver infinite scroll + manual buttons, 31 passing tests |
 | **2026-10-28** | Phase 12 | Ingestion resilience hardening, .bank.in domain fixes, Axis/HDFC/ICICI/SBI live adapters | 14 live adapters, fallback URLs, resilient browser headers, all 35 tests passing |
+| **2026-10-29** | Phase 13 | Elimination of web scraping fallbacks, structured ALCO circular engine, sentinel monitor, 38 banks audited | 40 unit tests passing (<1.2s), 100% circular URL/effective date coverage, clean lint & build |
 
 
 

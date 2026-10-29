@@ -53,6 +53,11 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       existingBank?.verificationStatus ??
       (masterDef.category === 'post_office' ? 'official_gazette' : 'baseline_verified');
 
+    const circularUrl = existingBank?.circularUrl ?? masterDef.circularUrl;
+    const effectiveDate = existingBank?.effectiveDate ?? masterDef.effectiveDate;
+    const callable = existingBank?.callable ?? masterDef.callable ?? true;
+    const retailCapCr = existingBank?.retailCapCr ?? masterDef.retailCapCr ?? 3;
+
     const fullBank: BankMasterDefinition = {
       ...masterDef,
       baseRate,
@@ -63,6 +68,10 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       seniorBonus,
       superSeniorBonus,
       womenBonus,
+      circularUrl,
+      effectiveDate,
+      callable,
+      retailCapCr,
       lastVerified,
       verificationStatus,
       fdSupported: masterDef.fdSupported ?? true,
@@ -81,6 +90,10 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       seniorBonus,
       superSeniorBonus,
       womenBonus,
+      circularUrl,
+      effectiveDate,
+      callable,
+      retailCapCr,
       sourceUrl: fullBank.sourceUrl,
       lastVerified,
       verificationStatus,
@@ -183,6 +196,18 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       if (scraped.sourceUrl) {
         bank.sourceUrl = scraped.sourceUrl;
       }
+      if (scraped.circularUrl) {
+        bank.circularUrl = scraped.circularUrl;
+      }
+      if (scraped.effectiveDate) {
+        bank.effectiveDate = scraped.effectiveDate;
+      }
+      if (typeof scraped.callable === 'boolean') {
+        bank.callable = scraped.callable;
+      }
+      if (typeof scraped.retailCapCr === 'number') {
+        bank.retailCapCr = scraped.retailCapCr;
+      }
 
       // Genuine verification confirmed by successful network fetch
       bank.lastVerified = new Date().toISOString();
@@ -198,6 +223,10 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
         seniorBonus: bank.seniorBonus,
         superSeniorBonus: bank.superSeniorBonus,
         womenBonus: bank.womenBonus,
+        circularUrl: bank.circularUrl,
+        effectiveDate: bank.effectiveDate,
+        callable: bank.callable,
+        retailCapCr: bank.retailCapCr,
         sourceUrl: bank.sourceUrl,
         lastVerified: bank.lastVerified,
         verificationStatus: bank.verificationStatus,
