@@ -27,6 +27,8 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 14: LLM Circular Extractor & Sentinel GitHub Actions** | Gemini 2.0 Flash Extraction Agent, Sentinel Signature CI/CD, Bounds Validation | `COMPLETED` | 100% | Completed |
 | **Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)** | Dynamic Bank & Tenure Landing Pages, Structured Schema.org, Sitemaps | `PLANNED` | 0% | Next Step |
 | **Phase 16: Depositor Crowdsource Verification Modal** | Community Circular Submissions, Branch Notice Reports, DPDP-Compliant Modal | `COMPLETED` | 100% | Completed |
+| **Phase 17: Production Bundle Optimization & Code Splitting** | Vite Rollup Manual Chunks (`vendor-charts`, `vendor-react`), FCP/LCP Gains | `COMPLETED` | 100% | Completed |
+| **Phase 18: Sentinel Resilience, Observability & Ingestion Hardening** | Elimination of False Green, Diagnostic Logging, Content Normalization, Statutory URL Hygiene | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -429,6 +431,44 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 18: Sentinel Resilience, Observability & Rate Disclosure Hardening
+*Target Files*: [`scripts/sentinel-monitor.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sentinel-monitor.ts), [`scripts/ingestion/masterRegistry.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/masterRegistry.ts), [`scripts/ingestion/http.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/http.ts)
+
+> **Governing Architectural Principle**: Build the simplest production-quality solution that satisfies current requirements, while making deliberate decisions about maintainability, security, performance, scalability, UX, and future change. In financial rate monitoring, **unreachable ≠ unchanged**.
+
+- [x] **18.1 Architectural Failure-Mode Audit & Root Cause Analysis** `[COMPLETED]`
+  - Identified 4 core systemic defects in sentinel monitor execution:
+    1. **False Green Anti-Pattern**: 7 unreachable endpoints (18.4% of catalog: Suryoday SFB, AU SFB, Union Bank, BOI, TGB, MGB, OGB) were bypassed while the summary reported *"✅ All monitored bank disclosure signatures match cached baselines."*
+    2. **Log Obscurity & Black-Box Failures**: Unreachable institutions and their specific HTTP error status codes (e.g. 403 WAF, timeout) were swallowed without printing actionable terminal logs.
+    3. **Content Signature Truncation Flaw**: `slice(0, 10000)` on raw HTML only hashed `<head>`, GTM tags, and nav scripts. Missed actual rate tables in the body (>20k-80k) while causing false positives on dynamic script/nonce shifts.
+    4. **Endpoint URL Misalignment**: Root homepages used instead of statutory ALCO rate disclosure subpaths, exposing monitor to aggressive CDN/Cloudflare bot walls.
+- [x] **18.2 Elimination of False Greens & Gated Status Reporting** `[COMPLETED]`
+  - Differentiated between **100% Verified Clean Run** vs. **Degraded / Partial Run**.
+  - Added prominent terminal warning banner whenever `unreachableBanks.length > 0`.
+  - Added real-time diagnostic logging with error messages directly in the terminal output.
+  - Added formatted **Unreachable Blind Spots Breakdown** table (Bank ID, Name, Error, Target Link) in both CLI output and GitHub Actions step summaries (`GITHUB_STEP_SUMMARY`).
+  - Added gated strict mode failure threshold (`SENTINEL_STRICT=1` or `strict: true`) when unreachability exceeds allowable tolerance (>15%).
+- [x] **18.3 Resilient Content Signature Normalization (`extractComparableContent`)** `[COMPLETED]`
+  - Implemented `extractComparableContent(html)` in `scripts/sentinel-monitor.ts`:
+    - Strips `<script>`, `<style>`, `<svg>`, `<noscript>`, HTML comments, and extra tags.
+    - Normalizes multi-spaces, newlines, and HTML entities (`&nbsp;`, `&amp;`, quotes).
+    - Hashes up to 50,000 characters of clean DOM text, preventing false positives from dynamic nonces and eliminating false negatives on deep rate tables.
+- [x] **18.4 Statutory Rate Disclosure URL Hygiene & Fallback Infrastructure** `[COMPLETED]`
+  - Migrated failing URLs in `masterRegistry.ts` to exact statutory deposit rate paths with redundant fallback URLs:
+    - `au-sfb`: `https://www.aubank.in/interest-rates/fixed-deposit` (fallbacks: `https://www.aubank.in/interest-rates`, `https://www.aubank.in/`)
+    - `suryoday-sfb`: `https://suryoday.bank.in/p/fixed-deposit` (fallbacks: `https://www.suryoday.bank.in/`, `https://www.suryodaybank.com/rates/`)
+    - `union-bank`: `https://www.unionbankofindia.co.in/english/interest-rates.aspx` (fallback: `https://www.unionbankofindia.co.in/`)
+    - `bank-of-india`: `https://bankofindia.co.in/interest-rates/deposit-rates` (fallbacks: `https://bankofindia.co.in/deposit-interest-rates`, `https://bankofindia.co.in/`)
+    - `tgb-bank`: `https://tgb.bank.in/deposit-interest-rates` (fallback: `https://tgb.bank.in/`)
+    - `mgb-bank`: `https://mahagramin.bank.in/` (fallback: `https://mahagramin.in/`)
+    - `ogb-bank`: `https://odishabank.in/` (fallback: `https://odishabank.bank.in/`)
+  - Added `fallbackUrls?: string[]` to `BankMasterDefinition` in `types.ts` and passed through `fetchWithResilience`.
+- [x] **18.5 Ingestion Cache Integrity & Consecutive Failure Tracking** `[COMPLETED]`
+  - Persists `status: 'unreachable'`, timestamp, and increments `consecutiveFailures` in `.sentinel-cache.json` while safely preserving the last verified `contentHash` baseline.
+  - Added Vitest unit test suite in `scripts/sentinel-monitor.test.ts` (5 passing tests). Total test suite now at 54 tests in 1.3s.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -450,6 +490,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-29** | Phase 14 | Built Multimodal Gemini 2.0 Flash Circular Extractor & Sentinel GitHub Actions Workflow | `.github/workflows/sentinel-check.yml` created, `extract-circular-llm.ts` built with strict schema validation |
 | **2026-10-29** | Phase 16 | Implemented Depositor Crowdsource Verification Modal (`ReportRateModal.tsx`) | DPDP Act compliant community rate flagging, localStorage persistence, WCAG 2.1 AA accessible |
 | **2026-10-29** | Phase 17 | Vite bundle manual chunk splitting in `vite.config.ts` | Monolith 983 kB JS split into `vendor-charts`, `vendor-react`, `vendor-motion`, `vendor-icons`. 49 unit tests pass in 1.3s |
+| **2026-11-02** | Phase 18 | Architectural Audit, Root Cause Analysis & Sentinel Hardening (`sentinel-monitor.ts`) | Eliminated False Green defect, added inline real-time error logs, content normalization (50k chars clean DOM text), statutory deposit rate URLs with redundant fallbacks across failing banks, and added 5 new unit tests (54 passing tests in 1.3s). |
 
 
 

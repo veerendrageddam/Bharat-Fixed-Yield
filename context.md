@@ -82,6 +82,7 @@ Bharat Fixed Yield is designed to be an **RBI/DICGC-indexed yield comparison pla
   - Bank interest rates in India are event-driven, changing 1–2 times per quarter per bank around RBI MPC meetings (bi-monthly) and bank ALCO circular releases.
   - Replaced DOM scraping with a **Sentinel Monitor + Structured Circular Ingestion Engine**:
     - **Sentinel Monitor** (`scripts/sentinel-monitor.ts`): Observes HTTP signatures (ETags, Last-Modified, content hashes) on official bank disclosure URLs.
+      - *Observability Hardening (Phase 18)*: Replaces "False Green" reporting with explicit status gating (100% Verified Clean vs. Degraded/Blind-Spot warnings), logs inline HTTP diagnostic error codes, sanitizes dynamic noise before hashing (DOM clean text hashing instead of raw 10k slice), and points endpoints directly to statutory ALCO rate disclosure subpaths rather than bot-protected root homepages.
     - **Circular Ingestion Engine** (`scripts/ingestion/circularEngine.ts` and `scripts/ingest-circular.ts`): Parses, validates (bounds 3.00%–11.50%), and merges official bank ALCO circulars (< ₹3 Cr retail limit) with audit diffs into `src/data/rates.json`.
     - **Audit Metadata**: Captures official `effectiveDate` (e.g. `w.e.f. Oct 15, 2024`), direct `circularUrl` links, `callable` flags, and `retailCapCr` (₹3 Cr).
     - **UI Transparency**: Bank cards display the exact `w.e.f.` date and a clickable link to inspect the official bank rate card.

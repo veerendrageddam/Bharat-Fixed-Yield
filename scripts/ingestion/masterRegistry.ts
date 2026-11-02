@@ -111,7 +111,11 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "womenBonus": 0.1,
     "fdSupported": true,
     "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://www.suryoday.bank.in/"
+    "sourceUrl": "https://suryoday.bank.in/p/fixed-deposit",
+    "fallbackUrls": [
+      "https://www.suryoday.bank.in/",
+      "https://www.suryodaybank.com/rates/"
+    ]
   },
   "utkarsh-sfb": {
     "id": "utkarsh-sfb",
@@ -273,7 +277,11 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "superSeniorBonus": 0.75,
     "womenBonus": 0.1,
     "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://www.aubank.in/"
+    "sourceUrl": "https://www.aubank.in/interest-rates/fixed-deposit",
+    "fallbackUrls": [
+      "https://www.aubank.in/interest-rates",
+      "https://www.aubank.in/"
+    ]
   },
   "ujjivan-sfb": {
     "id": "ujjivan-sfb",
@@ -950,7 +958,10 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "superSeniorBonus": 0.75,
     "womenBonus": 0.1,
     "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://www.unionbankofindia.co.in/"
+    "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+    "fallbackUrls": [
+      "https://www.unionbankofindia.co.in/"
+    ]
   },
   "canara-bank": {
     "id": "canara-bank",
@@ -1053,7 +1064,11 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "superSeniorBonus": 0.75,
     "womenBonus": 0.1,
     "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://bankofindia.co.in/"
+    "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+    "fallbackUrls": [
+      "https://bankofindia.co.in/deposit-interest-rates",
+      "https://bankofindia.co.in/"
+    ]
   },
   "saraswat-bank": {
     "id": "saraswat-bank",
@@ -1335,6 +1350,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "superSeniorBonus": 0.5,
     "womenBonus": 0,
     "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
+    "fallbackUrls": [
+      "https://tgb.bank.in/"
+    ],
     "lastVerified": "2026-10-28T04:32:01.388Z"
   },
   "kgb-bank": {
@@ -1464,7 +1482,10 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "womenBonus": 0.15,
     "specialSchemes": [],
     "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://mahagramin.bank.in/"
+    "sourceUrl": "https://mahagramin.bank.in/",
+    "fallbackUrls": [
+      "https://mahagramin.in/"
+    ]
   },
   "bggb-bank": {
     "id": "bggb-bank",
@@ -1694,7 +1715,10 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "seniorBonus": 0.5,
     "superSeniorBonus": 0.75,
     "womenBonus": 0.15,
-    "sourceUrl": "https://odishabank.bank.in/",
+    "sourceUrl": "https://odishabank.in/",
+    "fallbackUrls": [
+      "https://odishabank.bank.in/"
+    ],
     "lastVerified": "2026-10-20T14:01:55.186Z",
     "verificationStatus": "baseline_verified"
   },
