@@ -20,6 +20,7 @@
   - [Installation](#installation)
   - [Development Server](#development-server)
   - [Production Build](#production-build)
+  - [Essential Developer & Ingestion CLI Commands](#essential-developer--ingestion-cli-commands)
 - [Production Readiness Checklist](#production-readiness-checklist)
 - [Security & Regulatory Compliance](#security--regulatory-compliance)
 - [Architecture & Standards Documentation](#architecture--standards-documentation)
@@ -189,6 +190,25 @@ npm run build
 
 # Preview production build locally
 npm run preview
+```
+
+### Essential Developer & Ingestion CLI Commands
+
+```bash
+# 1. Run the 49-test Vitest unit test suite (executes in <1.5s)
+npm test
+
+# 2. Run the 38-Institution ALCO Rate & Gazette Audit Report
+npm run audit:rates
+
+# 3. Test the Multimodal Gemini 2.0 Flash Circular Extractor in offline test mode
+npm run extract:circular -- --bank sbi-bank --offline --file scripts/extract-circular-llm.test.ts
+
+# 4. Run the Sentinel Rate-Change Monitor against bank disclosure signatures
+npm run monitor:sentinel
+
+# 5. Verify production TypeScript build & vendor chunk distribution
+npm run lint && npm run build
 ```
 
 ---

@@ -247,6 +247,24 @@ gantt
   - Enforced audit schema (`effectiveDate`, `circularUrl`, `callable`, `retailCapCr`) and added transparent UI badges/links.
   - 40 passing unit tests (<1.2s), clean TypeScript check, and clean Vite build.
 
+### Developer & Ingestion CLI Reference
+```bash
+# 1. Run the 49-test Vitest unit test suite (executes in <1.5s)
+npm test
+
+# 2. Run the 38-Institution ALCO Rate & Gazette Audit Report
+npm run audit:rates
+
+# 3. Test the Multimodal Gemini 2.0 Flash Circular Extractor in offline test mode
+npm run extract:circular -- --bank sbi-bank --offline --file scripts/extract-circular-llm.test.ts
+
+# 4. Run the Sentinel Rate-Change Monitor against bank disclosure signatures
+npm run monitor:sentinel
+
+# 5. Verify production TypeScript build & vendor chunk distribution
+npm run lint && npm run build
+```
+
 ---
 
 ## 7. Strategic Next Steps & Roadmap
