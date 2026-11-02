@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-10-29T05:36:06.191Z",
+  "lastUpdated": "2026-10-28T05:30:50.558Z",
   "version": "2.2.0",
   "source": "RBI Scheduled Bank Disclosures, MoF Gazettes & Official Rate Cards",
   "banks": {
@@ -1229,7 +1229,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-29T05:35:58.614Z",
+      "lastVerified": "2026-10-28T05:30:49.541Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
@@ -1289,7 +1289,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-10-29T05:35:58.616Z",
+      "lastVerified": "2026-10-28T05:30:50.557Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
@@ -1400,6 +1400,18 @@
           "days": 444,
           "rate": 7.4,
           "badge": "Special 444D"
+        },
+        {
+          "name": "RD Lakhpati (36M RD)",
+          "days": 1095,
+          "rate": 7.5,
+          "badge": "High Yield Recurring"
+        },
+        {
+          "name": "TGB Mahila Samriddhi",
+          "days": 700,
+          "rate": 7.4,
+          "badge": "Special Women Scheme"
         }
       ],
       "seniorBonus": 0.5,
@@ -2811,7 +2823,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-29T05:35:58.614Z",
+      "lastVerified": "2026-10-28T05:30:49.541Z",
       "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
@@ -2845,7 +2857,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-10-29T05:35:58.616Z",
+      "lastVerified": "2026-10-28T05:30:50.557Z",
       "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
@@ -2897,6 +2909,18 @@
           "days": 444,
           "rate": 7.4,
           "badge": "Special 444D"
+        },
+        {
+          "name": "RD Lakhpati (36M RD)",
+          "days": 1095,
+          "rate": 7.5,
+          "badge": "High Yield Recurring"
+        },
+        {
+          "name": "TGB Mahila Samriddhi",
+          "days": 700,
+          "rate": 7.4,
+          "badge": "Special Women Scheme"
         }
       ],
       "seniorBonus": 0.5,
@@ -2907,8 +2931,8 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-29T04:46:29.854Z",
-      "verificationStatus": "circular_verified"
+      "lastVerified": "2026-10-28T05:30:17.418Z",
+      "verificationStatus": "live_synced"
     },
     "kgb-bank": {
       "baseRate": 6.8,
