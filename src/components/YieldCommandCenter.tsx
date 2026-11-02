@@ -31,7 +31,8 @@ import {
   Flame,
   Check,
   Search,
-  X
+  X,
+  Flag
 } from 'lucide-react';
 import {
   ResponsiveContainer,
@@ -82,6 +83,7 @@ interface YieldCommandCenterProps {
   comparedBankIds: string[];
   onToggleCompare: (bank: BankData) => void;
   onNavigateTab: (tab: string) => void;
+  onReportRate?: (bank: BankData) => void;
 }
 
 export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
@@ -93,6 +95,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   comparedBankIds,
   onToggleCompare,
   onNavigateTab,
+  onReportRate,
 }) => {
   const [selectedCategory, setSelectedCategory] = useState<BankCategory>('all');
   const [minRatingFilter, setMinRatingFilter] = useState<string>('all');
@@ -1165,10 +1168,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             </span>
             <div className="flex flex-col">
               <span className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
-                Live RBI & Scheduled Bank Rate Cards
+                Verified ALCO Rate Cards & Sovereign Gazettes
               </span>
               <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                Automated weekly sync pipeline actively tracks official circulars & rate revisions
+                Standard retail deposits (&lt; ₹3 Crore) verified against official bank circulars & MoF orders
               </span>
             </div>
           </div>
@@ -1434,6 +1437,43 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                       </span>
                       <span>•</span>
                       <span>Min Deposit: ₹{formatINR(bank.minDeposit)}</span>
+                      {bank.effectiveDate && (
+                        <>
+                          <span>•</span>
+                          <span className="px-2 py-0.5 rounded-md bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 text-[10px] font-medium">
+                            {bank.effectiveDate.startsWith('w.e.f.') ? bank.effectiveDate : `w.e.f. ${bank.effectiveDate}`}
+                          </span>
+                        </>
+                      )}
+                      {bank.circularUrl && (
+                        <>
+                          <span>•</span>
+                          <a
+                            href={bank.circularUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[#006c4a] dark:text-[#10b981] hover:underline flex items-center gap-1 font-semibold text-[11px]"
+                            title="Inspect official bank rate circular disclosure"
+                          >
+                            <span>Official Rate Card</span>
+                            <ExternalLink className="w-3 h-3" />
+                          </a>
+                        </>
+                      )}
+                      {onReportRate && (
+                        <>
+                          <span>•</span>
+                          <button
+                            type="button"
+                            onClick={() => onReportRate(bank)}
+                            className="text-slate-500 hover:text-amber-600 dark:hover:text-amber-400 flex items-center gap-1 font-semibold text-[11px] transition-colors"
+                            title="Report rate revision or notice board photo"
+                          >
+                            <Flag className="w-3 h-3" />
+                            <span>Report Revision</span>
+                          </button>
+                        </>
+                      )}
                     </div>
                   </div>
                 </div>

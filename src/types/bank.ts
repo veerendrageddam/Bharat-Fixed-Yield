@@ -5,6 +5,7 @@ export type CreditRating = 'AAA' | 'AA+' | 'AA' | 'A+' | 'A' | 'Sovereign';
 export type RateVerificationStatus =
   | 'live_synced'
   | 'official_gazette'
+  | 'circular_verified'
   | 'baseline_verified'
   | 'fetch_failed'
   | 'stale';
@@ -57,6 +58,10 @@ export interface BankData {
   rdSupported?: boolean;
   status?: 'active' | 'amalgamated';
   sourceUrl?: string;
+  circularUrl?: string;
+  effectiveDate?: string; // e.g. "2026-10-15" or "w.e.f. October 15, 2026"
+  callable?: boolean; // Default true: standard retail callable deposit
+  retailCapCr?: number; // Default 3: under ₹3 Crore retail deposit per RBI
   lastVerified?: string;
   verificationStatus?: RateVerificationStatus;
 }

@@ -74,14 +74,17 @@ Bharat Fixed Yield is designed to be an **RBI/DICGC-indexed yield comparison pla
 
 ---
 
-### E. Data Pipeline: Static Data to Real-Time Rates
-* **Current Flaw**: 8 static banks hardcoded in a single file with one tenure (36 months).
-* **Production Resolution**:
-  - Structured schema storing multiple tenure buckets per bank:
-    - 7 to 14 days, 15 to 45 days, 46 to 90 days, 91 to 179 days, 180 to 364 days.
-    - 1 Year, Special Tenures (e.g., 400 days, 444 days, 555 days, 777 days).
-    - 2 Years, 3 Years, 5 Years (Tax Saver 80C).
-  - Background crawler / verification worker running daily to track rate card revisions from RBI Scheduled Banks.
+### E. Data Pipeline: Transition from Fragile Scraping to Verified Circular Ingestion
+* **The Web Scraping Anti-Pattern**:
+  - Scraping 40+ bank marketing web pages with HTML/DOM selectors (Cheerio/Playwright) is brittle: bank websites use client-side SPAs (React/AEM), WAFs (Cloudflare/Akamai 403s), and multi-column tables with differing definitions.
+  - Previous adapters had a silent fallback flaw: failed scrapes fell back to hardcoded numbers and falsely claimed `live_synced`.
+* **Production Resolution (The Verified Circular Engine)**:
+  - Bank interest rates in India are event-driven, changing 1–2 times per quarter per bank around RBI MPC meetings (bi-monthly) and bank ALCO circular releases.
+  - Replaced DOM scraping with a **Sentinel Monitor + Structured Circular Ingestion Engine**:
+    - **Sentinel Monitor** (`scripts/sentinel-monitor.ts`): Observes HTTP signatures (ETags, Last-Modified, content hashes) on official bank disclosure URLs.
+    - **Circular Ingestion Engine** (`scripts/ingestion/circularEngine.ts` and `scripts/ingest-circular.ts`): Parses, validates (bounds 3.00%–11.50%), and merges official bank ALCO circulars (< ₹3 Cr retail limit) with audit diffs into `src/data/rates.json`.
+    - **Audit Metadata**: Captures official `effectiveDate` (e.g. `w.e.f. Oct 15, 2024`), direct `circularUrl` links, `callable` flags, and `retailCapCr` (₹3 Cr).
+    - **UI Transparency**: Bank cards display the exact `w.e.f.` date and a clickable link to inspect the official bank rate card.
 
 ---
 
@@ -235,9 +238,35 @@ gantt
   - [x] Custom percentage target modeling with RBI fractional quarterly compounding.
 - [x] **Phase 7: GitOps Automated Rate Pipeline** `[COMPLETED]`
   - [x] Scheduled GitHub Actions weekly cron, live bank scraping, decoupled `rates.json`.
-- [x] **Phase 8: Bank Consolidation & Zero-Hardcode Ingestion Architecture** `[COMPLETED]`
-  - [x] Purged all hardcoded rates from TypeScript files; `src/data/rates.json` is the sole source of truth populated via `scripts/sync-rates.ts`.
-  - [x] Modeled APGVB bifurcation into Telangana Grameena Bank (TGB, `https://tgb.bank.in/`) and Andhra Pradesh Grameena Bank (APGB, `https://apgb.bank.in/`).
-  - [x] Built live scrapers for both APGB and TGB deposit cards.
-  - [x] Added smart amalgamation search in `YieldCommandCenter.tsx` with merger guidance banner.
+- [x] **Phase 12: Ingestion Resilience Hardening & Commercial Bank Expansion** `[COMPLETED]`
+  - Enhanced HTTP client with modern browser hints, .bank.in domain migrations, and evaluated scraping alternatives.
+- [x] **Phase 13: Verified Circular Ingestion & Sentinel Monitoring Engine** `[COMPLETED]`
+  - Purged silent fallback masking and false `live_synced` status.
+  - Built `scripts/ingestion/circularEngine.ts`, `scripts/ingest-circular.ts`, and `scripts/sentinel-monitor.ts`.
+  - Synchronized verified ALCO circular baselines across all 38 registered institutions (< ₹3 Cr retail limit).
+  - Enforced audit schema (`effectiveDate`, `circularUrl`, `callable`, `retailCapCr`) and added transparent UI badges/links.
+  - 40 passing unit tests (<1.2s), clean TypeScript check, and clean Vite build.
+
+---
+
+## 7. Strategic Next Steps & Roadmap
+
+```mermaid
+flowchart LR
+    A["Phase 14: LLM Circular Extractor & GitHub Actions Sentinel"] --> B["Phase 15: Public Bank SEO Landing Pages (Next.js/Astro SSG)"] --> C["Phase 16: Community & Depositor Crowdsource Verification"]
+```
+
+1. **Phase 14: Automated Circular Extractor (Gemini 2.0 Flash) & Sentinel CI Workflow**
+   - Wire `scripts/sentinel-monitor.ts` into a scheduled GitHub Actions cron (weekly or post-RBI MPC release).
+   - When a sentinel alert triggers (page signature changes), trigger a Gemini 2.0 Flash agent to extract the structured table / PDF circular directly into the `BankCircularUpdate` schema.
+   - Automatically generate a GitHub Pull Request with the extracted rates, diff, and direct circular URL for 1-click human-in-the-loop (HITL) approval.
+
+2. **Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)**
+   - As identified in Section 3, organic Google search (*"best SBI 1 year FD rate"*, *"post office time deposit interest rate"*) is the primary user acquisition channel.
+   - Introduce static pre-rendered routes (e.g., `/banks/sbi`, `/banks/hdfc`, `/tenure/1-year-fd`) using Next.js or Astro/Vite-SSG to capture long-tail organic search volume.
+
+3. **Phase 16: Depositor Community Crowdsource Verification & Flagging**
+   - Add a lightweight "Report Rate Update" modal on bank cards: depositors can upload a branch notice photo or paste a new circular link.
+   - Community submissions enter a review queue to be audited via `scripts/ingest-circular.ts`.
+
 

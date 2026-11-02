@@ -11,6 +11,7 @@ import { DicgcSafetyScreen } from './components/DicgcSafetyScreen';
 import { CompareDrawer } from './components/CompareDrawer';
 import { BookingModal } from './components/BookingModal';
 import { SignInModal } from './components/SignInModal';
+import { ReportRateModal } from './components/ReportRateModal';
 import { PAN_INDIA_OPTION } from './data/jurisdictions';
 
 export default function App() {
@@ -18,6 +19,8 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [selectedBankForInspection, setSelectedBankForInspection] = useState<BankData>(INITIAL_BANKS[0]);
   const [bookingBank, setBookingBank] = useState<BankData | null>(null);
+  const [reportRateBank, setReportRateBank] = useState<BankData | null>(null);
+  const [reportRateOpen, setReportRateOpen] = useState<boolean>(false);
   const [signInOpen, setSignInOpen] = useState<boolean>(false);
   const [comparedBankIds, setComparedBankIds] = useState<string[]>([]);
 
@@ -121,6 +124,10 @@ export default function App() {
                   setActiveTab(tab);
                   window.scrollTo({ top: 0, behavior: 'smooth' });
                 }}
+                onReportRate={(bank) => {
+                  setReportRateBank(bank);
+                  setReportRateOpen(true);
+                }}
               />
             </motion.div>
           )}
@@ -195,6 +202,13 @@ export default function App() {
       <SignInModal
         isOpen={signInOpen}
         onClose={() => setSignInOpen(false)}
+      />
+
+      {/* Community Rate Revision & Circular Submission Modal */}
+      <ReportRateModal
+        bank={reportRateBank}
+        isOpen={reportRateOpen}
+        onClose={() => setReportRateOpen(false)}
       />
 
       {/* Footer */}

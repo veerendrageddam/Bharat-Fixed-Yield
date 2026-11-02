@@ -6,6 +6,7 @@
 export type RateVerificationStatus =
   | 'live_synced'
   | 'official_gazette'
+  | 'circular_verified'
   | 'baseline_verified'
   | 'fetch_failed'
   | 'stale';
@@ -29,6 +30,10 @@ export interface BankRateData {
   superSeniorBonus: number;
   womenBonus: number;
   sourceUrl?: string;
+  circularUrl?: string;
+  effectiveDate?: string;
+  callable?: boolean;
+  retailCapCr?: number;
   lastVerified?: string;
   verificationStatus?: RateVerificationStatus;
 }
@@ -82,6 +87,10 @@ export interface BankMasterDefinition {
   superSeniorBonus: number;
   womenBonus: number;
   sourceUrl?: string;
+  circularUrl?: string;
+  effectiveDate?: string;
+  callable?: boolean;
+  retailCapCr?: number;
   lastVerified?: string;
   verificationStatus?: RateVerificationStatus;
 }
@@ -105,6 +114,10 @@ export interface ScrapedRateResult {
   superSeniorBonus?: number;
   womenBonus?: number;
   sourceUrl?: string;
+  circularUrl?: string;
+  effectiveDate?: string;
+  callable?: boolean;
+  retailCapCr?: number;
   lastVerified?: string;
   verificationStatus?: RateVerificationStatus;
 }

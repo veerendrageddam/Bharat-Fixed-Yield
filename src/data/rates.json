@@ -59,9 +59,13 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "fdSupported": true,
-      "lastVerified": "2026-10-28T04:32:01.387Z",
+      "lastVerified": "2026-10-29T04:46:29.853Z",
       "sourceUrl": "https://www.unitybank.co.in/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://theunitybank.com/interest-rates.html",
+      "effectiveDate": "w.e.f. October 7, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "suryoday-sfb": {
       "id": "suryoday-sfb",
@@ -102,16 +106,20 @@
           "name": "Suryoday 2Y2D",
           "days": 732,
           "rate": 8.25,
-          "badge": "Special 732D"
+          "badge": "Special 732D (8.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.853Z",
       "sourceUrl": "https://www.suryoday.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://suryoday.bank.in/p/fixed-deposit",
+      "effectiveDate": "w.e.f. September 4, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "utkarsh-sfb": {
       "id": "utkarsh-sfb",
@@ -152,21 +160,26 @@
           "name": "Utkarsh 1500D",
           "days": 1500,
           "rate": 8.25,
-          "badge": "Long Term High Yield"
+          "badge": "Long Term 8.25%"
         },
         {
           "name": "Utkarsh 777D",
           "days": 777,
-          "rate": 8.15
+          "rate": 8.15,
+          "badge": "Special 777D (8.15%)"
         }
       ],
-      "seniorBonus": 0.5,
+      "seniorBonus": 0.6,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-28T05:30:25.524Z",
-      "sourceUrl": "https://www.utkarsh.bank/interest-rates",
-      "verificationStatus": "live_synced"
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "sourceUrl": "https://www.utkarsh.bank/",
+      "circularUrl": "https://www.utkarsh.bank/interest-rates",
+      "effectiveDate": "w.e.f. June 7, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "equitas-sfb": {
       "id": "equitas-sfb",
@@ -207,7 +220,7 @@
           "name": "Equitas 444D",
           "days": 444,
           "rate": 8.15,
-          "badge": "Special 444 Days"
+          "badge": "Special 444D (8.15%)"
         },
         {
           "name": "Equitas 888D",
@@ -219,9 +232,13 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "fdSupported": true,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.853Z",
       "sourceUrl": "https://www.equitasbank.com/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.equitas.bank.in/personal-banking/investments/fixed-deposits",
+      "effectiveDate": "w.e.f. August 21, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "au-sfb": {
       "id": "au-sfb",
@@ -253,30 +270,29 @@
       "baseRate": 7.5,
       "ratesByTenure": {
         "12": 7.25,
-        "24": 8,
+        "24": 7.5,
         "36": 7.5,
         "60": 7.25
       },
-      "specialTenure": "24 Months (8.00%)",
+      "specialTenure": "18M to 24M (8.00%)",
       "specialSchemes": [
         {
-          "name": "AU 24M Peak",
-          "days": 730,
+          "name": "AU Peak Term 18M-24M",
+          "days": 555,
           "rate": 8,
-          "badge": "Peak SFB 8.00%"
-        },
-        {
-          "name": "AU 18M Special",
-          "days": 545,
-          "rate": 7.75
+          "badge": "Peak AU 8.00%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.853Z",
       "sourceUrl": "https://www.aubank.in/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.au.bank.in/interest-rates",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "ujjivan-sfb": {
       "id": "ujjivan-sfb",
@@ -305,33 +321,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.75,
+      "baseRate": 7.2,
       "ratesByTenure": {
-        "12": 7.75,
-        "24": 8,
-        "36": 7.75,
+        "12": 8.25,
+        "24": 7.75,
+        "36": 7.2,
         "60": 7.2
       },
       "specialTenure": "15 Months (8.25%)",
       "specialSchemes": [
         {
-          "name": "Ujjivan 15M Peak",
+          "name": "Ujjivan Platina 15M",
           "days": 456,
           "rate": 8.25,
-          "badge": "Peak SFB 8.25%"
-        },
-        {
-          "name": "Ujjivan 80 Weeks",
-          "days": 560,
-          "rate": 8
+          "badge": "Peak Ujjivan 8.25%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.854Z",
       "sourceUrl": "https://www.ujjivansfb.in/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "hdfc-bank": {
       "id": "hdfc-bank",
@@ -360,21 +375,38 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.25,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 6.9,
-        "24": 7.15,
-        "36": 7.25,
+        "12": 6.6,
+        "24": 7,
+        "36": 7,
         "60": 7
       },
       "specialTenure": "55 Months (7.40%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "specialSchemes": [
+        {
+          "name": "HDFC 35M Special",
+          "days": 1065,
+          "rate": 7.35,
+          "badge": "Special 35M (7.35%)"
+        },
+        {
+          "name": "HDFC 55M Special",
+          "days": 1672,
+          "rate": 7.4,
+          "badge": "Peak HDFC 7.40%"
+        }
+      ],
+      "lastVerified": "2026-10-29T04:46:29.854Z",
       "sourceUrl": "https://netbanking.hdfcbank.com/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.hdfcbank.com/personal/save/fixed-deposit/fixed-deposit-interest-rate",
+      "effectiveDate": "w.e.f. July 24, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "icici-bank": {
       "id": "icici-bank",
@@ -403,21 +435,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.25,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 6.85,
-        "24": 7.1,
-        "36": 7.25,
+        "12": 6.7,
+        "24": 7.2,
+        "36": 7,
         "60": 7
       },
-      "specialTenure": "15 Months (7.25%)",
+      "specialTenure": "15M to 18M (7.25%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "specialSchemes": [
+        {
+          "name": "ICICI 15M Special",
+          "days": 456,
+          "rate": 7.25,
+          "badge": "Peak ICICI 7.25%"
+        }
+      ],
+      "lastVerified": "2026-10-29T04:46:29.854Z",
       "sourceUrl": "https://www.icicibank.com/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.icicibank.com/personal-banking/deposits/fixed-deposit/fd-interest-rates",
+      "effectiveDate": "w.e.f. August 2, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "axis-bank": {
       "id": "axis-bank",
@@ -453,27 +496,25 @@
         "36": 7.1,
         "60": 7
       },
-      "specialTenure": "17 Months Special (7.20%)",
+      "specialTenure": "17 Months (7.20%)",
       "specialSchemes": [
         {
           "name": "Axis 17M Special",
           "days": 515,
           "rate": 7.2,
           "badge": "Peak Axis 7.20%"
-        },
-        {
-          "name": "Axis 5Y Tax Saver",
-          "days": 1825,
-          "rate": 7,
-          "badge": "Sec 80C Tax Saver"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.854Z",
       "sourceUrl": "https://www.axisbank.com/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.axisbank.com/interest-rates",
+      "effectiveDate": "w.e.f. September 3, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "kotak-bank": {
       "id": "kotak-bank",
@@ -509,26 +550,25 @@
         "36": 7,
         "60": 6.2
       },
-      "specialTenure": "390 Days Active FD (7.40%)",
+      "specialTenure": "390 Days (7.40%)",
       "specialSchemes": [
         {
-          "name": "Kotak 390D Special",
+          "name": "Kotak 390D Active FD",
           "days": 390,
           "rate": 7.4,
           "badge": "Peak Kotak 7.40%"
-        },
-        {
-          "name": "Kotak 23M Special",
-          "days": 700,
-          "rate": 7.3
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.kotak.com/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:52.032Z",
+      "sourceUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+      "circularUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+      "effectiveDate": "w.e.f. August 20, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "idfc-first-bank": {
       "id": "idfc-first-bank",
@@ -560,31 +600,34 @@
       "baseRate": 7.25,
       "ratesByTenure": {
         "12": 6.5,
-        "24": 7.5,
+        "24": 7.25,
         "36": 7.25,
         "60": 7
       },
-      "specialTenure": "500 Days Peak Return (7.90%)",
+      "specialTenure": "500 Days (7.90%)",
       "specialSchemes": [
         {
-          "name": "IDFC 500D Peak",
+          "name": "IDFC FIRST 500D",
           "days": 500,
           "rate": 7.9,
-          "badge": "Peak 500D 7.90%"
+          "badge": "Peak IDFC 7.90%"
         },
         {
-          "name": "IDFC 400D Special",
+          "name": "IDFC FIRST 400D",
           "days": 400,
-          "rate": 7.75,
-          "badge": "Special 400D"
+          "rate": 7.75
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.idfcfirstbank.com/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:52.537Z",
+      "sourceUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
+      "circularUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
+      "effectiveDate": "w.e.f. October 16, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "indusind-bank": {
       "id": "indusind-bank",
@@ -620,26 +663,25 @@
         "36": 7.25,
         "60": 7.25
       },
-      "specialTenure": "1 Year 7 Months (7.75%)",
+      "specialTenure": "1Y 7M (7.75%)",
       "specialSchemes": [
         {
           "name": "IndusInd 1Y7M",
-          "days": 575,
+          "days": 579,
           "rate": 7.75,
-          "badge": "Peak Private 7.75%"
-        },
-        {
-          "name": "IndusInd 2Y9M",
-          "days": 1000,
-          "rate": 7.75
+          "badge": "Peak IndusInd 7.75%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.indusind.com/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:53.044Z",
+      "sourceUrl": "https://www.indusind.com/in/en/personal/rates.html",
+      "circularUrl": "https://www.indusind.com/in/en/personal/rates.html",
+      "effectiveDate": "w.e.f. September 10, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "yes-bank": {
       "id": "yes-bank",
@@ -671,30 +713,29 @@
       "baseRate": 7.25,
       "ratesByTenure": {
         "12": 7.25,
-        "24": 7.5,
+        "24": 7.75,
         "36": 7.25,
         "60": 7.25
       },
-      "specialTenure": "18 Months Special (7.75%)",
+      "specialTenure": "18 Months (7.75%)",
       "specialSchemes": [
         {
-          "name": "Yes 18M Special",
-          "days": 540,
+          "name": "Yes Bank 18M Special",
+          "days": 548,
           "rate": 7.75,
-          "badge": "Peak Private 7.75%"
-        },
-        {
-          "name": "Yes 12M Peak",
-          "days": 365,
-          "rate": 7.25
+          "badge": "Peak Yes Bank 7.75%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.yesbank.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:53.548Z",
+      "sourceUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
+      "circularUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
+      "effectiveDate": "w.e.f. August 5, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "federal-bank": {
       "id": "federal-bank",
@@ -730,10 +771,10 @@
         "36": 7,
         "60": 6.6
       },
-      "specialTenure": "400 Days Federal Special (7.40%)",
+      "specialTenure": "400 Days (7.40%)",
       "specialSchemes": [
         {
-          "name": "Federal 400D",
+          "name": "Federal 400D Special",
           "days": 400,
           "rate": 7.4,
           "badge": "Peak Federal 7.40%"
@@ -742,9 +783,13 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.federalbank.co.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:54.053Z",
+      "sourceUrl": "https://www.federalbank.co.in/deposit-rate",
+      "circularUrl": "https://www.federalbank.co.in/deposit-rate",
+      "effectiveDate": "w.e.f. September 16, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "sbi-bank": {
       "id": "sbi-bank",
@@ -773,34 +818,38 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.1,
+      "baseRate": 6.75,
       "ratesByTenure": {
         "12": 6.8,
         "24": 7,
-        "36": 7.1,
-        "60": 6.9
+        "36": 6.75,
+        "60": 6.5
       },
       "specialTenure": "444 Days Amrit Vrishti (7.25%)",
       "specialSchemes": [
         {
-          "name": "SBI 'Amrit Vrishti'",
+          "name": "SBI Amrit Vrishti",
           "days": 444,
           "rate": 7.25,
-          "badge": "SBI Flagship Scheme"
+          "badge": "Special 444D (7.25%)"
         },
         {
-          "name": "SBI 'Amrit Kalash'",
+          "name": "SBI Amrit Kalash",
           "days": 400,
           "rate": 7.1,
-          "badge": "Limited 400D"
+          "badge": "Special 400D (7.10%)"
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "lastVerified": "2026-10-29T04:46:29.854Z",
       "sourceUrl": "https://www.onlinesbi.sbi/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://sbi.bank.in/web/interest-rates/deposit-rates",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "bank-of-baroda": {
       "id": "bank-of-baroda",
@@ -829,33 +878,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.15,
+      "baseRate": 6.5,
       "ratesByTenure": {
         "12": 6.85,
-        "24": 7.05,
-        "36": 7.15,
-        "60": 6.8
+        "24": 7.15,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "399 Days BoB Tiranga (7.25%)",
+      "specialTenure": "399 Days Tiranga Plus (7.25%)",
       "specialSchemes": [
         {
           "name": "BoB Tiranga Plus",
           "days": 399,
           "rate": 7.25,
-          "badge": "Special 399D"
-        },
-        {
-          "name": "BoB Monsoon Dhamaka",
-          "days": 333,
-          "rate": 7.15
+          "badge": "Special 399D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.bankofbaroda.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:56.075Z",
+      "sourceUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
+      "circularUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
+      "effectiveDate": "w.e.f. October 3, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "pnb-bank": {
       "id": "pnb-bank",
@@ -884,33 +932,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.05,
+      "baseRate": 7,
       "ratesByTenure": {
         "12": 6.8,
-        "24": 7,
-        "36": 7.05,
-        "60": 6.75
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
       },
       "specialTenure": "400 Days PNB Uttam (7.25%)",
       "specialSchemes": [
         {
-          "name": "PNB Uttam",
+          "name": "PNB Uttam 400D",
           "days": 400,
           "rate": 7.25,
-          "badge": "High Yield 400D"
-        },
-        {
-          "name": "PNB 300D Special",
-          "days": 300,
-          "rate": 7.05
+          "badge": "Special 400D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.pnbindia.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:56.582Z",
+      "sourceUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
+      "circularUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "union-bank": {
       "id": "union-bank",
@@ -939,34 +986,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.3,
+      "baseRate": 6.7,
       "ratesByTenure": {
         "12": 6.75,
-        "24": 7,
-        "36": 7.3,
+        "24": 6.75,
+        "36": 6.7,
         "60": 6.5
       },
       "specialTenure": "333 Days Union Samriddhi (7.40%)",
       "specialSchemes": [
         {
-          "name": "Union Samriddhi",
+          "name": "Union Samriddhi 333D",
           "days": 333,
           "rate": 7.4,
-          "badge": "Flagship 333D 7.40%"
-        },
-        {
-          "name": "Union 399D Special",
-          "days": 399,
-          "rate": 7.25,
-          "badge": "Special 399D"
+          "badge": "Special 333D (7.40%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.unionbankofindia.co.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:57.087Z",
+      "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+      "circularUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+      "effectiveDate": "w.e.f. August 22, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "canara-bank": {
       "id": "canara-bank",
@@ -1002,21 +1047,25 @@
         "36": 6.8,
         "60": 6.7
       },
-      "specialTenure": "444 Days Canara Special (7.25%)",
+      "specialTenure": "444 Days Canara Dhanvarsha (7.25%)",
       "specialSchemes": [
         {
-          "name": "Canara 444D",
+          "name": "Canara Dhanvarsha",
           "days": 444,
           "rate": 7.25,
-          "badge": "Special 444D"
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://canarabank.com/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:57.601Z",
+      "sourceUrl": "https://canarabank.com/interest-rates-deposit",
+      "circularUrl": "https://canarabank.com/interest-rates-deposit",
+      "effectiveDate": "w.e.f. October 5, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "bank-of-india": {
       "id": "bank-of-india",
@@ -1048,30 +1097,34 @@
       "baseRate": 6.5,
       "ratesByTenure": {
         "12": 6.8,
-        "24": 6.75,
+        "24": 6.8,
         "36": 6.5,
         "60": 6
       },
-      "specialTenure": "333 Days Star Dhan Vriddhi (7.30%)",
+      "specialTenure": "666 Days Star Dhan Vriddhi (7.30%)",
       "specialSchemes": [
         {
-          "name": "BOI Star Dhan 333D",
-          "days": 333,
+          "name": "BOI Star Dhan Vriddhi 666D",
+          "days": 666,
           "rate": 7.3,
-          "badge": "Special 333D"
+          "badge": "Special 666D (7.30%)"
         },
         {
-          "name": "BOI Star Dhan 666D",
-          "days": 666,
-          "rate": 7.3
+          "name": "BOI Star Dhan Vriddhi 333D",
+          "days": 333,
+          "rate": 7.25
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
+      "superSeniorBonus": 0.65,
       "womenBonus": 0.1,
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://bankofindia.co.in/",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:58.105Z",
+      "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+      "circularUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+      "effectiveDate": "w.e.f. September 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "saraswat-bank": {
       "id": "saraswat-bank",
@@ -1103,21 +1156,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.6,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 7.4,
-        "24": 7.75,
-        "36": 7.6,
-        "60": 7.15
+        "12": 7,
+        "24": 7,
+        "36": 7,
+        "60": 6.75
       },
-      "specialTenure": "2 Years (7.75%)",
+      "specialTenure": "400 Days (7.30%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "specialSchemes": [
+        {
+          "name": "Saraswat 400D",
+          "days": 400,
+          "rate": 7.3,
+          "badge": "Special 400D (7.30%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:35:58.611Z",
       "sourceUrl": "https://www.saraswatbank.com/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.saraswatbank.com/",
+      "effectiveDate": "w.e.f. September 10, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "post-office-potd": {
       "id": "post-office-potd",
@@ -1153,29 +1217,13 @@
         "36": 7.1,
         "60": 7.5
       },
-      "specialTenure": "5-Year Tax Saver POTD (7.50%)",
+      "specialTenure": "5-Year Time Deposit (7.50% Sec 80C)",
       "specialSchemes": [
         {
-          "name": "5-Year POTD (Tax Saver)",
+          "name": "POTD 5-Year Tax Saver",
           "days": 1825,
           "rate": 7.5,
-          "badge": "Sec 80C Sovereign 7.50%"
-        },
-        {
-          "name": "3-Year POTD",
-          "days": 1095,
-          "rate": 7.1,
-          "badge": "Govt 3-Year 7.10%"
-        },
-        {
-          "name": "2-Year POTD",
-          "days": 730,
-          "rate": 7
-        },
-        {
-          "name": "1-Year POTD",
-          "days": 365,
-          "rate": 6.9
+          "badge": "Sovereign 7.50%"
         }
       ],
       "seniorBonus": 0,
@@ -1183,6 +1231,10 @@
       "womenBonus": 0,
       "lastVerified": "2026-10-28T05:30:49.541Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
+      "callable": true,
+      "retailCapCr": 3,
       "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
@@ -1225,7 +1277,7 @@
         "36": 6.7,
         "60": 6.7
       },
-      "specialTenure": "5-Year Mandatory Maturity (6.70%)",
+      "specialTenure": "5-Year PORD (6.70% Quarterly Compounded)",
       "specialSchemes": [
         {
           "name": "Post Office 5-Year RD",
@@ -1239,6 +1291,10 @@
       "womenBonus": 0,
       "lastVerified": "2026-10-28T05:30:50.557Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
+      "callable": true,
+      "retailCapCr": 3,
       "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
@@ -1276,7 +1332,7 @@
         "36": 6.65,
         "60": 6.65
       },
-      "specialTenure": "1 Year (7.00%)",
+      "specialTenure": "APGB 1 Year Term (7.00%)",
       "specialSchemes": [
         {
           "name": "APGB 1 Year Term",
@@ -1289,8 +1345,12 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-28T05:30:20.024Z",
-      "verificationStatus": "live_synced"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "circularUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "tgb-bank": {
       "id": "tgb-bank",
@@ -1355,11 +1415,15 @@
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-10-28T05:30:17.418Z",
-      "verificationStatus": "live_synced"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "circularUrl": "https://tgb.bank.in/deposit-interest-rates",
+      "effectiveDate": "w.e.f. August 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "kgb-bank": {
       "id": "kgb-bank",
@@ -1389,21 +1453,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.6,
+      "baseRate": 6.8,
       "ratesByTenure": {
-        "12": 7.2,
-        "24": 7.45,
-        "36": 7.6,
-        "60": 7.1
+        "12": 6.9,
+        "24": 6.85,
+        "36": 6.8,
+        "60": 6.7
       },
-      "specialTenure": "444 Days KGB Special (7.75%)",
+      "specialTenure": "444 Days Special (7.25%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://kgb.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "specialSchemes": [
+        {
+          "name": "KGB 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:00.134Z",
+      "sourceUrl": "https://keralagbank.com/",
+      "circularUrl": "https://keralagbank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "kagb-bank": {
       "id": "kagb-bank",
@@ -1433,21 +1508,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.8,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.8,
+        "60": 6.7
       },
-      "specialTenure": "555 Days KaGB Golden (7.65%)",
+      "specialTenure": "444 Days (7.25%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://karnatakagb.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "specialSchemes": [
+        {
+          "name": "Karnataka Gramin 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:00.641Z",
+      "sourceUrl": "https://karnatakagraminbank.com/",
+      "circularUrl": "https://karnatakagraminbank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "mgb-bank": {
       "id": "mgb-bank",
@@ -1477,21 +1563,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.5,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
+        "12": 6.8,
+        "24": 6.8,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "444 Days Maha Special (7.60%)",
+      "specialTenure": "400 Days (7.15%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
+      "specialSchemes": [
+        {
+          "name": "MGB 400D",
+          "days": 400,
+          "rate": 7.15,
+          "badge": "Special 400D (7.15%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:01.146Z",
       "sourceUrl": "https://mahagramin.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://mahagramin.bank.in/",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "bggb-bank": {
       "id": "bggb-bank",
@@ -1521,21 +1618,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.45,
+      "baseRate": 6.5,
       "ratesByTenure": {
-        "12": 7.05,
-        "24": 7.3,
-        "36": 7.45,
-        "60": 6.95
+        "12": 6.85,
+        "24": 7,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "399 Days Gujarat Gramin (7.55%)",
+      "specialTenure": "399 Days (7.20%)",
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://ggb.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "specialSchemes": [
+        {
+          "name": "Baroda Gujarat 399D",
+          "days": 399,
+          "rate": 7.2,
+          "badge": "Special 399D (7.20%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:01.653Z",
+      "sourceUrl": "https://bggb.in/",
+      "circularUrl": "https://bggb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "aryavart-bank": {
       "id": "aryavart-bank",
@@ -1565,21 +1673,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.5,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
+        "12": 6.8,
+        "24": 6.8,
+        "36": 6.5,
+        "60": 6
       },
-      "specialTenure": "444 Days Aryavart Special (7.65%)",
+      "specialTenure": "666 Days (7.25%)",
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://upgb.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "specialSchemes": [
+        {
+          "name": "Aryavart 666D",
+          "days": 666,
+          "rate": 7.25,
+          "badge": "Special 666D (7.25%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:02.160Z",
+      "sourceUrl": "https://aryavart-rrb.com/",
+      "circularUrl": "https://aryavart-rrb.com/",
+      "effectiveDate": "w.e.f. September 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "jkgb-bank": {
       "id": "jkgb-bank",
@@ -1610,21 +1729,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.5,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 6.95
+        "12": 6.8,
+        "24": 6.75,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "400 Days JKGB Amrit (7.60%)",
+      "specialTenure": "444 Days (7.20%)",
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "specialSchemes": [],
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "sourceUrl": "https://www.jkgrameen.bank.in/",
-      "verificationStatus": "baseline_verified"
+      "specialSchemes": [
+        {
+          "name": "JKGB 444D",
+          "days": 444,
+          "rate": 7.2,
+          "badge": "Special 444D (7.20%)"
+        }
+      ],
+      "lastVerified": "2026-10-29T05:36:02.664Z",
+      "sourceUrl": "https://jkgb.in/",
+      "circularUrl": "https://jkgb.in/",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "verificationStatus": "circular_verified"
     },
     "dbgb-bank": {
       "id": "dbgb-bank",
@@ -1654,28 +1784,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 7,
-        "24": 7.25,
-        "36": 7.5,
-        "60": 6.75
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
       },
-      "specialTenure": "400 Days (7.65%)",
+      "specialTenure": "400 Days DBGB Uttam (7.20%)",
       "specialSchemes": [
         {
-          "name": "DBGB Samriddhi 400D",
+          "name": "DBGB 400D Uttam",
           "days": 400,
-          "rate": 7.65,
-          "badge": "Peak RRB 7.65%"
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
+      "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://bgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://dbgb.in/",
+      "lastVerified": "2026-10-29T05:36:03.169Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://dbgb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "ogb-bank": {
       "id": "ogb-bank",
@@ -1705,28 +1839,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.5,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.3,
-        "36": 7.5,
-        "60": 6.8
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "444 Days (7.60%)",
+      "specialTenure": "444 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "OGB Pragati 444D",
+          "name": "OGB 444D",
           "days": 444,
-          "rate": 7.6,
-          "badge": "Peak RRB 7.60%"
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://odishabank.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://odishabank.in/",
+      "lastVerified": "2026-10-29T05:36:03.675Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://odishabank.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "rmgb-bank": {
       "id": "rmgb-bank",
@@ -1756,28 +1894,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.4,
+      "baseRate": 6.75,
       "ratesByTenure": {
-        "12": 7,
-        "24": 7.2,
-        "36": 7.4,
-        "60": 6.8
+        "12": 6.8,
+        "24": 7,
+        "36": 6.75,
+        "60": 6.5
       },
-      "specialTenure": "444 Days (7.50%)",
+      "specialTenure": "444 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "RMGB Maru 444D",
+          "name": "RMGB 444D",
           "days": 444,
-          "rate": 7.5,
-          "badge": "Special 444D"
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://www.rgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://rmgb.in/",
+      "lastVerified": "2026-10-29T05:36:04.179Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://rmgb.in/",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "bgvb-bank": {
       "id": "bgvb-bank",
@@ -1807,28 +1949,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.3,
-        "36": 7.5,
-        "60": 6.75
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
       },
-      "specialTenure": "400 Days (7.60%)",
+      "specialTenure": "400 Days (7.20%)",
       "specialSchemes": [
         {
-          "name": "BGVB Samriddhi 400D",
+          "name": "BGVB 400D",
           "days": 400,
-          "rate": 7.6,
-          "badge": "Peak RRB 7.60%"
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
+      "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://www.wbgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://bgvb.in/",
+      "lastVerified": "2026-10-29T05:36:04.682Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://bgvb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "agvb-bank": {
       "id": "agvb-bank",
@@ -1858,28 +2004,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.45,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 7,
-        "24": 7.25,
-        "36": 7.45,
-        "60": 6.7
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
       },
-      "specialTenure": "444 Days (7.55%)",
+      "specialTenure": "400 Days (7.20%)",
       "specialSchemes": [
         {
-          "name": "AGVB Rongali 444D",
-          "days": 444,
-          "rate": 7.55,
-          "badge": "Special 444D"
+          "name": "AGVB 400D",
+          "days": 400,
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
+      "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://agvb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://agvbank.co.in/",
+      "lastVerified": "2026-10-29T05:36:05.185Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://agvbank.co.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "tngb-bank": {
       "id": "tngb-bank",
@@ -1909,28 +2059,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.5,
+      "baseRate": 6.7,
       "ratesByTenure": {
-        "12": 7.15,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 6.8
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.7,
+        "60": 6.5
       },
-      "specialTenure": "444 Days (7.65%)",
+      "specialTenure": "400 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "TNGB Thangam 444D",
-          "days": 444,
-          "rate": 7.65,
-          "badge": "Peak RRB 7.65%"
+          "name": "TNGB 400D",
+          "days": 400,
+          "rate": 7.25,
+          "badge": "Special 400D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://tngb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://www.tamilnadugramabank.com/",
+      "lastVerified": "2026-10-29T05:36:05.688Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://www.tamilnadugramabank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3
     },
     "mgb-mp-bank": {
       "id": "mgb-mp-bank",
@@ -1960,28 +2114,32 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 7.45,
+      "baseRate": 6.75,
       "ratesByTenure": {
-        "12": 7,
-        "24": 7.2,
-        "36": 7.45,
-        "60": 6.75
+        "12": 6.8,
+        "24": 7,
+        "36": 6.75,
+        "60": 6.5
       },
-      "specialTenure": "400 Days (7.55%)",
+      "specialTenure": "444 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "MGB MP Utkarsh 400D",
-          "days": 400,
-          "rate": 7.55,
-          "badge": "Special 400D"
+          "name": "MGB MP 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://mpgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "sourceUrl": "https://mgbank.co.in/",
+      "lastVerified": "2026-10-29T05:36:06.191Z",
+      "verificationStatus": "circular_verified",
+      "circularUrl": "https://mgbank.co.in/",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3
     }
   },
   "mergedBanks": {
@@ -2039,9 +2197,13 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
+      "circularUrl": "https://theunitybank.com/interest-rates.html",
+      "effectiveDate": "w.e.f. October 7, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.unitybank.co.in/",
-      "lastVerified": "2026-10-28T04:32:01.387Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "verificationStatus": "circular_verified"
     },
     "suryoday-sfb": {
       "baseRate": 8,
@@ -2057,15 +2219,19 @@
           "name": "Suryoday 2Y2D",
           "days": 732,
           "rate": 8.25,
-          "badge": "Special 732D"
+          "badge": "Special 732D (8.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
+      "circularUrl": "https://suryoday.bank.in/p/fixed-deposit",
+      "effectiveDate": "w.e.f. September 4, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.suryoday.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "verificationStatus": "circular_verified"
     },
     "utkarsh-sfb": {
       "baseRate": 8,
@@ -2081,20 +2247,25 @@
           "name": "Utkarsh 1500D",
           "days": 1500,
           "rate": 8.25,
-          "badge": "Long Term High Yield"
+          "badge": "Long Term 8.25%"
         },
         {
           "name": "Utkarsh 777D",
           "days": 777,
-          "rate": 8.15
+          "rate": 8.15,
+          "badge": "Special 777D (8.15%)"
         }
       ],
-      "seniorBonus": 0.5,
+      "seniorBonus": 0.6,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://www.utkarsh.bank/interest-rates",
-      "lastVerified": "2026-10-28T05:30:25.524Z",
-      "verificationStatus": "live_synced"
+      "circularUrl": "https://www.utkarsh.bank/interest-rates",
+      "effectiveDate": "w.e.f. June 7, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.utkarsh.bank/",
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "verificationStatus": "circular_verified"
     },
     "equitas-sfb": {
       "baseRate": 7.9,
@@ -2110,7 +2281,7 @@
           "name": "Equitas 444D",
           "days": 444,
           "rate": 8.15,
-          "badge": "Special 444 Days"
+          "badge": "Special 444D (8.15%)"
         },
         {
           "name": "Equitas 888D",
@@ -2121,101 +2292,131 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
+      "circularUrl": "https://www.equitas.bank.in/personal-banking/investments/fixed-deposits",
+      "effectiveDate": "w.e.f. August 21, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.equitasbank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "verificationStatus": "circular_verified"
     },
     "au-sfb": {
       "baseRate": 7.5,
       "ratesByTenure": {
         "12": 7.25,
-        "24": 8,
+        "24": 7.5,
         "36": 7.5,
         "60": 7.25
       },
-      "specialTenure": "24 Months (8.00%)",
+      "specialTenure": "18M to 24M (8.00%)",
       "specialSchemes": [
         {
-          "name": "AU 24M Peak",
-          "days": 730,
+          "name": "AU Peak Term 18M-24M",
+          "days": 555,
           "rate": 8,
-          "badge": "Peak SFB 8.00%"
-        },
-        {
-          "name": "AU 18M Special",
-          "days": 545,
-          "rate": 7.75
+          "badge": "Peak AU 8.00%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
+      "circularUrl": "https://www.au.bank.in/interest-rates",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.aubank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.853Z",
+      "verificationStatus": "circular_verified"
     },
     "ujjivan-sfb": {
-      "baseRate": 7.75,
+      "baseRate": 7.2,
       "ratesByTenure": {
-        "12": 7.75,
-        "24": 8,
-        "36": 7.75,
+        "12": 8.25,
+        "24": 7.75,
+        "36": 7.2,
         "60": 7.2
       },
       "specialTenure": "15 Months (8.25%)",
       "specialSchemes": [
         {
-          "name": "Ujjivan 15M Peak",
+          "name": "Ujjivan Platina 15M",
           "days": 456,
           "rate": 8.25,
-          "badge": "Peak SFB 8.25%"
-        },
-        {
-          "name": "Ujjivan 80 Weeks",
-          "days": 560,
-          "rate": 8
+          "badge": "Peak Ujjivan 8.25%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
+      "circularUrl": "https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.ujjivansfb.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "hdfc-bank": {
-      "baseRate": 7.25,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 6.9,
-        "24": 7.15,
-        "36": 7.25,
+        "12": 6.6,
+        "24": 7,
+        "36": 7,
         "60": 7
       },
       "specialTenure": "55 Months (7.40%)",
-      "specialSchemes": [],
+      "specialSchemes": [
+        {
+          "name": "HDFC 35M Special",
+          "days": 1065,
+          "rate": 7.35,
+          "badge": "Special 35M (7.35%)"
+        },
+        {
+          "name": "HDFC 55M Special",
+          "days": 1672,
+          "rate": 7.4,
+          "badge": "Peak HDFC 7.40%"
+        }
+      ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
+      "circularUrl": "https://www.hdfcbank.com/personal/save/fixed-deposit/fixed-deposit-interest-rate",
+      "effectiveDate": "w.e.f. July 24, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://netbanking.hdfcbank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "icici-bank": {
-      "baseRate": 7.25,
+      "baseRate": 7,
       "ratesByTenure": {
-        "12": 6.85,
-        "24": 7.1,
-        "36": 7.25,
+        "12": 6.7,
+        "24": 7.2,
+        "36": 7,
         "60": 7
       },
-      "specialTenure": "15 Months (7.25%)",
-      "specialSchemes": [],
+      "specialTenure": "15M to 18M (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "ICICI 15M Special",
+          "days": 456,
+          "rate": 7.25,
+          "badge": "Peak ICICI 7.25%"
+        }
+      ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
+      "circularUrl": "https://www.icicibank.com/personal-banking/deposits/fixed-deposit/fd-interest-rates",
+      "effectiveDate": "w.e.f. August 2, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.icicibank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "axis-bank": {
       "baseRate": 7.1,
@@ -2225,27 +2426,25 @@
         "36": 7.1,
         "60": 7
       },
-      "specialTenure": "17 Months Special (7.20%)",
+      "specialTenure": "17 Months (7.20%)",
       "specialSchemes": [
         {
           "name": "Axis 17M Special",
           "days": 515,
           "rate": 7.2,
           "badge": "Peak Axis 7.20%"
-        },
-        {
-          "name": "Axis 5Y Tax Saver",
-          "days": 1825,
-          "rate": 7,
-          "badge": "Sec 80C Tax Saver"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
+      "circularUrl": "https://www.axisbank.com/interest-rates",
+      "effectiveDate": "w.e.f. September 3, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.axisbank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "kotak-bank": {
       "baseRate": 7,
@@ -2255,56 +2454,58 @@
         "36": 7,
         "60": 6.2
       },
-      "specialTenure": "390 Days Active FD (7.40%)",
+      "specialTenure": "390 Days (7.40%)",
       "specialSchemes": [
         {
-          "name": "Kotak 390D Special",
+          "name": "Kotak 390D Active FD",
           "days": 390,
           "rate": 7.4,
           "badge": "Peak Kotak 7.40%"
-        },
-        {
-          "name": "Kotak 23M Special",
-          "days": 700,
-          "rate": 7.3
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "sourceUrl": "https://www.kotak.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+      "effectiveDate": "w.e.f. August 20, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
+      "lastVerified": "2026-10-29T05:35:52.032Z",
+      "verificationStatus": "circular_verified"
     },
     "idfc-first-bank": {
       "baseRate": 7.25,
       "ratesByTenure": {
         "12": 6.5,
-        "24": 7.5,
+        "24": 7.25,
         "36": 7.25,
         "60": 7
       },
-      "specialTenure": "500 Days Peak Return (7.90%)",
+      "specialTenure": "500 Days (7.90%)",
       "specialSchemes": [
         {
-          "name": "IDFC 500D Peak",
+          "name": "IDFC FIRST 500D",
           "days": 500,
           "rate": 7.9,
-          "badge": "Peak 500D 7.90%"
+          "badge": "Peak IDFC 7.90%"
         },
         {
-          "name": "IDFC 400D Special",
+          "name": "IDFC FIRST 400D",
           "days": 400,
-          "rate": 7.75,
-          "badge": "Special 400D"
+          "rate": 7.75
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "sourceUrl": "https://www.idfcfirstbank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
+      "effectiveDate": "w.e.f. October 16, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
+      "lastVerified": "2026-10-29T05:35:52.537Z",
+      "verificationStatus": "circular_verified"
     },
     "indusind-bank": {
       "baseRate": 7.25,
@@ -2314,55 +2515,53 @@
         "36": 7.25,
         "60": 7.25
       },
-      "specialTenure": "1 Year 7 Months (7.75%)",
+      "specialTenure": "1Y 7M (7.75%)",
       "specialSchemes": [
         {
           "name": "IndusInd 1Y7M",
-          "days": 575,
+          "days": 579,
           "rate": 7.75,
-          "badge": "Peak Private 7.75%"
-        },
-        {
-          "name": "IndusInd 2Y9M",
-          "days": 1000,
-          "rate": 7.75
+          "badge": "Peak IndusInd 7.75%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "sourceUrl": "https://www.indusind.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.indusind.com/in/en/personal/rates.html",
+      "effectiveDate": "w.e.f. September 10, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.indusind.com/in/en/personal/rates.html",
+      "lastVerified": "2026-10-29T05:35:53.044Z",
+      "verificationStatus": "circular_verified"
     },
     "yes-bank": {
       "baseRate": 7.25,
       "ratesByTenure": {
         "12": 7.25,
-        "24": 7.5,
+        "24": 7.75,
         "36": 7.25,
         "60": 7.25
       },
-      "specialTenure": "18 Months Special (7.75%)",
+      "specialTenure": "18 Months (7.75%)",
       "specialSchemes": [
         {
-          "name": "Yes 18M Special",
-          "days": 540,
+          "name": "Yes Bank 18M Special",
+          "days": 548,
           "rate": 7.75,
-          "badge": "Peak Private 7.75%"
-        },
-        {
-          "name": "Yes 12M Peak",
-          "days": 365,
-          "rate": 7.25
+          "badge": "Peak Yes Bank 7.75%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "sourceUrl": "https://www.yesbank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
+      "effectiveDate": "w.e.f. August 5, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
+      "lastVerified": "2026-10-29T05:35:53.548Z",
+      "verificationStatus": "circular_verified"
     },
     "federal-bank": {
       "baseRate": 7,
@@ -2372,10 +2571,10 @@
         "36": 7,
         "60": 6.6
       },
-      "specialTenure": "400 Days Federal Special (7.40%)",
+      "specialTenure": "400 Days (7.40%)",
       "specialSchemes": [
         {
-          "name": "Federal 400D",
+          "name": "Federal 400D Special",
           "days": 400,
           "rate": 7.4,
           "badge": "Peak Federal 7.40%"
@@ -2384,127 +2583,131 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "sourceUrl": "https://www.federalbank.co.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.federalbank.co.in/deposit-rate",
+      "effectiveDate": "w.e.f. September 16, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.federalbank.co.in/deposit-rate",
+      "lastVerified": "2026-10-29T05:35:54.053Z",
+      "verificationStatus": "circular_verified"
     },
     "sbi-bank": {
-      "baseRate": 7.1,
+      "baseRate": 6.75,
       "ratesByTenure": {
         "12": 6.8,
         "24": 7,
-        "36": 7.1,
-        "60": 6.9
+        "36": 6.75,
+        "60": 6.5
       },
       "specialTenure": "444 Days Amrit Vrishti (7.25%)",
       "specialSchemes": [
         {
-          "name": "SBI 'Amrit Vrishti'",
+          "name": "SBI Amrit Vrishti",
           "days": 444,
           "rate": 7.25,
-          "badge": "SBI Flagship Scheme"
+          "badge": "Special 444D (7.25%)"
         },
         {
-          "name": "SBI 'Amrit Kalash'",
+          "name": "SBI Amrit Kalash",
           "days": 400,
           "rate": 7.1,
-          "badge": "Limited 400D"
+          "badge": "Special 400D (7.10%)"
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
+      "circularUrl": "https://sbi.bank.in/web/interest-rates/deposit-rates",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.onlinesbi.sbi/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "bank-of-baroda": {
-      "baseRate": 7.15,
+      "baseRate": 6.5,
       "ratesByTenure": {
         "12": 6.85,
-        "24": 7.05,
-        "36": 7.15,
-        "60": 6.8
+        "24": 7.15,
+        "36": 6.5,
+        "60": 6.5
       },
-      "specialTenure": "399 Days BoB Tiranga (7.25%)",
+      "specialTenure": "399 Days Tiranga Plus (7.25%)",
       "specialSchemes": [
         {
           "name": "BoB Tiranga Plus",
           "days": 399,
           "rate": 7.25,
-          "badge": "Special 399D"
-        },
-        {
-          "name": "BoB Monsoon Dhamaka",
-          "days": 333,
-          "rate": 7.15
+          "badge": "Special 399D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://www.bankofbaroda.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
+      "effectiveDate": "w.e.f. October 3, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
+      "lastVerified": "2026-10-29T05:35:56.075Z",
+      "verificationStatus": "circular_verified"
     },
     "pnb-bank": {
-      "baseRate": 7.05,
+      "baseRate": 7,
       "ratesByTenure": {
         "12": 6.8,
-        "24": 7,
-        "36": 7.05,
-        "60": 6.75
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
       },
       "specialTenure": "400 Days PNB Uttam (7.25%)",
       "specialSchemes": [
         {
-          "name": "PNB Uttam",
+          "name": "PNB Uttam 400D",
           "days": 400,
           "rate": 7.25,
-          "badge": "High Yield 400D"
-        },
-        {
-          "name": "PNB 300D Special",
-          "days": 300,
-          "rate": 7.05
+          "badge": "Special 400D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "sourceUrl": "https://www.pnbindia.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
+      "lastVerified": "2026-10-29T05:35:56.582Z",
+      "verificationStatus": "circular_verified"
     },
     "union-bank": {
-      "baseRate": 7.3,
+      "baseRate": 6.7,
       "ratesByTenure": {
         "12": 6.75,
-        "24": 7,
-        "36": 7.3,
+        "24": 6.75,
+        "36": 6.7,
         "60": 6.5
       },
       "specialTenure": "333 Days Union Samriddhi (7.40%)",
       "specialSchemes": [
         {
-          "name": "Union Samriddhi",
+          "name": "Union Samriddhi 333D",
           "days": 333,
           "rate": 7.4,
-          "badge": "Flagship 333D 7.40%"
-        },
-        {
-          "name": "Union 399D Special",
-          "days": 399,
-          "rate": 7.25,
-          "badge": "Special 399D"
+          "badge": "Special 333D (7.40%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://www.unionbankofindia.co.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+      "effectiveDate": "w.e.f. August 22, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+      "lastVerified": "2026-10-29T05:35:57.087Z",
+      "verificationStatus": "circular_verified"
     },
     "canara-bank": {
       "baseRate": 6.8,
@@ -2514,67 +2717,86 @@
         "36": 6.8,
         "60": 6.7
       },
-      "specialTenure": "444 Days Canara Special (7.25%)",
+      "specialTenure": "444 Days Canara Dhanvarsha (7.25%)",
       "specialSchemes": [
         {
-          "name": "Canara 444D",
+          "name": "Canara Dhanvarsha",
           "days": 444,
           "rate": 7.25,
-          "badge": "Special 444D"
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://canarabank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://canarabank.com/interest-rates-deposit",
+      "effectiveDate": "w.e.f. October 5, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://canarabank.com/interest-rates-deposit",
+      "lastVerified": "2026-10-29T05:35:57.601Z",
+      "verificationStatus": "circular_verified"
     },
     "bank-of-india": {
       "baseRate": 6.5,
       "ratesByTenure": {
         "12": 6.8,
-        "24": 6.75,
+        "24": 6.8,
         "36": 6.5,
         "60": 6
       },
-      "specialTenure": "333 Days Star Dhan Vriddhi (7.30%)",
+      "specialTenure": "666 Days Star Dhan Vriddhi (7.30%)",
       "specialSchemes": [
         {
-          "name": "BOI Star Dhan 333D",
-          "days": 333,
+          "name": "BOI Star Dhan Vriddhi 666D",
+          "days": 666,
           "rate": 7.3,
-          "badge": "Special 333D"
+          "badge": "Special 666D (7.30%)"
         },
         {
-          "name": "BOI Star Dhan 666D",
-          "days": 666,
-          "rate": 7.3
+          "name": "BOI Star Dhan Vriddhi 333D",
+          "days": 333,
+          "rate": 7.25
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.65,
+      "womenBonus": 0.1,
+      "circularUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+      "effectiveDate": "w.e.f. September 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+      "lastVerified": "2026-10-29T05:35:58.105Z",
+      "verificationStatus": "circular_verified"
+    },
+    "saraswat-bank": {
+      "baseRate": 7,
+      "ratesByTenure": {
+        "12": 7,
+        "24": 7,
+        "36": 7,
+        "60": 6.75
+      },
+      "specialTenure": "400 Days (7.30%)",
+      "specialSchemes": [
+        {
+          "name": "Saraswat 400D",
+          "days": 400,
+          "rate": 7.3,
+          "badge": "Special 400D (7.30%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "sourceUrl": "https://bankofindia.co.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "saraswat-bank": {
-      "baseRate": 7.6,
-      "ratesByTenure": {
-        "12": 7.4,
-        "24": 7.75,
-        "36": 7.6,
-        "60": 7.15
-      },
-      "specialTenure": "2 Years (7.75%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.1,
+      "circularUrl": "https://www.saraswatbank.com/",
+      "effectiveDate": "w.e.f. September 10, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.saraswatbank.com/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
+      "lastVerified": "2026-10-29T05:35:58.611Z",
+      "verificationStatus": "circular_verified"
     },
     "post-office-potd": {
       "baseRate": 7.1,
@@ -2584,34 +2806,22 @@
         "36": 7.1,
         "60": 7.5
       },
-      "specialTenure": "5-Year Tax Saver POTD (7.50%)",
+      "specialTenure": "5-Year Time Deposit (7.50% Sec 80C)",
       "specialSchemes": [
         {
-          "name": "5-Year POTD (Tax Saver)",
+          "name": "POTD 5-Year Tax Saver",
           "days": 1825,
           "rate": 7.5,
-          "badge": "Sec 80C Sovereign 7.50%"
-        },
-        {
-          "name": "3-Year POTD",
-          "days": 1095,
-          "rate": 7.1,
-          "badge": "Govt 3-Year 7.10%"
-        },
-        {
-          "name": "2-Year POTD",
-          "days": 730,
-          "rate": 7
-        },
-        {
-          "name": "1-Year POTD",
-          "days": 365,
-          "rate": 6.9
+          "badge": "Sovereign 7.50%"
         }
       ],
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
+      "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "lastVerified": "2026-10-28T05:30:49.541Z",
       "verificationStatus": "official_gazette"
@@ -2630,7 +2840,7 @@
         "36": 6.7,
         "60": 6.7
       },
-      "specialTenure": "5-Year Mandatory Maturity (6.70%)",
+      "specialTenure": "5-Year PORD (6.70% Quarterly Compounded)",
       "specialSchemes": [
         {
           "name": "Post Office 5-Year RD",
@@ -2642,6 +2852,10 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
+      "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
+      "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "lastVerified": "2026-10-28T05:30:50.557Z",
       "verificationStatus": "official_gazette"
@@ -2654,7 +2868,7 @@
         "36": 6.65,
         "60": 6.65
       },
-      "specialTenure": "1 Year (7.00%)",
+      "specialTenure": "APGB 1 Year Term (7.00%)",
       "specialSchemes": [
         {
           "name": "APGB 1 Year Term",
@@ -2666,9 +2880,13 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
+      "circularUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-10-28T05:30:20.024Z",
-      "verificationStatus": "live_synced"
+      "lastVerified": "2026-10-29T04:46:29.854Z",
+      "verificationStatus": "circular_verified"
     },
     "tgb-bank": {
       "baseRate": 6.5,
@@ -2706,281 +2924,379 @@
         }
       ],
       "seniorBonus": 0.5,
-      "superSeniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
       "womenBonus": 0,
+      "circularUrl": "https://tgb.bank.in/deposit-interest-rates",
+      "effectiveDate": "w.e.f. August 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
       "lastVerified": "2026-10-28T05:30:17.418Z",
       "verificationStatus": "live_synced"
     },
     "kgb-bank": {
-      "baseRate": 7.6,
+      "baseRate": 6.8,
       "ratesByTenure": {
-        "12": 7.2,
-        "24": 7.45,
-        "36": 7.6,
-        "60": 7.1
-      },
-      "specialTenure": "444 Days KGB Special (7.75%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://kgb.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "kagb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
-      },
-      "specialTenure": "555 Days KaGB Golden (7.65%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://karnatakagb.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "mgb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
-      },
-      "specialTenure": "444 Days Maha Special (7.60%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://mahagramin.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "bggb-bank": {
-      "baseRate": 7.45,
-      "ratesByTenure": {
-        "12": 7.05,
-        "24": 7.3,
-        "36": 7.45,
-        "60": 6.95
-      },
-      "specialTenure": "399 Days Gujarat Gramin (7.55%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://ggb.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "aryavart-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 7
-      },
-      "specialTenure": "444 Days Aryavart Special (7.65%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://upgb.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "jkgb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 6.95
-      },
-      "specialTenure": "400 Days JKGB Amrit (7.60%)",
-      "specialSchemes": [],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.8,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://www.jkgrameen.bank.in/",
-      "lastVerified": "2026-10-28T04:32:01.388Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "dbgb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7,
-        "24": 7.25,
-        "36": 7.5,
-        "60": 6.75
-      },
-      "specialTenure": "400 Days (7.65%)",
-      "specialSchemes": [
-        {
-          "name": "DBGB Samriddhi 400D",
-          "days": 400,
-          "rate": 7.65,
-          "badge": "Peak RRB 7.65%"
-        }
-      ],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://bgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "ogb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.3,
-        "36": 7.5,
-        "60": 6.8
-      },
-      "specialTenure": "444 Days (7.60%)",
-      "specialSchemes": [
-        {
-          "name": "OGB Pragati 444D",
-          "days": 444,
-          "rate": 7.6,
-          "badge": "Peak RRB 7.60%"
-        }
-      ],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://odishabank.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "rmgb-bank": {
-      "baseRate": 7.4,
-      "ratesByTenure": {
-        "12": 7,
-        "24": 7.2,
-        "36": 7.4,
-        "60": 6.8
-      },
-      "specialTenure": "444 Days (7.50%)",
-      "specialSchemes": [
-        {
-          "name": "RMGB Maru 444D",
-          "days": 444,
-          "rate": 7.5,
-          "badge": "Special 444D"
-        }
-      ],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://www.rgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "bgvb-bank": {
-      "baseRate": 7.5,
-      "ratesByTenure": {
-        "12": 7.1,
-        "24": 7.3,
-        "36": 7.5,
-        "60": 6.75
-      },
-      "specialTenure": "400 Days (7.60%)",
-      "specialSchemes": [
-        {
-          "name": "BGVB Samriddhi 400D",
-          "days": 400,
-          "rate": 7.6,
-          "badge": "Peak RRB 7.60%"
-        }
-      ],
-      "seniorBonus": 0.5,
-      "superSeniorBonus": 0.75,
-      "womenBonus": 0.15,
-      "sourceUrl": "https://www.wbgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
-    },
-    "agvb-bank": {
-      "baseRate": 7.45,
-      "ratesByTenure": {
-        "12": 7,
-        "24": 7.25,
-        "36": 7.45,
+        "12": 6.9,
+        "24": 6.85,
+        "36": 6.8,
         "60": 6.7
       },
-      "specialTenure": "444 Days (7.55%)",
+      "specialTenure": "444 Days Special (7.25%)",
       "specialSchemes": [
         {
-          "name": "AGVB Rongali 444D",
+          "name": "KGB 444D",
           "days": 444,
-          "rate": 7.55,
-          "badge": "Special 444D"
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://agvb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://keralagbank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://keralagbank.com/",
+      "lastVerified": "2026-10-29T05:36:00.134Z",
+      "verificationStatus": "circular_verified"
+    },
+    "kagb-bank": {
+      "baseRate": 6.8,
+      "ratesByTenure": {
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.8,
+        "60": 6.7
+      },
+      "specialTenure": "444 Days (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "Karnataka Gramin 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://karnatakagraminbank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://karnatakagraminbank.com/",
+      "lastVerified": "2026-10-29T05:36:00.641Z",
+      "verificationStatus": "circular_verified"
+    },
+    "mgb-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.8,
+        "36": 6.5,
+        "60": 6.5
+      },
+      "specialTenure": "400 Days (7.15%)",
+      "specialSchemes": [
+        {
+          "name": "MGB 400D",
+          "days": 400,
+          "rate": 7.15,
+          "badge": "Special 400D (7.15%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://mahagramin.bank.in/",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://mahagramin.bank.in/",
+      "lastVerified": "2026-10-29T05:36:01.146Z",
+      "verificationStatus": "circular_verified"
+    },
+    "bggb-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.85,
+        "24": 7,
+        "36": 6.5,
+        "60": 6.5
+      },
+      "specialTenure": "399 Days (7.20%)",
+      "specialSchemes": [
+        {
+          "name": "Baroda Gujarat 399D",
+          "days": 399,
+          "rate": 7.2,
+          "badge": "Special 399D (7.20%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://bggb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://bggb.in/",
+      "lastVerified": "2026-10-29T05:36:01.653Z",
+      "verificationStatus": "circular_verified"
+    },
+    "aryavart-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.8,
+        "36": 6.5,
+        "60": 6
+      },
+      "specialTenure": "666 Days (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "Aryavart 666D",
+          "days": 666,
+          "rate": 7.25,
+          "badge": "Special 666D (7.25%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://aryavart-rrb.com/",
+      "effectiveDate": "w.e.f. September 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://aryavart-rrb.com/",
+      "lastVerified": "2026-10-29T05:36:02.160Z",
+      "verificationStatus": "circular_verified"
+    },
+    "jkgb-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.75,
+        "36": 6.5,
+        "60": 6.5
+      },
+      "specialTenure": "444 Days (7.20%)",
+      "specialSchemes": [
+        {
+          "name": "JKGB 444D",
+          "days": 444,
+          "rate": 7.2,
+          "badge": "Special 444D (7.20%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://jkgb.in/",
+      "effectiveDate": "w.e.f. September 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://jkgb.in/",
+      "lastVerified": "2026-10-29T05:36:02.664Z",
+      "verificationStatus": "circular_verified"
+    },
+    "dbgb-bank": {
+      "baseRate": 7,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
+      },
+      "specialTenure": "400 Days DBGB Uttam (7.20%)",
+      "specialSchemes": [
+        {
+          "name": "DBGB 400D Uttam",
+          "days": 400,
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "circularUrl": "https://dbgb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://dbgb.in/",
+      "lastVerified": "2026-10-29T05:36:03.169Z",
+      "verificationStatus": "circular_verified"
+    },
+    "ogb-bank": {
+      "baseRate": 6.5,
+      "ratesByTenure": {
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.5,
+        "60": 6.5
+      },
+      "specialTenure": "444 Days (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "OGB 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://odishabank.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://odishabank.in/",
+      "lastVerified": "2026-10-29T05:36:03.675Z",
+      "verificationStatus": "circular_verified"
+    },
+    "rmgb-bank": {
+      "baseRate": 6.75,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 7,
+        "36": 6.75,
+        "60": 6.5
+      },
+      "specialTenure": "444 Days (7.25%)",
+      "specialSchemes": [
+        {
+          "name": "RMGB 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.75,
+      "womenBonus": 0.15,
+      "circularUrl": "https://rmgb.in/",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://rmgb.in/",
+      "lastVerified": "2026-10-29T05:36:04.179Z",
+      "verificationStatus": "circular_verified"
+    },
+    "bgvb-bank": {
+      "baseRate": 7,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
+      },
+      "specialTenure": "400 Days (7.20%)",
+      "specialSchemes": [
+        {
+          "name": "BGVB 400D",
+          "days": 400,
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "circularUrl": "https://bgvb.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://bgvb.in/",
+      "lastVerified": "2026-10-29T05:36:04.682Z",
+      "verificationStatus": "circular_verified"
+    },
+    "agvb-bank": {
+      "baseRate": 7,
+      "ratesByTenure": {
+        "12": 6.8,
+        "24": 6.8,
+        "36": 7,
+        "60": 6.5
+      },
+      "specialTenure": "400 Days (7.20%)",
+      "specialSchemes": [
+        {
+          "name": "AGVB 400D",
+          "days": 400,
+          "rate": 7.2,
+          "badge": "Special 400D (7.20%)"
+        }
+      ],
+      "seniorBonus": 0.5,
+      "superSeniorBonus": 0.8,
+      "womenBonus": 0.15,
+      "circularUrl": "https://agvbank.co.in/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://agvbank.co.in/",
+      "lastVerified": "2026-10-29T05:36:05.185Z",
+      "verificationStatus": "circular_verified"
     },
     "tngb-bank": {
-      "baseRate": 7.5,
+      "baseRate": 6.7,
       "ratesByTenure": {
-        "12": 7.15,
-        "24": 7.35,
-        "36": 7.5,
-        "60": 6.8
+        "12": 6.85,
+        "24": 6.85,
+        "36": 6.7,
+        "60": 6.5
       },
-      "specialTenure": "444 Days (7.65%)",
+      "specialTenure": "400 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "TNGB Thangam 444D",
-          "days": 444,
-          "rate": 7.65,
-          "badge": "Peak RRB 7.65%"
+          "name": "TNGB 400D",
+          "days": 400,
+          "rate": 7.25,
+          "badge": "Special 400D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://tngb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://www.tamilnadugramabank.com/",
+      "effectiveDate": "w.e.f. October 1, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://www.tamilnadugramabank.com/",
+      "lastVerified": "2026-10-29T05:36:05.688Z",
+      "verificationStatus": "circular_verified"
     },
     "mgb-mp-bank": {
-      "baseRate": 7.45,
+      "baseRate": 6.75,
       "ratesByTenure": {
-        "12": 7,
-        "24": 7.2,
-        "36": 7.45,
-        "60": 6.75
+        "12": 6.8,
+        "24": 7,
+        "36": 6.75,
+        "60": 6.5
       },
-      "specialTenure": "400 Days (7.55%)",
+      "specialTenure": "444 Days (7.25%)",
       "specialSchemes": [
         {
-          "name": "MGB MP Utkarsh 400D",
-          "days": 400,
-          "rate": 7.55,
-          "badge": "Special 400D"
+          "name": "MGB MP 444D",
+          "days": 444,
+          "rate": 7.25,
+          "badge": "Special 444D (7.25%)"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "sourceUrl": "https://mpgb.bank.in/",
-      "lastVerified": "2026-10-20T14:01:55.186Z",
-      "verificationStatus": "baseline_verified"
+      "circularUrl": "https://mgbank.co.in/",
+      "effectiveDate": "w.e.f. June 15, 2024",
+      "callable": true,
+      "retailCapCr": 3,
+      "sourceUrl": "https://mgbank.co.in/",
+      "lastVerified": "2026-10-29T05:36:06.191Z",
+      "verificationStatus": "circular_verified"
     }
   }
 }

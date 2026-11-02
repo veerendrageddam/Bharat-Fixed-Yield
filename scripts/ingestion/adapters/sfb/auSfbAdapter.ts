@@ -6,11 +6,20 @@ import { extractStandardTenureRates } from '../cheerioHelper';
 export const auSfbAdapter: BankRateAdapter = {
   bankId: 'au-sfb',
   bankName: 'AU Small Finance Bank',
-  sourceUrl: 'https://www.aubank.in/interest-rates',
+  sourceUrl: 'https://www.au.bank.in/interest-rates',
   category: 'sfb',
 
   async fetchRates(): Promise<ScrapedRateResult | null> {
-    const res = await fetchWithResilience(this.sourceUrl);
+    const res = await fetchWithResilience(this.sourceUrl, {
+      fallbackUrls: [
+        'https://www.au.bank.in/interest-rates/fixed-deposit-interest-rate',
+        'https://www.aubank.in/interest-rates',
+      ],
+      headers: {
+        Referer: 'https://www.au.bank.in/',
+      },
+      timeoutMs: 12000,
+    });
     if (!res.ok) {
       console.warn(`[AU SFB] HTTP Error: ${res.error}`);
       return null;
@@ -19,6 +28,11 @@ export const auSfbAdapter: BankRateAdapter = {
     try {
       const $ = cheerio.load(res.text);
       const { ratesByTenure, seniorBonus, superSeniorBonus } = extractStandardTenureRates($);
+
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[AU SFB] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
 
       const baseRate = ratesByTenure['36'] ?? 7.50;
 

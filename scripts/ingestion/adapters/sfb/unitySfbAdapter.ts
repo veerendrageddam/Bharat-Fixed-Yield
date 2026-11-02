@@ -6,11 +6,18 @@ import { parsePercent, isValidRate } from '../../validator';
 export const unitySfbAdapter: BankRateAdapter = {
   bankId: 'unity-sfb',
   bankName: 'Unity Small Finance Bank',
-  sourceUrl: 'https://www.unitybank.co.in/interest-rates.html',
+  sourceUrl: 'https://theunitybank.com/',
   category: 'sfb',
 
   async fetchRates(): Promise<ScrapedRateResult | null> {
-    const res = await fetchWithResilience(this.sourceUrl);
+    const res = await fetchWithResilience(this.sourceUrl, {
+      fallbackUrls: [
+        'https://unity.bank.in/',
+        'https://www.unitybank.co.in/',
+        'https://www.unitybank.co.in/interest-rates.html',
+      ],
+      timeoutMs: 12000,
+    });
     if (!res.ok) {
       console.warn(`[Unity SFB] HTTP Error: ${res.error}`);
       return null;
@@ -41,6 +48,11 @@ export const unitySfbAdapter: BankRateAdapter = {
           }
         }
       });
+
+      if (Object.keys(ratesByTenure).length < 2) {
+        console.warn(`[Unity SFB] Could not extract structured rate table from HTML (found ${Object.keys(ratesByTenure).length} tenures). Skipping to avoid spoofing rates.`);
+        return null;
+      }
 
       // Special Odd-Day Schemes: Unity Shrestha 1001D, 501D, 701D
       const pageText = $('body').text();
