@@ -35,7 +35,8 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
   const [form15HSubmitted, setForm15HSubmitted] = useState<boolean>(persona.form15HSubmitted);
 
   const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
-  const effectiveRate = getEffectiveRate(bank, persona, persona.tenureMonths);
+  const effectiveDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
+  const effectiveRate = getEffectiveRate(bank, persona, persona.tenureMonths, effectiveDays);
   const calc = calculateYield(
     depositAmount,
     effectiveRate,
@@ -43,7 +44,8 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
     persona.age,
     form15HSubmitted,
     persona.depositType,
-    persona.panLinked
+    persona.panLinked,
+    effectiveDays
   );
 
   // CSV Exporter
@@ -79,7 +81,7 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
             <span className="font-semibold text-slate-800 dark:text-slate-200">{bank.name}</span>
             <span>/</span>
             <span className="font-bold text-[#006c4a] dark:text-[#10b981]">
-              Tenure Inspection (Schedule {persona.tenureMonths}M)
+              Tenure Inspection ({effectiveDays ? `${effectiveDays} Days` : `Schedule ${persona.tenureMonths}M`})
             </span>
           </div>
 
@@ -117,7 +119,9 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
                   )}
                 </div>
                 <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-0.5">
-                  FD Certificate Amortization Schedule & Section 194A Tax Planning Engine
+                  {persona.depositType === 'RD'
+                    ? 'Recurring Deposit (RD) Passbook Schedule & Compounding Amortization Engine'
+                    : 'FD Certificate Amortization Schedule & Section 194A Tax Planning Engine'}
                 </p>
               </div>
             </div>

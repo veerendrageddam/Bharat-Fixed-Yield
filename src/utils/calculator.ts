@@ -45,7 +45,8 @@ export function getEffectiveRate(
     : bank.ratesByTenure;
 
   // 1. Check if an odd-day special high-yield scheme matches (e.g. 222D, 399D, 400D, 444D, 555D, 1001D)
-  if (effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
+  // Odd-day promotional schemes are strictly for Term Deposits (FDs), not Recurring Deposits
+  if (persona.depositType !== 'RD' && effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
     // Exact or nearest special scheme within 10 days
     const matchedScheme = bank.specialSchemes.find(
       (s) => Math.abs(s.days - effectiveDays) <= 10
@@ -83,6 +84,54 @@ export function getEffectiveRate(
   }
 
   return Number((rate || 0).toFixed(2));
+}
+
+/**
+ * Checks if a bank actively supports the selected tenure for the given deposit type
+ */
+export function isTenureSupported(
+  bank: BankData,
+  persona: UserPersona,
+  tenureMonths?: number,
+  tenureDays?: number
+): boolean {
+  if (persona.depositType === 'RD') {
+    if (bank.rdSupported === false) return false;
+    // Odd-day promotional schemes are strictly for Term Deposits (FDs)
+    const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
+    if (effectiveDays) return false;
+
+    const targetTenure = tenureMonths ?? persona.tenureMonths;
+    const ratesMatrix = (bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
+      ? bank.rdRatesByTenure
+      : bank.ratesByTenure;
+
+    if (ratesMatrix && Object.keys(ratesMatrix).length > 0) {
+      return ratesMatrix[targetTenure] !== undefined;
+    }
+    return bank.tenureMonths === targetTenure;
+  }
+
+  // FD
+  if (bank.fdSupported === false) return false;
+  const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
+  if (effectiveDays) {
+    if (bank.specialSchemes && bank.specialSchemes.length > 0) {
+      const matched = bank.specialSchemes.some((s) => Math.abs(s.days - effectiveDays) <= 10);
+      if (matched) return true;
+    }
+    const approxMonths = Math.round(effectiveDays / 30.41);
+    if (bank.ratesByTenure && bank.ratesByTenure[approxMonths] !== undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  const targetTenure = tenureMonths ?? persona.tenureMonths;
+  if (bank.ratesByTenure && Object.keys(bank.ratesByTenure).length > 0) {
+    return bank.ratesByTenure[targetTenure] !== undefined;
+  }
+  return bank.tenureMonths === targetTenure;
 }
 
 /**

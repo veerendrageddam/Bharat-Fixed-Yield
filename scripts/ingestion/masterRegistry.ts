@@ -1209,15 +1209,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "status": "active",
     "baseRate": 6.7,
     "ratesByTenure": {
-      "12": 6.7,
-      "24": 6.7,
-      "36": 6.7,
       "60": 6.7
     },
     "rdRatesByTenure": {
-      "12": 6.7,
-      "24": 6.7,
-      "36": 6.7,
       "60": 6.7
     },
     "specialTenure": "5-Year Mandatory Maturity (6.70%)",

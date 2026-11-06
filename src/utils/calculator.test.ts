@@ -4,6 +4,7 @@ import {
   calculateRDYield,
   calculateYield,
   getEffectiveRate,
+  isTenureSupported,
   formatINR,
   formatLakhs,
 } from './calculator';
@@ -167,6 +168,136 @@ describe('Calculator Core Engineering & Math Engine', () => {
         36
       );
       expect(rate).toBe(8.45);
+    });
+
+    it('does not resolve special odd-day schemes when depositType is RD', () => {
+      const rdPersona: UserPersona = {
+        ...basePersona,
+        depositType: 'RD',
+        tenureUnit: 'days',
+        tenureDays: 444,
+      };
+      // In RD mode, odd-day scheme (8.1%) should NOT be resolved; should resolve monthly matrix (e.g. 7.5%)
+      const rate = getEffectiveRate(mockBank, rdPersona, 36, 444);
+      expect(rate).toBe(7.5);
+    });
+  });
+
+  describe('isTenureSupported Validation', () => {
+    const mockPordBank: BankData = {
+      id: 'post-office-pord',
+      rank: 23,
+      name: 'Post Office 5-Year Recurring Deposit (PORD)',
+      subTitle: 'India Post',
+      category: 'post_office',
+      badge: 'Sovereign 5Y RD',
+      categoryTag: 'India Post',
+      ratingAgency: 'Sovereign',
+      rating: 'Sovereign',
+      logoUrl: '',
+      baseRate: 6.7,
+      seniorBonus: 0,
+      superSeniorBonus: 0,
+      minDeposit: 100,
+      tenureYears: 5,
+      tenureMonths: 60,
+      dicgcCovered: true,
+      notes: '',
+      exitPenalty: '',
+      lockInDays: 1095,
+      fdSupported: false,
+      rdSupported: true,
+      ratesByTenure: {
+        60: 6.7,
+      },
+      rdRatesByTenure: {
+        60: 6.7,
+      },
+    };
+
+    const regularBank: BankData = {
+      id: 'regular-bank',
+      rank: 1,
+      name: 'Regular Bank',
+      subTitle: '',
+      category: 'private',
+      badge: '',
+      categoryTag: '',
+      ratingAgency: 'CRISIL',
+      rating: 'AAA',
+      logoUrl: '',
+      baseRate: 7.0,
+      seniorBonus: 0.5,
+      superSeniorBonus: 0.75,
+      minDeposit: 1000,
+      tenureYears: 3,
+      tenureMonths: 36,
+      dicgcCovered: true,
+      notes: '',
+      exitPenalty: '',
+      lockInDays: 7,
+      fdSupported: true,
+      rdSupported: true,
+      ratesByTenure: {
+        12: 7.0,
+        24: 7.2,
+        36: 7.5,
+        60: 7.1,
+      },
+      specialSchemes: [
+        { days: 444, name: 'Special 444D', rate: 7.8 },
+      ],
+    };
+
+    it('enforces 60M exclusivity for Post Office PORD', () => {
+      const rdPersona: UserPersona = {
+        depositType: 'RD',
+        principal: 5000,
+        monthlyInstallment: 5000,
+        tenureMonths: 12,
+        compounding: 'quarterly',
+        age: 40,
+        gender: 'male',
+        state: 'ALL',
+        residency: 'resident',
+        panLinked: true,
+        form15HSubmitted: false,
+      };
+
+      // 12M, 24M, 36M are NOT supported for Post Office PORD
+      expect(isTenureSupported(mockPordBank, rdPersona, 12)).toBe(false);
+      expect(isTenureSupported(mockPordBank, rdPersona, 24)).toBe(false);
+      expect(isTenureSupported(mockPordBank, rdPersona, 36)).toBe(false);
+
+      // 60M IS supported
+      expect(isTenureSupported(mockPordBank, rdPersona, 60)).toBe(true);
+
+      // PORD does not support FD
+      expect(isTenureSupported(mockPordBank, { ...rdPersona, depositType: 'FD' }, 60)).toBe(false);
+    });
+
+    it('disallows odd-day schemes for Recurring Deposits', () => {
+      const rdPersona: UserPersona = {
+        depositType: 'RD',
+        principal: 5000,
+        monthlyInstallment: 5000,
+        tenureMonths: 15,
+        tenureUnit: 'days',
+        tenureDays: 444,
+        compounding: 'quarterly',
+        age: 40,
+        gender: 'male',
+        state: 'ALL',
+        residency: 'resident',
+        panLinked: true,
+        form15HSubmitted: false,
+      };
+
+      // Odd-day tenures are not supported in RD mode
+      expect(isTenureSupported(regularBank, rdPersona, 15, 444)).toBe(false);
+
+      // Odd-day tenures ARE supported in FD mode when matching scheme exists
+      expect(isTenureSupported(regularBank, { ...rdPersona, depositType: 'FD' }, 15, 444)).toBe(true);
     });
   });
 });

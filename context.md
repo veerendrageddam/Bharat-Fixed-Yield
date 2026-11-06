@@ -256,18 +256,18 @@ gantt
   - Configured manual rollup chunking in `vite.config.ts` (`vendor-charts`, `vendor-react`, `vendor-motion`, `vendor-icons`).
 - [x] **Phase 18: Sentinel Resilience, Observability & Ingestion Hardening** `[COMPLETED]`
   - Eliminated False Green defect, added inline real-time error logs, content normalization (50k chars clean DOM text), and statutory deposit rate URLs with redundant fallbacks across failing banks. Total 54 unit tests passing.
-- [ ] **Phase 19: Domain Math & Banking Rules Precision Hardening** `[PENDING]`
-  - PORD 5-year exclusivity, RD odd-day disablement, Section 80C badge conditioning, `TenureInspectionScreen` parameter sync.
-- [ ] **Phase 20: Codebase Hygiene & Dead Code Elimination** `[PENDING]`
-  - Purge legacy `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70 kB), deduplicate `rates.json`, drop unused font downloads.
-- [ ] **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening** `[PENDING]`
-  - Automated PR/push CI gating (`ci.yml`), SPA routing rewrites (`vercel.json`), static assets in `public/` (favicon, robots.txt).
+- [x] **Phase 19: Domain Math & Banking Rules Precision Hardening** `[COMPLETED]`
+  - PORD 5-year exclusivity, RD odd-day disablement, Section 80C badge conditioning, `isTenureSupported` filtering, `TenureInspectionScreen` parameter sync. 57 passing tests.
+- [x] **Phase 20: Codebase Hygiene & Dead Code Elimination** `[COMPLETED]`
+  - Purged legacy `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), deduplicated `rates.json`, dropped unused font downloads.
+- [x] **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening** `[COMPLETED]`
+  - Automated PR/push CI gating (`ci.yml`), SPA routing rewrites & security headers (`vercel.json`), static assets in `public/` (favicon, robots.txt, sitemap.xml).
 - [ ] **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** `[PLANNED]`
   - Discounted monthly and quarterly interest payouts for retirees/pensioners.
 
 ### Developer & Ingestion CLI Reference
 ```bash
-# 1. Run the 54-test Vitest unit test suite (executes in <1.5s)
+# 1. Run the 57-test Vitest unit test suite (executes in <1.5s)
 npm test
 
 # 2. Run the 38-Institution ALCO Rate & Gazette Audit Report

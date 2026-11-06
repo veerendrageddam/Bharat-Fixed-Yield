@@ -49,7 +49,7 @@ import {
   Legend
 } from 'recharts';
 import { BankCategory, BankData, UserPersona } from '../types/bank';
-import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
+import { calculateYield, formatINR, formatLakhs, getEffectiveRate, isTenureSupported } from '../utils/calculator';
 import { INDIAN_STATES, UNION_TERRITORIES, PAN_INDIA_OPTION } from '../data/jurisdictions';
 import { LATEST_RATES_METADATA, MERGED_BANKS_REGISTRY } from '../data/bankData';
 import { AmortizationModal } from './AmortizationModal';
@@ -137,12 +137,13 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   };
 
   const handleDepositTypeChange = (type: 'FD' | 'RD') => {
-    if (type === 'RD' && persona.principal > 100000) {
+    if (type === 'RD') {
       setPersona((prev) => ({
         ...prev,
         depositType: 'RD',
-        monthlyInstallment: 10000,
-        principal: 10000,
+        tenureUnit: 'months', // Force standard monthly schedules for RD (odd days not applicable)
+        monthlyInstallment: prev.monthlyInstallment ?? (prev.principal > 100000 ? 10000 : prev.principal),
+        principal: prev.monthlyInstallment ?? (prev.principal > 100000 ? 10000 : prev.principal),
       }));
     } else if (type === 'FD' && persona.principal <= 25000) {
       setPersona((prev) => ({
@@ -172,14 +173,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     });
   }, [banks, persona.state, searchQuery]);
 
-  // Banks filtered by active state and deposit type (FD vs RD)
+  // Banks filtered by active state, deposit type (FD vs RD), and active tenure availability
   const depositTypeAndStateFilteredBanks = useMemo(() => {
+    const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
     return stateFilteredBanks.filter((b) => {
       if (persona.depositType === 'RD' && b.rdSupported === false) return false;
       if (persona.depositType === 'FD' && b.fdSupported === false) return false;
-      return true;
+      return isTenureSupported(b, persona, persona.tenureMonths, activeTenureDays);
     });
-  }, [stateFilteredBanks, persona.depositType]);
+  }, [stateFilteredBanks, persona.depositType, persona.tenureMonths, persona.tenureUnit, persona.tenureDays]);
 
   // Category and sub-filter logic
   const filteredAndRankedBanks = useMemo(() => {
@@ -196,7 +198,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       if (selectedCategory === 'private' && b.category !== 'private') return false;
       if (selectedCategory === 'psu' && b.category !== 'psu' && b.category !== 'post_office') return false;
       if (selectedCategory === 'post_office' && b.category !== 'post_office') return false;
-      if (selectedCategory === 'taxsaver' && persona.tenureMonths !== 60 && !b.badge.includes('Tax')) return false;
+      if (selectedCategory === 'taxsaver') {
+        // Section 80C applies strictly to 5-Year FDs, not Recurring Deposits
+        if (persona.depositType === 'RD') return false;
+        if (persona.tenureMonths !== 60 && !b.badge.includes('Tax')) return false;
+      }
 
       if (minRatingFilter === 'AAA' && !b.rating.includes('AAA') && !b.rating.includes('Highest')) return false;
       if (minRatingFilter === 'A+' && !b.rating.includes('AAA') && !b.rating.includes('A+') && !b.rating.includes('Highest')) return false;
@@ -232,10 +238,12 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       if (b.category === 'psu' || b.category === 'post_office') counts.psu++;
       if (b.category === 'post_office') counts.post_office++;
       if (b.category === 'rrb') counts.rrb++;
-      if (b.badge?.includes('Tax') || b.categoryTag?.includes('Lock-in') || b.tenureMonths === 60) counts.taxsaver++;
+      if (persona.depositType === 'FD' && (b.badge?.includes('Tax') || b.categoryTag?.includes('Lock-in') || b.tenureMonths === 60)) {
+        counts.taxsaver++;
+      }
     }
     return counts;
-  }, [depositTypeAndStateFilteredBanks]);
+  }, [depositTypeAndStateFilteredBanks, persona.depositType]);
 
   // Tenure Days resolution
   const activeTenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
@@ -527,35 +535,42 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             </div>
 
             {/* Toggle: Standard Months vs Special Odd-Day Schemes */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
-              <button
-                type="button"
-                onClick={() => setPersona((prev) => ({ ...prev, tenureUnit: 'months' }))}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-                  persona.tenureUnit !== 'days'
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                Standard (Months)
-              </button>
-              <button
-                type="button"
-                onClick={() => setPersona((prev) => ({ 
-                  ...prev, 
-                  tenureUnit: 'days',
-                  tenureDays: prev.tenureDays || 444
-                }))}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  persona.tenureUnit === 'days'
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Flame className="w-3.5 h-3.5 text-amber-500" />
-                <span>Special Schemes (Odd Days)</span>
-              </button>
-            </div>
+            {persona.depositType === 'RD' ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 self-start sm:self-auto font-medium">
+                <Info className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981] shrink-0" />
+                <span>Odd-day schemes (222D–1001D) are exclusive to Fixed Deposits</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
+                <button
+                  type="button"
+                  onClick={() => setPersona((prev) => ({ ...prev, tenureUnit: 'months' }))}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
+                    persona.tenureUnit !== 'days'
+                      ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                      : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  Standard (Months)
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPersona((prev) => ({ 
+                    ...prev, 
+                    tenureUnit: 'days',
+                    tenureDays: prev.tenureDays || 444
+                  }))}
+                  className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
+                    persona.tenureUnit === 'days'
+                      ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                      : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                >
+                  <Flame className="w-3.5 h-3.5 text-amber-500" />
+                  <span>Special Schemes (Odd Days)</span>
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Standard Months Selector */}
@@ -565,7 +580,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 { months: 12, label: '1 Year (12M)', badge: 'Short Horizon' },
                 { months: 24, label: '2 Years (24M)', badge: 'Balanced Growth' },
                 { months: 36, label: '3 Years (36M)', badge: 'Highest Regular Yield' },
-                { months: 60, label: '5 Years (60M)', badge: 'Tax Saver 80C' },
+                { 
+                  months: 60, 
+                  label: '5 Years (60M)', 
+                  badge: persona.depositType === 'RD' ? 'Long-Term Savings' : 'Tax Saver 80C' 
+                },
               ].map((t) => (
                 <button
                   key={t.months}

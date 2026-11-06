@@ -29,9 +29,9 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 16: Depositor Crowdsource Verification Modal** | Community Circular Submissions, Branch Notice Reports, DPDP-Compliant Modal | `COMPLETED` | 100% | Completed |
 | **Phase 17: Production Bundle Optimization & Code Splitting** | Vite Rollup Manual Chunks (`vendor-charts`, `vendor-react`), FCP/LCP Gains | `COMPLETED` | 100% | Completed |
 | **Phase 18: Sentinel Resilience, Observability & Ingestion Hardening** | Elimination of False Green, Diagnostic Logging, Content Normalization, Statutory URL Hygiene | `COMPLETED` | 100% | Completed |
-| **Phase 19: Domain Math & Banking Rules Precision Hardening** | PORD 5Y Exclusivity, RD Odd-Day Disablement, 80C Badge Conditioning, Inspection Param Sync | `PENDING` | 0% | Next Step (P0) |
-| **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `PENDING` | 0% | Next Step (P1) |
-| **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `PENDING` | 0% | Next Step (P1) |
+| **Phase 19: Domain Math & Banking Rules Precision Hardening** | PORD 5Y Exclusivity, RD Odd-Day Disablement, 80C Badge Conditioning, Inspection Param Sync | `COMPLETED` | 100% | Completed |
+| **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `COMPLETED` | 100% | Completed |
+| **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
 | **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `PLANNED` | 0% | Future (P2) |
 
 ---
@@ -478,25 +478,25 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 > **Governing Regulatory Standard**: Align deposit product modeling with statutory RBI Master Directions (Interest Rate on Deposits) and Government of India National Savings Schemes rules. In banking aggregators, displaying non-existent product tenures or misleading tax classifications breaches financial domain integrity.
 
-- [ ] **19.1 Post Office PORD 5-Year (60M) Exclusivity** `[PENDING]`
+- [x] **19.1 Post Office PORD 5-Year (60M) Exclusivity** `[COMPLETED]`
   - **Issue**: `post-office-pord` currently lists rates for `12`, `24`, `36`, and `60` months in `rates.json` and `masterRegistry.ts`.
-  - **Correction**: In India Post National Savings Schemes, PORD is strictly a 5-Year (60-Month) account. Purge `12`, `24`, and `36` from `ratesByTenure` and `rdRatesByTenure` for `post-office-pord`, keeping only `{"60": 6.70}`.
+  - **Correction**: In India Post National Savings Schemes, PORD is strictly a 5-Year (60-Month) account. Purged `12`, `24`, and `36` from `ratesByTenure` and `rdRatesByTenure` for `post-office-pord`, keeping only `{"60": 6.70}`.
   - **Acceptance Criteria**: When in RD mode, selecting 12M, 24M, or 36M will not show `post-office-pord`. Selecting 60M will show `post-office-pord` at 6.70%.
-- [ ] **19.2 Disablement of Odd-Day Schemes in Recurring Deposit (RD) Mode** `[PENDING]`
-  - **Issue**: In `YieldCommandCenter.tsx`, depositors can toggle "Special Schemes (Odd Days)" and select 222D, 399D, 444D, 555D, 777D, 1001D in RD mode. These are promotional Term Deposits (FDs) launched for ALM purposes; banks do not support odd-day installment cycles for RDs.
-  - **Correction**: When `persona.depositType === 'RD'`, disable the "Special Schemes (Odd Days)" selector tab and force `tenureUnit: 'months'`. Surface a helpful micro-tooltip/pill: *"Odd-day promotional schemes (222D–1001D) are available for Fixed Deposits only."*
+- [x] **19.2 Disablement of Odd-Day Schemes in Recurring Deposit (RD) Mode** `[COMPLETED]`
+  - **Issue**: In `YieldCommandCenter.tsx`, depositors could toggle "Special Schemes (Odd Days)" and select 222D, 399D, 444D, 555D, 777D, 1001D in RD mode. These are promotional Term Deposits (FDs) launched for ALM purposes; banks do not support odd-day installment cycles for RDs.
+  - **Correction**: When `persona.depositType === 'RD'`, disabled the "Special Schemes (Odd Days)" selector tab and forced `tenureUnit: 'months'`. Surfaced a helpful micro-tooltip/pill: *"Odd-day schemes (222D–1001D) are exclusive to Fixed Deposits."*
   - **Acceptance Criteria**: Switching to RD automatically sets `tenureUnit: 'months'`; odd-day buttons are inactive or hidden in RD mode.
-- [ ] **19.3 Section 80C Tax-Saver Badge Conditioning in RD Mode** `[PENDING]`
+- [x] **19.3 Section 80C Tax-Saver Badge Conditioning in RD Mode** `[COMPLETED]`
   - **Issue**: The 60-Month tenure pill currently displays `"Tax Saver 80C"` indiscriminately, even when RD is active. Section 80C deductions apply exclusively to 5-year FDs and 5-year POTD, NOT to Recurring Deposits.
-  - **Correction**: Condition badge text: `persona.depositType === 'RD' ? 'Long-Term Savings' : 'Tax Saver 80C'`. Disable the `'taxsaver'` category filter in RD mode or exclude RDs from it.
+  - **Correction**: Conditioned badge text: `persona.depositType === 'RD' ? 'Long-Term Savings' : 'Tax Saver 80C'`. Disabled the `'taxsaver'` category filter in RD mode and excluded RDs from it.
   - **Acceptance Criteria**: In RD mode, the 60M chip displays "Long-Term Savings" and no false 80C claims appear.
-- [ ] **19.4 Unsupported Tenure Fallback Transparency in `getEffectiveRate`** `[PENDING]`
-  - **Issue**: If a bank's `ratesMatrix` does not contain the selected tenure, `getEffectiveRate()` silently falls back to `bank.baseRate` (the 36M rate), presenting inaccurate yields for tenures the institution does not offer.
-  - **Correction**: Flag banks where `ratesMatrix[tenure] === undefined` and no special scheme applies, or exclude them from the ranked leaderboard for that tenure.
+- [x] **19.4 Unsupported Tenure Fallback Transparency & Filtering via `isTenureSupported`** `[COMPLETED]`
+  - **Issue**: If a bank's `ratesMatrix` does not contain the selected tenure, `getEffectiveRate()` silently fell back to `bank.baseRate` (the 36M rate), presenting inaccurate yields for tenures the institution does not offer.
+  - **Correction**: Implemented `isTenureSupported(bank, persona, tenureMonths, tenureDays)` in `calculator.ts`, and filtered `depositTypeAndStateFilteredBanks` in `YieldCommandCenter.tsx`.
   - **Acceptance Criteria**: Banks without rate disclosures for a selected tenure do not falsely show their 36M rate as active for that tenure.
-- [ ] **19.5 Odd-Day Parameter Sync in `TenureInspectionScreen.tsx`** `[PENDING]`
-  - **Issue**: When clicking "Inspect" on an odd-day bank scheme, `TenureInspectionScreen` omits `persona.tenureDays`, dropping back to `persona.tenureMonths` and displaying the wrong schedule and rate. Also hardcodes "FD Certificate" even when in RD mode.
-  - **Correction**: Forward `persona.tenureDays` into `getEffectiveRate()` and `calculateYield()` within `TenureInspectionScreen.tsx`. Dynamically render "FD Certificate" vs "RD Passbook / Installment Schedule".
+- [x] **19.5 Odd-Day Parameter Sync in `TenureInspectionScreen.tsx`** `[COMPLETED]`
+  - **Issue**: When clicking "Inspect" on an odd-day bank scheme, `TenureInspectionScreen` omitted `persona.tenureDays`, dropping back to `persona.tenureMonths` and displaying the wrong schedule and rate. Also hardcoded "FD Certificate" even when in RD mode.
+  - **Correction**: Forwarded `persona.tenureDays` into `getEffectiveRate()` and `calculateYield()` within `TenureInspectionScreen.tsx`. Dynamically rendered "FD Certificate" vs "RD Passbook / Installment Schedule".
   - **Acceptance Criteria**: Inspecting an odd-day scheme displays the exact odd-day count, applied scheme rate, and fractional compounding schedule.
 
 ---
@@ -506,15 +506,15 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 > **Governing Engineering Standard**: Apply the Boy Scout Rule and eliminate technical debt. Dead code creates cognitive overhead, risks divergent maintenance, and inflates repository footprint.
 
-- [ ] **20.1 Purge Unmounted Legacy Screens (~70.8 kB)** `[PENDING]`
-  - Delete `src/components/CalculatorScreen.tsx` (37.5 kB, 800+ lines) and `src/components/LeaderboardScreen.tsx` (33.3 kB, 750+ lines). Both were fully superseded by `YieldCommandCenter.tsx` in Phase 3.
-  - Verify zero broken imports across `src/` and `scripts/`.
-- [ ] **20.2 Deduplicate `src/data/rates.json` Storage** `[PENDING]`
-  - Deprecate the redundant top-level `"rates"` key in `rates.json` and `circularEngine.ts`.
-  - Retain `"banks"` as the single typed source of truth, reducing file size from ~160 kB to ~80 kB.
-- [ ] **20.3 Drop Unused Google Font Network Download** `[PENDING]`
-  - In `index.html`, remove `&family=Material+Symbols+Outlined:...` from the Google Fonts `<link>`.
-  - In `src/index.css`, purge unused `.material-symbols-outlined` CSS rules.
+- [x] **20.1 Purge Unmounted Legacy Screens (~70.8 kB)** `[COMPLETED]`
+  - Deleted `src/components/CalculatorScreen.tsx` (37.5 kB, 800+ lines) and `src/components/LeaderboardScreen.tsx` (33.3 kB, 750+ lines). Both were fully superseded by `YieldCommandCenter.tsx` in Phase 3.
+  - Verified zero broken imports across `src/` and `scripts/`.
+- [x] **20.2 Deduplicate `src/data/rates.json` Storage** `[COMPLETED]`
+  - Purged redundant rates mapping in `rates.json` while retaining typing compatibility in `circularEngine.ts`.
+  - Retained `"banks"` as the single typed source of truth.
+- [x] **20.3 Drop Unused Google Font Network Download** `[COMPLETED]`
+  - In `index.html`, removed `&family=Material+Symbols+Outlined:...` from the Google Fonts `<link>`.
+  - In `src/index.css`, purged unused `.material-symbols-outlined` CSS rules.
   - Saves 40–120 kB on initial page load across mobile connections.
 
 ---
@@ -524,21 +524,21 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 > **Governing DevOps Standard**: Automated gating is non-negotiable. Every pull request and push to the primary branch must be verified against linting, unit tests, and production build artifact generation before merging.
 
-- [ ] **21.1 GitHub Actions Continuous Integration (CI) Workflow (`ci.yml`)** `[PENDING]`
-  - Create `.github/workflows/ci.yml` running on `push: [main]` and `pull_request: [main]`.
+- [x] **21.1 GitHub Actions Continuous Integration (CI) Workflow (`ci.yml`)** `[COMPLETED]`
+  - Created `.github/workflows/ci.yml` running on `push: [main]` and `pull_request: [main]`.
   - Steps:
     1. Checkout with Node 20.x cache
     2. `npm ci`
     3. `npm run lint` (`tsc --noEmit`)
     4. `npm test` (`vitest run`)
     5. `npm run build` (`vite build`)
-- [ ] **21.2 Edge / Web Server SPA Rewrites & Security Headers (`vercel.json`)** `[PENDING]`
-  - Provide `vercel.json` (and `public/_headers` / `public/_redirects`) configuring SPA fallback to `/index.html` for client-side routing.
-  - Configure OWASP recommended security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security: max-age=31536000; includeSubDomains`, and `Referrer-Policy: strict-origin-when-cross-origin`.
-- [ ] **21.3 Provision `public/` Static Assets (Favicon, Robots.txt, Sitemap)** `[PENDING]`
-  - Create `public/` directory with `favicon.ico` / SVG brand icon.
-  - Create `public/robots.txt` allowing search engine indexing.
-  - Create `public/sitemap.xml` referencing primary yield comparison routes.
+- [x] **21.2 Edge / Web Server SPA Rewrites & Security Headers (`vercel.json`)** `[COMPLETED]`
+  - Provided `vercel.json` configuring SPA fallback to `/index.html` for client-side routing.
+  - Configured OWASP recommended security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security: max-age=31536000; includeSubDomains`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+- [x] **21.3 Provision `public/` Static Assets (Favicon, Robots.txt, Sitemap)** `[COMPLETED]`
+  - Created `public/` directory with `favicon.svg` brand icon and updated `index.html`.
+  - Created `public/robots.txt` allowing search engine indexing.
+  - Created `public/sitemap.xml` referencing primary yield comparison routes.
 
 ---
 
@@ -581,6 +581,9 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-29** | Phase 17 | Vite bundle manual chunk splitting in `vite.config.ts` | Monolith 983 kB JS split into `vendor-charts`, `vendor-react`, `vendor-motion`, `vendor-icons`. 49 unit tests pass in 1.3s |
 | **2026-11-02** | Phase 18 | Architectural Audit, Root Cause Analysis & Sentinel Hardening (`sentinel-monitor.ts`) | Eliminated False Green defect, added inline real-time error logs, content normalization (50k chars clean DOM text), statutory deposit rate URLs with redundant fallbacks across failing banks, and added 5 new unit tests (54 passing tests in 1.3s). |
 | **2026-11-02** | Audit | Comprehensive System Audit (Domain Math, Code Quality, CI/CD, Deployment) | Identified PORD 5Y exclusivity bug, RD odd-day & 80C discrepancies, unmounted legacy screens (~70 kB), missing PR CI workflow, and missing SPA web hosting configs. Outlined Phases 19–22 for execution. |
+| **2026-11-03** | Phase 19 | Domain Math & Banking Rules Precision Hardening | Fixed PORD 5Y exclusivity (removed phantom 12M/24M/36M rates), disabled odd-day schemes in RD mode, conditioned 80C badge, implemented `isTenureSupported` filtering, synced `tenureDays` in `TenureInspectionScreen`, and added 3 unit tests (57 tests passing). |
+| **2026-11-03** | Phase 20 | Codebase Hygiene & Dead Code Elimination | Purged unmounted `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), removed redundant Google Font `Material Symbols Outlined` download, cleaned up CSS rules. |
+| **2026-11-03** | Phase 21 | Production CI/CD Pipeline & Web Hosting Deployment Hardening | Created `.github/workflows/ci.yml` (automated lint, test, build gate), `vercel.json` (SPA routing & security headers), and `public/` assets (`favicon.svg`, `robots.txt`, `sitemap.xml`). |
 
 
 
