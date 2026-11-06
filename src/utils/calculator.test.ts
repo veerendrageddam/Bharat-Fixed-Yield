@@ -300,4 +300,59 @@ describe('Calculator Core Engineering & Math Engine', () => {
       expect(isTenureSupported(regularBank, { ...rdPersona, depositType: 'FD' }, 15, 444)).toBe(true);
     });
   });
+
+  describe('Non-Cumulative Interest Payout Engine (Monthly & Quarterly Payouts)', () => {
+    it('calculates RBI discounted monthly interest payout accurately (₹10L @ 7.5% for 12M)', () => {
+      // Principal = 10,00,000, Rate = 7.50% p.a., Tenure = 12M, Monthly Payout
+      // RBI/IBA Formula: m = (1 + 7.5/400)^(1/3) - 1 = (1.01875)^(1/3) - 1 = 0.006211142...
+      // Monthly Payout = round(1000000 * 0.006211142) = 6211
+      const result = calculateFDYield(1000000, 7.5, 12, 45, false, true, undefined, 'monthly');
+      expect(result.payoutFrequency).toBe('monthly');
+      expect(result.periodicPayoutAmount).toBe(6211);
+      expect(result.maturityAmount).toBe(1000000); // Capital returned at maturity
+      expect(result.totalInvested).toBe(1000000);
+      expect(result.totalInterest).toBe(12 * 6211); // 74,532
+      expect(result.quarters.length).toBe(4);
+      // Quarters verify capital remains principal
+      expect(result.quarters[0].closingBalance).toBe(1000000);
+      expect(result.quarters[3].closingBalance).toBe(1000000);
+    });
+
+    it('calculates quarterly simple interest payout accurately (₹10L @ 7.5% for 12M)', () => {
+      // Principal = 10,00,000, Rate = 7.50% p.a., Tenure = 12M, Quarterly Payout
+      // Payout per quarter = round(1000000 * (7.5 / 400)) = 18750
+      const result = calculateFDYield(1000000, 7.5, 12, 45, false, true, undefined, 'quarterly');
+      expect(result.payoutFrequency).toBe('quarterly');
+      expect(result.periodicPayoutAmount).toBe(18750);
+      expect(result.maturityAmount).toBe(1000000); // Capital returned at maturity
+      expect(result.totalInterest).toBe(4 * 18750); // 75,000
+      expect(result.effectiveAnnualYield).toBe(7.5);
+      expect(result.quarters[0].interestEarned).toBe(18750);
+      expect(result.quarters[3].closingBalance).toBe(1000000);
+    });
+
+    it('calculates cumulative reinvestment payout accurately (₹10L @ 7.5% for 12M)', () => {
+      // Principal = 10,00,000, Rate = 7.50% p.a., Tenure = 12M, Cumulative (maturity)
+      // A = round(1000000 * (1 + 7.5/400)^4) = 1077136
+      const result = calculateFDYield(1000000, 7.5, 12, 45, false, true, undefined, 'maturity');
+      expect(result.payoutFrequency).toBe('maturity');
+      expect(result.periodicPayoutAmount).toBeUndefined();
+      expect(result.maturityAmount).toBe(1077136);
+      expect(result.totalInterest).toBe(77136);
+      expect(result.effectiveAnnualYield).toBe(7.71);
+    });
+
+    it('passes payoutFrequency through polymorphic calculateYield gateway', () => {
+      const monthly = calculateYield(500000, 8.0, 24, 62, true, 'FD', true, undefined, 'monthly');
+      expect(monthly.payoutFrequency).toBe('monthly');
+      expect(monthly.maturityAmount).toBe(500000);
+      expect(monthly.periodicPayoutAmount).toBeGreaterThan(0);
+
+      // RD ignores non-cumulative payout and stays cumulative
+      const rd = calculateYield(10000, 8.0, 24, 62, true, 'RD', true, undefined, 'monthly');
+      expect(rd.payoutFrequency).toBe('maturity');
+      expect(rd.depositType).toBe('RD');
+      expect(rd.maturityAmount).toBeGreaterThan(rd.totalInvested);
+    });
+  });
 });

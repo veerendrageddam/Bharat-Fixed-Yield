@@ -141,6 +141,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       setPersona((prev) => ({
         ...prev,
         depositType: 'RD',
+        compounding: 'maturity', // RD is strictly cumulative
         tenureUnit: 'months', // Force standard monthly schedules for RD (odd days not applicable)
         monthlyInstallment: prev.monthlyInstallment ?? (prev.principal > 100000 ? 10000 : prev.principal),
         principal: prev.monthlyInstallment ?? (prev.principal > 100000 ? 10000 : prev.principal),
@@ -268,9 +269,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       persona.form15HSubmitted,
       persona.depositType,
       persona.panLinked,
-      activeTenureDays
+      activeTenureDays,
+      persona.compounding
     );
-  }, [currentAmount, activeSimulationRate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, activeTenureDays]);
+  }, [currentAmount, activeSimulationRate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, activeTenureDays, persona.compounding]);
 
   // Donut chart data
   const donutData = useMemo(() => {
@@ -506,6 +508,14 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`}
               </span>
             </div>
+            {persona.depositType === 'FD' && persona.compounding !== 'maturity' && topCalculation.periodicPayoutAmount && (
+              <div className="flex justify-between items-center text-emerald-700 dark:text-emerald-400 font-semibold">
+                <span>Periodic Cashflow:</span>
+                <span className="font-extrabold tabular-nums">
+                  ₹{formatINR(topCalculation.periodicPayoutAmount)} / {persona.compounding === 'monthly' ? 'month' : 'quarter'}
+                </span>
+              </div>
+            )}
             <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-1.5">
                 <span className="font-bold text-slate-900 dark:text-white">Active Simulation Yield:</span>
@@ -851,6 +861,95 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           )}
         </div>
 
+        {/* INTEREST PAYOUT & COMPOUNDING PLAN (Monthly / Quarterly / Maturity) */}
+        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <Wallet className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
+              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                Interest Payout &amp; Compounding Plan
+              </label>
+            </div>
+
+            {persona.depositType === 'RD' ? (
+              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 self-start sm:self-auto font-medium">
+                <Info className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981] shrink-0" />
+                <span>Recurring Deposits are strictly Cumulative (Quarterly Reinvestment at Maturity)</span>
+              </div>
+            ) : (
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                Select regular income cashflow or compounding wealth creation
+              </span>
+            )}
+          </div>
+
+          {persona.depositType === 'FD' && (
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              {[
+                {
+                  id: 'maturity' as const,
+                  title: 'Cumulative (At Maturity)',
+                  badge: 'Highest Total Wealth',
+                  desc: 'Quarterly reinvestment. Full interest + capital paid at maturity.',
+                  stat: `₹${formatINR(topCalculation.maturityAmount)} at maturity`,
+                },
+                {
+                  id: 'monthly' as const,
+                  title: 'Monthly Income Payout',
+                  badge: 'Pensioners & Retirees',
+                  desc: 'RBI discounted monthly interest credited to your savings account.',
+                  stat: topCalculation.payoutFrequency === 'monthly' && topCalculation.periodicPayoutAmount
+                    ? `₹${formatINR(topCalculation.periodicPayoutAmount)} / month`
+                    : `~₹${formatINR(Math.round(currentAmount * (Math.pow(1 + activeSimulationRate / 400, 1 / 3) - 1)))} / month`,
+                },
+                {
+                  id: 'quarterly' as const,
+                  title: 'Quarterly Payout',
+                  badge: 'Quarterly Cashflow',
+                  desc: 'Simple interest credited every 3 months. Principal returned at maturity.',
+                  stat: topCalculation.payoutFrequency === 'quarterly' && topCalculation.periodicPayoutAmount
+                    ? `₹${formatINR(topCalculation.periodicPayoutAmount)} / quarter`
+                    : `~₹${formatINR(Math.round(currentAmount * (activeSimulationRate / 400)))} / quarter`,
+                },
+              ].map((p) => {
+                const isSelected = persona.compounding === p.id;
+                return (
+                  <button
+                    key={p.id}
+                    type="button"
+                    onClick={() => setPersona((prev) => ({ ...prev, compounding: p.id }))}
+                    className={`p-3.5 rounded-xl border flex flex-col text-left transition-all cursor-pointer ${
+                      isSelected
+                        ? 'border-[#006c4a] bg-emerald-50/70 dark:bg-emerald-950/40 text-slate-900 dark:text-white ring-1 ring-[#006c4a] shadow-xs'
+                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-xs font-bold text-slate-900 dark:text-white">{p.title}</span>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        isSelected
+                          ? 'bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
+                      }`}>
+                        {p.badge}
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
+                      {p.desc}
+                    </p>
+                    <div className="mt-2 pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
+                      <span className="text-[10px] text-slate-400 uppercase font-semibold">Expected Cashflow:</span>
+                      <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
+                        {p.stat}
+                      </span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+
         {/* Persona Matrix Controls (Age, Gender, State, Form 15H) */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
           {/* Age Tier */}
@@ -967,12 +1066,28 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
             </div>
 
             <div>
-              <span className="text-xs text-slate-500 dark:text-slate-400">Guaranteed Maturity Payout</span>
+              <span className="text-xs text-slate-500 dark:text-slate-400">
+                {persona.compounding === 'maturity'
+                  ? 'Guaranteed Maturity Payout'
+                  : persona.compounding === 'monthly'
+                  ? 'Monthly Income Cashflow'
+                  : 'Quarterly Cashflow Payout'}
+              </span>
               <p className="text-3xl font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums mt-0.5">
-                ₹{formatINR(topCalculation.maturityAmount)}
+                {persona.compounding === 'maturity'
+                  ? `₹${formatINR(topCalculation.maturityAmount)}`
+                  : `₹${formatINR(topCalculation.periodicPayoutAmount || 0)}`}
+                {persona.compounding === 'monthly' && (
+                  <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 ml-1">/ mo</span>
+                )}
+                {persona.compounding === 'quarterly' && (
+                  <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 ml-1">/ quarter</span>
+                )}
               </p>
               <span className="text-xs text-slate-500 dark:text-slate-400">
-                Net after TDS: ₹{formatINR(topCalculation.netMaturityWithTds)}
+                {persona.compounding === 'maturity'
+                  ? `Net after TDS: ₹${formatINR(topCalculation.netMaturityWithTds)}`
+                  : `Capital Returned at Maturity: ₹${formatINR(topCalculation.maturityAmount)}`}
               </span>
             </div>
 
@@ -984,7 +1099,9 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 </p>
               </div>
               <div>
-                <span className="text-slate-500">Wealth Created:</span>
+                <span className="text-slate-500">
+                  {persona.compounding === 'maturity' ? 'Wealth Created:' : 'Total Interest Paid Out:'}
+                </span>
                 <p className="font-bold text-[#006c4a] dark:text-[#10b981] text-sm tabular-nums mt-0.5">
                   +₹{formatINR(topCalculation.totalInterest)}
                 </p>
@@ -1089,9 +1206,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                     </PieChart>
                   </ResponsiveContainer>
                   <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase">Net Maturity</span>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">
+                      {persona.compounding === 'maturity' ? 'Net Maturity' : 'Total Delivered'}
+                    </span>
                     <span className="text-sm font-extrabold text-slate-900 dark:text-white">
-                      ₹{formatLakhs(topCalculation.maturityAmount)}
+                      ₹{formatLakhs(topCalculation.totalInvested + topCalculation.totalInterest)}
                     </span>
                   </div>
                 </div>
@@ -1102,19 +1221,25 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                     <span className="text-slate-600 dark:text-slate-400">Total Invested:</span>
                     <span className="font-bold text-slate-900 dark:text-white tabular-nums">
                       ₹{formatINR(topCalculation.totalInvested)} (
-                      {((topCalculation.totalInvested / topCalculation.maturityAmount) * 100).toFixed(1)}%)
+                      {(((topCalculation.totalInvested) / (topCalculation.totalInvested + topCalculation.totalInterest || 1)) * 100).toFixed(1)}%)
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-emerald-500 shrink-0" />
-                    <span className="text-slate-600 dark:text-slate-400">Wealth Created (Gain):</span>
+                    <span className="text-slate-600 dark:text-slate-400">
+                      {persona.compounding === 'maturity' ? 'Wealth Created (Gain):' : 'Total Interest Paid Out:'}
+                    </span>
                     <span className="font-bold text-[#006c4a] dark:text-[#10b981] tabular-nums">
                       ₹{formatINR(topCalculation.totalInterest)} (
-                      {((topCalculation.totalInterest / topCalculation.maturityAmount) * 100).toFixed(1)}%)
+                      {(((topCalculation.totalInterest) / (topCalculation.totalInvested + topCalculation.totalInterest || 1)) * 100).toFixed(1)}%)
                     </span>
                   </div>
                   <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[11px]">
-                    Wealth multiplier: <strong>{(topCalculation.maturityAmount / topCalculation.totalInvested).toFixed(2)}x</strong> over {persona.tenureMonths} months.
+                    {persona.compounding === 'maturity' ? (
+                      <>Wealth multiplier: <strong>{(topCalculation.maturityAmount / (topCalculation.totalInvested || 1)).toFixed(2)}x</strong> over {persona.tenureMonths} months.</>
+                    ) : (
+                      <>Total return delivered: <strong>₹{formatINR(topCalculation.totalInvested + topCalculation.totalInterest)}</strong> (Capital + Regular Income).</>
+                    )}
                   </div>
                 </div>
               </div>
@@ -1390,7 +1515,8 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               persona.form15HSubmitted,
               persona.depositType,
               persona.panLinked,
-              activeTenureDays
+              activeTenureDays,
+              persona.compounding
             );
             const isCompared = comparedBankIds.includes(bank.id);
             const matchedScheme = activeTenureDays 
@@ -1518,7 +1644,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                       {effectiveRate.toFixed(2)}% p.a.
                     </span>
                     <span className="text-[11px] text-slate-500 font-medium">
-                      Maturity: <strong className="text-slate-900 dark:text-white">₹{formatINR(calc.maturityAmount)}</strong>
+                      {persona.compounding === 'maturity' ? (
+                        <>Maturity: <strong className="text-slate-900 dark:text-white">₹{formatINR(calc.maturityAmount)}</strong></>
+                      ) : (
+                        <>Payout: <strong className="text-[#006c4a] dark:text-[#10b981]">₹{formatINR(calc.periodicPayoutAmount || 0)}/{persona.compounding === 'monthly' ? 'mo' : 'qtr'}</strong></>
+                      )}
                     </span>
                   </div>
 

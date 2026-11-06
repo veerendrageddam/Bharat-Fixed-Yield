@@ -262,12 +262,14 @@ gantt
   - Purged legacy `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), deduplicated `rates.json`, dropped unused font downloads.
 - [x] **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening** `[COMPLETED]`
   - Automated PR/push CI gating (`ci.yml`), SPA routing rewrites & security headers (`vercel.json`), static assets in `public/` (favicon, robots.txt, sitemap.xml).
-- [ ] **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** `[PLANNED]`
-  - Discounted monthly and quarterly interest payouts for retirees/pensioners.
+- [x] **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** `[COMPLETED]`
+  - Implemented RBI discounted monthly interest formula and quarterly simple interest payout in `calculateFDYield()`.
+  - Added "Interest Payout & Compounding Plan" selector in Yield Command Center with dynamic cashflow badges (`₹{amount}/mo` or `₹{amount}/quarter`), Capital Returned at Maturity indicators, and synchronized Modals and Inspection Screen.
+  - 61 unit tests passing across 9 test suites.
 
 ### Developer & Ingestion CLI Reference
 ```bash
-# 1. Run the 57-test Vitest unit test suite (executes in <1.5s)
+# 1. Run the 61-test Vitest unit test suite (executes in <1.5s)
 npm test
 
 # 2. Run the 38-Institution ALCO Rate & Gazette Audit Report

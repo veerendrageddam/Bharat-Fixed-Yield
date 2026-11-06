@@ -45,7 +45,8 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
     form15HSubmitted,
     persona.depositType,
     persona.panLinked,
-    effectiveDays
+    effectiveDays,
+    persona.compounding
   );
 
   // CSV Exporter
@@ -173,33 +174,37 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
 
             <div className="p-4 bg-white dark:bg-[#161b22] rounded-xl shadow-2xs border border-slate-200/60 dark:border-slate-800 flex flex-col">
               <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Compounding Regime
+                {persona.compounding === 'maturity' ? 'Compounding Regime' : 'Payout Plan'}
               </span>
               <span className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1 capitalize">
-                {persona.compounding}
+                {persona.compounding === 'maturity' ? 'Cumulative' : persona.compounding === 'monthly' ? 'Monthly Payout' : 'Quarterly Payout'}
               </span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400">n = 4 cycles / annum</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                {persona.compounding === 'maturity' ? 'Quarterly Reinvestment' : `₹${formatINR(calc.periodicPayoutAmount || 0)} / ${persona.compounding === 'monthly' ? 'mo' : 'qtr'}`}
+              </span>
             </div>
 
             <div className="p-4 bg-white dark:bg-[#161b22] rounded-xl shadow-2xs border border-slate-200/60 dark:border-slate-800 flex flex-col">
               <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-                Tenure & Maturity
+                Tenure &amp; Maturity
               </span>
               <span className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mt-1">
-                {persona.tenureMonths} Months
+                {persona.tenureUnit === 'days' && effectiveDays ? `${effectiveDays} Days` : `${persona.tenureMonths} Months`}
               </span>
-              <span className="text-[11px] text-slate-500 dark:text-slate-400">Due: April 2028</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400">
+                {effectiveDays ? `(${(effectiveDays / 365).toFixed(2)} Years)` : `(${(persona.tenureMonths / 12).toFixed(1)} Years)`}
+              </span>
             </div>
 
             <div className="col-span-2 sm:col-span-1 p-4 bg-emerald-50 dark:bg-emerald-950/60 rounded-xl shadow-2xs border border-emerald-200 dark:border-emerald-800 flex flex-col justify-between">
               <span className="text-[10px] font-bold text-[#00714e] dark:text-[#a7f3d0] uppercase tracking-wider">
-                Total Maturity Corpus
+                {persona.compounding === 'maturity' ? 'Total Maturity Corpus' : 'Capital Returned'}
               </span>
               <span className="text-xl sm:text-2xl font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums mt-1">
                 ₹{formatINR(form15HSubmitted ? calc.maturityAmount : calc.netMaturityWithTds)}
               </span>
               <span className="text-[11px] text-slate-600 dark:text-slate-400">
-                +₹{formatINR(calc.totalInterest)} Total Gain
+                +₹{formatINR(calc.totalInterest)} {persona.compounding === 'maturity' ? 'Total Gain' : 'Total Payout'}
               </span>
             </div>
           </div>

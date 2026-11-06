@@ -163,7 +163,7 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
-                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays, persona.compounding);
                       return (
                         <td key={b.id} className="py-3 px-4 font-semibold text-slate-700 dark:text-slate-300 tabular-nums">
                           ₹{formatINR(calc.totalInvested)}
@@ -176,7 +176,7 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
-                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays, persona.compounding);
                       return (
                         <td key={b.id} className="py-3 px-4 font-bold text-slate-900 dark:text-white tabular-nums">
                           ₹{formatINR(calc.maturityAmount)}
@@ -189,7 +189,7 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
-                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays, persona.compounding);
                       return (
                         <td key={b.id} className="py-3 px-4 font-semibold text-[#006c4a] dark:text-[#10b981] tabular-nums">
                           +₹{formatINR(calc.totalInterest)}
@@ -202,7 +202,7 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
-                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays);
+                      const calc = calculateYield(depositAmount, rate, persona.tenureMonths, persona.age, persona.form15HSubmitted, persona.depositType, persona.panLinked, tenureDays, persona.compounding);
                       return (
                         <td key={b.id} className="py-3 px-4 text-slate-700 dark:text-slate-300 tabular-nums">
                           {calc.effectiveAnnualYield}% (Compounded)

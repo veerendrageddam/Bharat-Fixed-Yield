@@ -32,7 +32,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 19: Domain Math & Banking Rules Precision Hardening** | PORD 5Y Exclusivity, RD Odd-Day Disablement, 80C Badge Conditioning, Inspection Param Sync | `COMPLETED` | 100% | Completed |
 | **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `COMPLETED` | 100% | Completed |
 | **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
-| **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `PLANNED` | 0% | Future (P2) |
+| **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -547,14 +547,22 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 > **Governing Financial Modeling Standard**: Senior citizen depositors frequently rely on monthly or quarterly interest disbursements into their savings accounts for living expenses rather than cumulative compounding at maturity.
 
-- [ ] **22.1 Non-Cumulative Payout Engine (Monthly & Quarterly Payout Formulas)** `[PLANNED]`
-  - Support `compounding: 'monthly' | 'quarterly' | 'maturity'` in `calculateFDYield()`:
-    - **Quarterly Payout**: Simple interest payout $= P \times (r / 400)$ per quarter; maturity balance $= P$.
-    - **Monthly Payout**: Discounted monthly payout per RBI formula $= P \times \left[(1 + r/400)^{1/3} - 1\right]$.
-    - **Cumulative (At Maturity)**: Current standard quarterly reinvestment $A = P(1 + r/400)^{4t}$.
-- [ ] **22.2 Payout Mode Toggle in Yield Command Center** `[PLANNED]`
-  - Add an intuitive selector: `[ Cumulative (Reinvested) | Monthly Income Payout | Quarterly Payout ]`.
-  - When non-cumulative is active, chart visualizations switch to displaying periodic cash-flow income streams alongside principal safety.
+- [x] **22.1 Non-Cumulative Payout Engine (Monthly & Quarterly Payout Formulas)** `[COMPLETED]`
+  - Supported `payoutFrequency: 'monthly' | 'quarterly' | 'maturity'` in `calculateFDYield()`:
+    - **Quarterly Payout**: Simple interest payout $= P \times (r / 400)$ per quarter; capital returned at maturity $= P$.
+    - **Monthly Payout**: Official RBI/IBA discounted monthly interest formula $= P \times \left[(1 + r/400)^{1/3} - 1\right]$; capital returned at maturity $= P$.
+    - **Cumulative (At Maturity)**: Standard quarterly reinvestment $A = P(1 + r/400)^{4t}$.
+  - Polymorphic `calculateYield()` passes `payoutFrequency`; RD strictly remains cumulative (`'maturity'`).
+- [x] **22.2 Payout Mode Selector & Reactive UX in Yield Command Center** `[COMPLETED]`
+  - Added "Interest Payout & Compounding Plan" selector in Section 1 controls with 3 cards: Cumulative, Monthly Income Plan, and Quarterly Regular Payout.
+  - When non-cumulative is active:
+    - Guaranteed Maturity Payout switches to "Monthly Income Cashflow" / "Quarterly Cashflow Payout" badge with `₹{payout} / mo` or `₹{payout} / quarter`.
+    - Donut chart and summary metrics display Capital Protected ($P$) vs Total Interest Paid Out ($I$).
+    - Bank cards list displays periodic payout amount (e.g. `Payout: ₹6,211/mo`).
+    - Modals (`AmortizationModal`, `BookingModal`) and `TenureInspectionScreen` reflect periodic income cashflow and capital return.
+- [x] **22.3 Verification & Unit Test Suite** `[COMPLETED]`
+  - Added unit test suite in `calculator.test.ts` verifying discounted monthly payout formula (₹10L @ 7.5% -> ₹6,211/mo, ₹74,532 total interest), quarterly payout (₹18,750/quarter), cumulative reinvestment (₹10,77,136), and RD immunity.
+  - All 61 unit tests passing across 9 test suites; `npm run lint` passing with 0 errors; clean production build.
 
 ---
 
@@ -584,6 +592,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-11-03** | Phase 19 | Domain Math & Banking Rules Precision Hardening | Fixed PORD 5Y exclusivity (removed phantom 12M/24M/36M rates), disabled odd-day schemes in RD mode, conditioned 80C badge, implemented `isTenureSupported` filtering, synced `tenureDays` in `TenureInspectionScreen`, and added 3 unit tests (57 tests passing). |
 | **2026-11-03** | Phase 20 | Codebase Hygiene & Dead Code Elimination | Purged unmounted `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), removed redundant Google Font `Material Symbols Outlined` download, cleaned up CSS rules. |
 | **2026-11-03** | Phase 21 | Production CI/CD Pipeline & Web Hosting Deployment Hardening | Created `.github/workflows/ci.yml` (automated lint, test, build gate), `vercel.json` (SPA routing & security headers), and `public/` assets (`favicon.svg`, `robots.txt`, `sitemap.xml`). |
+| **2026-11-06** | Phase 22 | Advanced Yield Modeling: Non-Cumulative Payout Engine | Implemented RBI discounted monthly interest formula, quarterly simple interest payout, compounding frequency selector UI in Section 1, periodic cashflow badges across command center, cards, modals, and inspection screen; added 4 new unit tests (61 tests passing). |
 
 
 
