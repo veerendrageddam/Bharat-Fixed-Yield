@@ -31,6 +31,7 @@ export interface BankRateData {
   womenBonus: number;
   sourceUrl?: string;
   circularUrl?: string;
+  fallbackUrls?: string[];
   effectiveDate?: string;
   callable?: boolean;
   retailCapCr?: number;
@@ -88,6 +89,7 @@ export interface BankMasterDefinition {
   womenBonus: number;
   sourceUrl?: string;
   circularUrl?: string;
+  fallbackUrls?: string[];
   effectiveDate?: string;
   callable?: boolean;
   retailCapCr?: number;
@@ -115,6 +117,7 @@ export interface ScrapedRateResult {
   womenBonus?: number;
   sourceUrl?: string;
   circularUrl?: string;
+  fallbackUrls?: string[];
   effectiveDate?: string;
   callable?: boolean;
   retailCapCr?: number;

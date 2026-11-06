@@ -39,7 +39,8 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
     persona.form15HSubmitted,
     persona.depositType,
     persona.panLinked,
-    tenureDays
+    tenureDays,
+    persona.compounding
   );
 
   const tenureText = persona.tenureUnit === 'days' && persona.tenureDays
@@ -93,18 +94,28 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
             )}
           </div>
           <div>
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Interest Earned</span>
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              {persona.compounding === 'maturity' ? 'Interest Earned' : 'Total Payout'}
+            </span>
             <p className="text-base sm:text-lg font-bold text-[#006c4a] dark:text-[#10b981] tabular-nums mt-0.5">
               +₹{formatINR(calculation.totalInterest)}
             </p>
-            <span className="text-[10px] text-emerald-600 font-semibold">{rate.toFixed(2)}% p.a.</span>
+            <span className="text-[10px] text-emerald-600 font-semibold">
+              {persona.compounding !== 'maturity' && calculation.periodicPayoutAmount
+                ? `₹${formatINR(calculation.periodicPayoutAmount)}/${persona.compounding === 'monthly' ? 'mo' : 'qtr'}`
+                : `${rate.toFixed(2)}% p.a.`}
+            </span>
           </div>
           <div>
-            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Gross Maturity</span>
+            <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+              {persona.compounding === 'maturity' ? 'Gross Maturity' : 'Capital Returned'}
+            </span>
             <p className="text-base sm:text-lg font-bold text-slate-900 dark:text-white tabular-nums mt-0.5">
               ₹{formatINR(calculation.maturityAmount)}
             </p>
-            <span className="text-[10px] text-slate-400">Before TDS</span>
+            <span className="text-[10px] text-slate-400">
+              {persona.compounding === 'maturity' ? 'Before TDS' : 'At Maturity Date'}
+            </span>
           </div>
           <div>
             <span className="text-[11px] font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Net Payout</span>

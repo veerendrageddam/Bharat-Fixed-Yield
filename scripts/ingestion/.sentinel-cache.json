@@ -1,4 +1,12 @@
 {
+  "unity-sfb": {
+    "bankId": "unity-sfb",
+    "sourceUrl": "https://www.unitybank.co.in/",
+    "lastChecked": "2026-11-02T05:05:59.284Z",
+    "contentHash": "b141247ca8112ae3",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
   "utkarsh-sfb": {
     "bankId": "utkarsh-sfb",
     "sourceUrl": "https://www.utkarsh.bank/",
@@ -12,6 +20,14 @@
     "lastChecked": "2026-11-05T12:02:39.712Z",
     "contentHash": "7dfd135cb4f5ab93",
     "status": "unchanged"
+  },
+  "ujjivan-sfb": {
+    "bankId": "ujjivan-sfb",
+    "sourceUrl": "https://www.ujjivansfb.in/",
+    "lastChecked": "2026-11-02T05:06:03.863Z",
+    "contentHash": "609c88655c94e6a6",
+    "status": "unreachable",
+    "consecutiveFailures": 1
   },
   "hdfc-bank": {
     "bankId": "hdfc-bank",
@@ -125,13 +141,6 @@
     "contentHash": "33f1a39343e9852a",
     "status": "modified"
   },
-  "tgb-bank": {
-    "bankId": "tgb-bank",
-    "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-    "lastChecked": "2026-11-05T12:04:00.489Z",
-    "contentHash": "ba49c41ab893b685",
-    "status": "modified"
-  },
   "kgb-bank": {
     "bankId": "kgb-bank",
     "sourceUrl": "https://kgb.bank.in/",
@@ -152,6 +161,14 @@
     "lastChecked": "2026-11-05T12:04:23.288Z",
     "contentHash": "09167ad1a8b342f2",
     "status": "unchanged"
+  },
+  "aryavart-bank": {
+    "bankId": "aryavart-bank",
+    "sourceUrl": "https://upgb.bank.in/",
+    "lastChecked": "2026-11-02T05:06:18.561Z",
+    "contentHash": "d0036ea5abeb9bef",
+    "status": "unreachable",
+    "consecutiveFailures": 1
   },
   "jkgb-bank": {
     "bankId": "jkgb-bank",
@@ -201,5 +218,54 @@
     "lastChecked": "2026-11-05T12:04:38.145Z",
     "contentHash": "bc152ef0192c9a4d",
     "status": "unchanged"
+  },
+  "suryoday-sfb": {
+    "bankId": "suryoday-sfb",
+    "sourceUrl": "https://suryoday.bank.in/p/fixed-deposit",
+    "lastChecked": "2026-11-02T05:06:00.815Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
+  "au-sfb": {
+    "bankId": "au-sfb",
+    "sourceUrl": "https://www.aubank.in/interest-rates/fixed-deposit",
+    "lastChecked": "2026-11-02T05:06:03.355Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
+  "union-bank": {
+    "bankId": "union-bank",
+    "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+    "lastChecked": "2026-11-02T05:06:10.456Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
+  "bank-of-india": {
+    "bankId": "bank-of-india",
+    "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+    "lastChecked": "2026-11-02T05:06:12.480Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
+  "tgb-bank": {
+    "bankId": "tgb-bank",
+    "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
+    "lastChecked": "2026-11-05T12:04:00.489Z",
+    "contentHash": "ba49c41ab893b685",
+    "status": "modified"
+  },
+  "mgb-bank": {
+    "bankId": "mgb-bank",
+    "sourceUrl": "https://mahagramin.bank.in/",
+    "lastChecked": "2026-11-02T05:06:17.548Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
+  },
+  "ogb-bank": {
+    "bankId": "ogb-bank",
+    "sourceUrl": "https://odishabank.in/",
+    "lastChecked": "2026-11-02T05:06:20.590Z",
+    "status": "unreachable",
+    "consecutiveFailures": 1
   }
 }

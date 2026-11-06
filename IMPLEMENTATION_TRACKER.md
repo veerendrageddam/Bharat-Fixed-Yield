@@ -27,6 +27,12 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 14: LLM Circular Extractor & Sentinel GitHub Actions** | Gemini 2.0 Flash Extraction Agent, Sentinel Signature CI/CD, Bounds Validation | `COMPLETED` | 100% | Completed |
 | **Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)** | Dynamic Bank & Tenure Landing Pages, Structured Schema.org, Sitemaps | `PLANNED` | 0% | Next Step |
 | **Phase 16: Depositor Crowdsource Verification Modal** | Community Circular Submissions, Branch Notice Reports, DPDP-Compliant Modal | `COMPLETED` | 100% | Completed |
+| **Phase 17: Production Bundle Optimization & Code Splitting** | Vite Rollup Manual Chunks (`vendor-charts`, `vendor-react`), FCP/LCP Gains | `COMPLETED` | 100% | Completed |
+| **Phase 18: Sentinel Resilience, Observability & Ingestion Hardening** | Elimination of False Green, Diagnostic Logging, Content Normalization, Statutory URL Hygiene | `COMPLETED` | 100% | Completed |
+| **Phase 19: Domain Math & Banking Rules Precision Hardening** | PORD 5Y Exclusivity, RD Odd-Day Disablement, 80C Badge Conditioning, Inspection Param Sync | `COMPLETED` | 100% | Completed |
+| **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `COMPLETED` | 100% | Completed |
+| **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
+| **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -429,6 +435,137 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 18: Sentinel Resilience, Observability & Rate Disclosure Hardening
+*Target Files*: [`scripts/sentinel-monitor.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/sentinel-monitor.ts), [`scripts/ingestion/masterRegistry.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/masterRegistry.ts), [`scripts/ingestion/http.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/http.ts)
+
+> **Governing Architectural Principle**: Build the simplest production-quality solution that satisfies current requirements, while making deliberate decisions about maintainability, security, performance, scalability, UX, and future change. In financial rate monitoring, **unreachable ≠ unchanged**.
+
+- [x] **18.1 Architectural Failure-Mode Audit & Root Cause Analysis** `[COMPLETED]`
+  - Identified 4 core systemic defects in sentinel monitor execution:
+    1. **False Green Anti-Pattern**: 7 unreachable endpoints (18.4% of catalog: Suryoday SFB, AU SFB, Union Bank, BOI, TGB, MGB, OGB) were bypassed while the summary reported *"✅ All monitored bank disclosure signatures match cached baselines."*
+    2. **Log Obscurity & Black-Box Failures**: Unreachable institutions and their specific HTTP error status codes (e.g. 403 WAF, timeout) were swallowed without printing actionable terminal logs.
+    3. **Content Signature Truncation Flaw**: `slice(0, 10000)` on raw HTML only hashed `<head>`, GTM tags, and nav scripts. Missed actual rate tables in the body (>20k-80k) while causing false positives on dynamic script/nonce shifts.
+    4. **Endpoint URL Misalignment**: Root homepages used instead of statutory ALCO rate disclosure subpaths, exposing monitor to aggressive CDN/Cloudflare bot walls.
+- [x] **18.2 Elimination of False Greens & Gated Status Reporting** `[COMPLETED]`
+  - Differentiated between **100% Verified Clean Run** vs. **Degraded / Partial Run**.
+  - Added prominent terminal warning banner whenever `unreachableBanks.length > 0`.
+  - Added real-time diagnostic logging with error messages directly in the terminal output.
+  - Added formatted **Unreachable Blind Spots Breakdown** table (Bank ID, Name, Error, Target Link) in both CLI output and GitHub Actions step summaries (`GITHUB_STEP_SUMMARY`).
+  - Added gated strict mode failure threshold (`SENTINEL_STRICT=1` or `strict: true`) when unreachability exceeds allowable tolerance (>15%).
+- [x] **18.3 Resilient Content Signature Normalization (`extractComparableContent`)** `[COMPLETED]`
+  - Implemented `extractComparableContent(html)` in `scripts/sentinel-monitor.ts`:
+    - Strips `<script>`, `<style>`, `<svg>`, `<noscript>`, HTML comments, and extra tags.
+    - Normalizes multi-spaces, newlines, and HTML entities (`&nbsp;`, `&amp;`, quotes).
+    - Hashes up to 50,000 characters of clean DOM text, preventing false positives from dynamic nonces and eliminating false negatives on deep rate tables.
+- [x] **18.4 Statutory Rate Disclosure URL Hygiene & Fallback Infrastructure** `[COMPLETED]`
+  - Migrated failing URLs in `masterRegistry.ts` to exact statutory deposit rate paths with redundant fallback URLs:
+    - `au-sfb`: `https://www.aubank.in/interest-rates/fixed-deposit` (fallbacks: `https://www.aubank.in/interest-rates`, `https://www.aubank.in/`)
+    - `suryoday-sfb`: `https://suryoday.bank.in/p/fixed-deposit` (fallbacks: `https://www.suryoday.bank.in/`, `https://www.suryodaybank.com/rates/`)
+    - `union-bank`: `https://www.unionbankofindia.co.in/english/interest-rates.aspx` (fallback: `https://www.unionbankofindia.co.in/`)
+    - `bank-of-india`: `https://bankofindia.co.in/interest-rates/deposit-rates` (fallbacks: `https://bankofindia.co.in/deposit-interest-rates`, `https://bankofindia.co.in/`)
+    - `tgb-bank`: `https://tgb.bank.in/deposit-interest-rates` (fallback: `https://tgb.bank.in/`)
+    - `mgb-bank`: `https://mahagramin.bank.in/` (fallback: `https://mahagramin.in/`)
+    - `ogb-bank`: `https://odishabank.in/` (fallback: `https://odishabank.bank.in/`)
+  - Added `fallbackUrls?: string[]` to `BankMasterDefinition` in `types.ts` and passed through `fetchWithResilience`.
+- [x] **18.5 Ingestion Cache Integrity & Consecutive Failure Tracking** `[COMPLETED]`
+  - Persists `status: 'unreachable'`, timestamp, and increments `consecutiveFailures` in `.sentinel-cache.json` while safely preserving the last verified `contentHash` baseline.
+  - Added Vitest unit test suite in `scripts/sentinel-monitor.test.ts` (5 passing tests). Total test suite now at 54 tests in 1.3s.
+
+---
+
+### Phase 19: Domain Math & Banking Rules Precision Hardening
+*Target Files*: [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`scripts/ingestion/masterRegistry.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/masterRegistry.ts), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/utils/calculator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.ts), [`src/components/TenureInspectionScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/TenureInspectionScreen.tsx)
+
+> **Governing Regulatory Standard**: Align deposit product modeling with statutory RBI Master Directions (Interest Rate on Deposits) and Government of India National Savings Schemes rules. In banking aggregators, displaying non-existent product tenures or misleading tax classifications breaches financial domain integrity.
+
+- [x] **19.1 Post Office PORD 5-Year (60M) Exclusivity** `[COMPLETED]`
+  - **Issue**: `post-office-pord` currently lists rates for `12`, `24`, `36`, and `60` months in `rates.json` and `masterRegistry.ts`.
+  - **Correction**: In India Post National Savings Schemes, PORD is strictly a 5-Year (60-Month) account. Purged `12`, `24`, and `36` from `ratesByTenure` and `rdRatesByTenure` for `post-office-pord`, keeping only `{"60": 6.70}`.
+  - **Acceptance Criteria**: When in RD mode, selecting 12M, 24M, or 36M will not show `post-office-pord`. Selecting 60M will show `post-office-pord` at 6.70%.
+- [x] **19.2 Disablement of Odd-Day Schemes in Recurring Deposit (RD) Mode** `[COMPLETED]`
+  - **Issue**: In `YieldCommandCenter.tsx`, depositors could toggle "Special Schemes (Odd Days)" and select 222D, 399D, 444D, 555D, 777D, 1001D in RD mode. These are promotional Term Deposits (FDs) launched for ALM purposes; banks do not support odd-day installment cycles for RDs.
+  - **Correction**: When `persona.depositType === 'RD'`, disabled the "Special Schemes (Odd Days)" selector tab and forced `tenureUnit: 'months'`. Surfaced a helpful micro-tooltip/pill: *"Odd-day schemes (222D–1001D) are exclusive to Fixed Deposits."*
+  - **Acceptance Criteria**: Switching to RD automatically sets `tenureUnit: 'months'`; odd-day buttons are inactive or hidden in RD mode.
+- [x] **19.3 Section 80C Tax-Saver Badge Conditioning in RD Mode** `[COMPLETED]`
+  - **Issue**: The 60-Month tenure pill currently displays `"Tax Saver 80C"` indiscriminately, even when RD is active. Section 80C deductions apply exclusively to 5-year FDs and 5-year POTD, NOT to Recurring Deposits.
+  - **Correction**: Conditioned badge text: `persona.depositType === 'RD' ? 'Long-Term Savings' : 'Tax Saver 80C'`. Disabled the `'taxsaver'` category filter in RD mode and excluded RDs from it.
+  - **Acceptance Criteria**: In RD mode, the 60M chip displays "Long-Term Savings" and no false 80C claims appear.
+- [x] **19.4 Unsupported Tenure Fallback Transparency & Filtering via `isTenureSupported`** `[COMPLETED]`
+  - **Issue**: If a bank's `ratesMatrix` does not contain the selected tenure, `getEffectiveRate()` silently fell back to `bank.baseRate` (the 36M rate), presenting inaccurate yields for tenures the institution does not offer.
+  - **Correction**: Implemented `isTenureSupported(bank, persona, tenureMonths, tenureDays)` in `calculator.ts`, and filtered `depositTypeAndStateFilteredBanks` in `YieldCommandCenter.tsx`.
+  - **Acceptance Criteria**: Banks without rate disclosures for a selected tenure do not falsely show their 36M rate as active for that tenure.
+- [x] **19.5 Odd-Day Parameter Sync in `TenureInspectionScreen.tsx`** `[COMPLETED]`
+  - **Issue**: When clicking "Inspect" on an odd-day bank scheme, `TenureInspectionScreen` omitted `persona.tenureDays`, dropping back to `persona.tenureMonths` and displaying the wrong schedule and rate. Also hardcoded "FD Certificate" even when in RD mode.
+  - **Correction**: Forwarded `persona.tenureDays` into `getEffectiveRate()` and `calculateYield()` within `TenureInspectionScreen.tsx`. Dynamically rendered "FD Certificate" vs "RD Passbook / Installment Schedule".
+  - **Acceptance Criteria**: Inspecting an odd-day scheme displays the exact odd-day count, applied scheme rate, and fractional compounding schedule.
+
+---
+
+### Phase 20: Codebase Hygiene, Dead Code Elimination & Architecture Streamlining
+*Target Files*: [`src/components/CalculatorScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/CalculatorScreen.tsx), [`src/components/LeaderboardScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/LeaderboardScreen.tsx), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`scripts/ingestion/circularEngine.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/circularEngine.ts), [`index.html`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/index.html), [`src/index.css`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/index.css)
+
+> **Governing Engineering Standard**: Apply the Boy Scout Rule and eliminate technical debt. Dead code creates cognitive overhead, risks divergent maintenance, and inflates repository footprint.
+
+- [x] **20.1 Purge Unmounted Legacy Screens (~70.8 kB)** `[COMPLETED]`
+  - Deleted `src/components/CalculatorScreen.tsx` (37.5 kB, 800+ lines) and `src/components/LeaderboardScreen.tsx` (33.3 kB, 750+ lines). Both were fully superseded by `YieldCommandCenter.tsx` in Phase 3.
+  - Verified zero broken imports across `src/` and `scripts/`.
+- [x] **20.2 Deduplicate `src/data/rates.json` Storage** `[COMPLETED]`
+  - Purged redundant rates mapping in `rates.json` while retaining typing compatibility in `circularEngine.ts`.
+  - Retained `"banks"` as the single typed source of truth.
+- [x] **20.3 Drop Unused Google Font Network Download** `[COMPLETED]`
+  - In `index.html`, removed `&family=Material+Symbols+Outlined:...` from the Google Fonts `<link>`.
+  - In `src/index.css`, purged unused `.material-symbols-outlined` CSS rules.
+  - Saves 40–120 kB on initial page load across mobile connections.
+
+---
+
+### Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening
+*Target Files*: [`.github/workflows/ci.yml`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/.github/workflows/ci.yml), [`vercel.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/vercel.json), `public/favicon.ico`, `public/robots.txt`, `public/_headers`
+
+> **Governing DevOps Standard**: Automated gating is non-negotiable. Every pull request and push to the primary branch must be verified against linting, unit tests, and production build artifact generation before merging.
+
+- [x] **21.1 GitHub Actions Continuous Integration (CI) Workflow (`ci.yml`)** `[COMPLETED]`
+  - Created `.github/workflows/ci.yml` running on `push: [main]` and `pull_request: [main]`.
+  - Steps:
+    1. Checkout with Node 20.x cache
+    2. `npm ci`
+    3. `npm run lint` (`tsc --noEmit`)
+    4. `npm test` (`vitest run`)
+    5. `npm run build` (`vite build`)
+- [x] **21.2 Edge / Web Server SPA Rewrites & Security Headers (`vercel.json`)** `[COMPLETED]`
+  - Provided `vercel.json` configuring SPA fallback to `/index.html` for client-side routing.
+  - Configured OWASP recommended security headers: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Strict-Transport-Security: max-age=31536000; includeSubDomains`, and `Referrer-Policy: strict-origin-when-cross-origin`.
+- [x] **21.3 Provision `public/` Static Assets (Favicon, Robots.txt, Sitemap)** `[COMPLETED]`
+  - Created `public/` directory with `favicon.svg` brand icon and updated `index.html`.
+  - Created `public/robots.txt` allowing search engine indexing.
+  - Created `public/sitemap.xml` referencing primary yield comparison routes.
+
+---
+
+### Phase 22: Advanced Yield Modeling: Non-Cumulative Payout Engine
+*Target Files*: [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts), [`src/utils/calculator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.ts), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx)
+
+> **Governing Financial Modeling Standard**: Senior citizen depositors frequently rely on monthly or quarterly interest disbursements into their savings accounts for living expenses rather than cumulative compounding at maturity.
+
+- [x] **22.1 Non-Cumulative Payout Engine (Monthly & Quarterly Payout Formulas)** `[COMPLETED]`
+  - Supported `payoutFrequency: 'monthly' | 'quarterly' | 'maturity'` in `calculateFDYield()`:
+    - **Quarterly Payout**: Simple interest payout $= P \times (r / 400)$ per quarter; capital returned at maturity $= P$.
+    - **Monthly Payout**: Official RBI/IBA discounted monthly interest formula $= P \times \left[(1 + r/400)^{1/3} - 1\right]$; capital returned at maturity $= P$.
+    - **Cumulative (At Maturity)**: Standard quarterly reinvestment $A = P(1 + r/400)^{4t}$.
+  - Polymorphic `calculateYield()` passes `payoutFrequency`; RD strictly remains cumulative (`'maturity'`).
+- [x] **22.2 Payout Mode Selector & Reactive UX in Yield Command Center** `[COMPLETED]`
+  - Added "Interest Payout & Compounding Plan" selector in Section 1 controls with 3 cards: Cumulative, Monthly Income Plan, and Quarterly Regular Payout.
+  - When non-cumulative is active:
+    - Guaranteed Maturity Payout switches to "Monthly Income Cashflow" / "Quarterly Cashflow Payout" badge with `₹{payout} / mo` or `₹{payout} / quarter`.
+    - Donut chart and summary metrics display Capital Protected ($P$) vs Total Interest Paid Out ($I$).
+    - Bank cards list displays periodic payout amount (e.g. `Payout: ₹6,211/mo`).
+    - Modals (`AmortizationModal`, `BookingModal`) and `TenureInspectionScreen` reflect periodic income cashflow and capital return.
+- [x] **22.3 Verification & Unit Test Suite** `[COMPLETED]`
+  - Added unit test suite in `calculator.test.ts` verifying discounted monthly payout formula (₹10L @ 7.5% -> ₹6,211/mo, ₹74,532 total interest), quarterly payout (₹18,750/quarter), cumulative reinvestment (₹10,77,136), and RD immunity.
+  - All 61 unit tests passing across 9 test suites; `npm run lint` passing with 0 errors; clean production build.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -450,6 +587,12 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-10-29** | Phase 14 | Built Multimodal Gemini 2.0 Flash Circular Extractor & Sentinel GitHub Actions Workflow | `.github/workflows/sentinel-check.yml` created, `extract-circular-llm.ts` built with strict schema validation |
 | **2026-10-29** | Phase 16 | Implemented Depositor Crowdsource Verification Modal (`ReportRateModal.tsx`) | DPDP Act compliant community rate flagging, localStorage persistence, WCAG 2.1 AA accessible |
 | **2026-10-29** | Phase 17 | Vite bundle manual chunk splitting in `vite.config.ts` | Monolith 983 kB JS split into `vendor-charts`, `vendor-react`, `vendor-motion`, `vendor-icons`. 49 unit tests pass in 1.3s |
+| **2026-11-02** | Phase 18 | Architectural Audit, Root Cause Analysis & Sentinel Hardening (`sentinel-monitor.ts`) | Eliminated False Green defect, added inline real-time error logs, content normalization (50k chars clean DOM text), statutory deposit rate URLs with redundant fallbacks across failing banks, and added 5 new unit tests (54 passing tests in 1.3s). |
+| **2026-11-02** | Audit | Comprehensive System Audit (Domain Math, Code Quality, CI/CD, Deployment) | Identified PORD 5Y exclusivity bug, RD odd-day & 80C discrepancies, unmounted legacy screens (~70 kB), missing PR CI workflow, and missing SPA web hosting configs. Outlined Phases 19–22 for execution. |
+| **2026-11-03** | Phase 19 | Domain Math & Banking Rules Precision Hardening | Fixed PORD 5Y exclusivity (removed phantom 12M/24M/36M rates), disabled odd-day schemes in RD mode, conditioned 80C badge, implemented `isTenureSupported` filtering, synced `tenureDays` in `TenureInspectionScreen`, and added 3 unit tests (57 tests passing). |
+| **2026-11-03** | Phase 20 | Codebase Hygiene & Dead Code Elimination | Purged unmounted `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), removed redundant Google Font `Material Symbols Outlined` download, cleaned up CSS rules. |
+| **2026-11-03** | Phase 21 | Production CI/CD Pipeline & Web Hosting Deployment Hardening | Created `.github/workflows/ci.yml` (automated lint, test, build gate), `vercel.json` (SPA routing & security headers), and `public/` assets (`favicon.svg`, `robots.txt`, `sitemap.xml`). |
+| **2026-11-06** | Phase 22 | Advanced Yield Modeling: Non-Cumulative Payout Engine | Implemented RBI discounted monthly interest formula, quarterly simple interest payout, compounding frequency selector UI in Section 1, periodic cashflow badges across command center, cards, modals, and inspection screen; added 4 new unit tests (61 tests passing). |
 
 
 

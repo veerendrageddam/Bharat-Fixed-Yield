@@ -1,6 +1,7 @@
 import {
   BankData,
   CalculationResult,
+  CompoundingFrequency,
   DepositType,
   QuarterData,
   TimelineDataPoint,
@@ -45,7 +46,8 @@ export function getEffectiveRate(
     : bank.ratesByTenure;
 
   // 1. Check if an odd-day special high-yield scheme matches (e.g. 222D, 399D, 400D, 444D, 555D, 1001D)
-  if (effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
+  // Odd-day promotional schemes are strictly for Term Deposits (FDs), not Recurring Deposits
+  if (persona.depositType !== 'RD' && effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
     // Exact or nearest special scheme within 10 days
     const matchedScheme = bank.specialSchemes.find(
       (s) => Math.abs(s.days - effectiveDays) <= 10
@@ -86,9 +88,57 @@ export function getEffectiveRate(
 }
 
 /**
+ * Checks if a bank actively supports the selected tenure for the given deposit type
+ */
+export function isTenureSupported(
+  bank: BankData,
+  persona: UserPersona,
+  tenureMonths?: number,
+  tenureDays?: number
+): boolean {
+  if (persona.depositType === 'RD') {
+    if (bank.rdSupported === false) return false;
+    // Odd-day promotional schemes are strictly for Term Deposits (FDs)
+    const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
+    if (effectiveDays) return false;
+
+    const targetTenure = tenureMonths ?? persona.tenureMonths;
+    const ratesMatrix = (bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
+      ? bank.rdRatesByTenure
+      : bank.ratesByTenure;
+
+    if (ratesMatrix && Object.keys(ratesMatrix).length > 0) {
+      return ratesMatrix[targetTenure] !== undefined;
+    }
+    return bank.tenureMonths === targetTenure;
+  }
+
+  // FD
+  if (bank.fdSupported === false) return false;
+  const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
+  if (effectiveDays) {
+    if (bank.specialSchemes && bank.specialSchemes.length > 0) {
+      const matched = bank.specialSchemes.some((s) => Math.abs(s.days - effectiveDays) <= 10);
+      if (matched) return true;
+    }
+    const approxMonths = Math.round(effectiveDays / 30.41);
+    if (bank.ratesByTenure && bank.ratesByTenure[approxMonths] !== undefined) {
+      return true;
+    }
+    return false;
+  }
+
+  const targetTenure = tenureMonths ?? persona.tenureMonths;
+  if (bank.ratesByTenure && Object.keys(bank.ratesByTenure).length > 0) {
+    return bank.ratesByTenure[targetTenure] !== undefined;
+  }
+  return bank.tenureMonths === targetTenure;
+}
+
+/**
  * Calculates Fixed Deposit Yield with quarterly compounding (RBI Banking Standard)
+ * Supports Cumulative (reinvestment at maturity) and Non-Cumulative (Monthly / Quarterly Payouts)
  * Supports both standard months and odd-day tenures (e.g. 222D, 444D, 555D, 1001D)
- * Formula: A = P * (1 + r/400)^(4 * t) where t = days/365 or months/12
  */
 export function calculateFDYield(
   principal: number,
@@ -97,12 +147,40 @@ export function calculateFDYield(
   age: number,
   form15HSubmitted: boolean = false,
   panLinked: boolean = true,
-  tenureDays?: number
+  tenureDays?: number,
+  payoutFrequency: CompoundingFrequency = 'maturity'
 ): CalculationResult {
   const r = annualRate;
   const isDaysMode = tenureDays !== undefined && tenureDays > 0;
   const t = isDaysMode ? tenureDays / 365 : tenureMonths / 12;
   const quartersCount = Math.max(1, isDaysMode ? Math.round(tenureDays / 91.25) : Math.round(tenureMonths / 3));
+  const totalMonths = isDaysMode ? Math.max(1, Math.round(tenureDays / 30.41)) : tenureMonths;
+
+  const isMonthlyPayout = payoutFrequency === 'monthly';
+  const isQuarterlyPayout = payoutFrequency === 'quarterly';
+  const isCumulative = !isMonthlyPayout && !isQuarterlyPayout;
+
+  let periodicPayoutAmount: number | undefined;
+  let maturityAmount = principal;
+  let totalInterest = 0;
+
+  if (isMonthlyPayout) {
+    // Official RBI/IBA Discounted Monthly Interest Formula: m = (1 + r/400)^(1/3) - 1
+    const monthlyFactor = Math.pow(1 + r / 400, 1 / 3) - 1;
+    periodicPayoutAmount = Math.round(principal * monthlyFactor);
+    totalInterest = totalMonths * periodicPayoutAmount;
+    maturityAmount = principal;
+  } else if (isQuarterlyPayout) {
+    // Simple quarterly interest payout: P * (r / 400)
+    periodicPayoutAmount = Math.round(principal * (r / 400));
+    totalInterest = quartersCount * periodicPayoutAmount;
+    maturityAmount = principal;
+  } else {
+    // Cumulative: A = P * (1 + r/400)^(4 * t)
+    const exactMaturity = Math.round(principal * Math.pow(1 + r / 400, 4 * t));
+    maturityAmount = exactMaturity > 0 ? exactMaturity : principal;
+    totalInterest = Math.max(0, maturityAmount - principal);
+  }
 
   let currentBalance = principal;
   let cumInterest = 0;
@@ -133,9 +211,26 @@ export function calculateFDYield(
 
   for (let q = 1; q <= quartersCount; q++) {
     const opening = currentBalance;
-    const interest = Math.round(opening * (r / 400));
-    cumInterest += interest;
-    currentBalance = opening + interest;
+    let interest = 0;
+
+    if (isMonthlyPayout && periodicPayoutAmount) {
+      // 3 months per quarter (or remainder for final quarter)
+      const monthsInThisQuarter = (q === quartersCount)
+        ? Math.max(1, totalMonths - (quartersCount - 1) * 3)
+        : 3;
+      interest = monthsInThisQuarter * periodicPayoutAmount;
+      cumInterest += interest;
+      currentBalance = principal; // Balance stays principal as interest is paid out monthly
+    } else if (isQuarterlyPayout && periodicPayoutAmount) {
+      interest = periodicPayoutAmount;
+      cumInterest += interest;
+      currentBalance = principal; // Balance stays principal as interest is paid out quarterly
+    } else {
+      // Cumulative reinvestment
+      interest = Math.round(opening * (r / 400));
+      cumInterest += interest;
+      currentBalance = opening + interest;
+    }
 
     // Track FY interest
     if (q <= 4) {
@@ -193,11 +288,6 @@ export function calculateFDYield(
     });
   }
 
-  // Exact maturity value using RBI fractional quarterly compounding: A = P * (1 + r/400)^(4 * t)
-  const exactMaturityAmount = Math.round(principal * Math.pow(1 + r / 400, 4 * t));
-  const maturityAmount = exactMaturityAmount > 0 ? exactMaturityAmount : currentBalance;
-  const totalInterest = Math.max(0, maturityAmount - principal);
-
   if (quarters.length > 0) {
     quarters[quarters.length - 1].closingBalance = maturityAmount;
     quarters[quarters.length - 1].cumulativeInterest = totalInterest;
@@ -210,12 +300,19 @@ export function calculateFDYield(
     }
   }
 
-  const effectiveAnnualYield = Number(((totalInterest / (principal * t)) * 100).toFixed(2));
+  const effectiveAnnualYield = isQuarterlyPayout
+    ? Number(annualRate.toFixed(2))
+    : Number(((totalInterest / (principal * t)) * 100).toFixed(2));
+
   const estimatedTdsYear3 = fy3Interest > exemptionThreshold ? Math.round(fy3Interest * tdsRate) : 0;
-  const netMaturityWithTds = form15HSubmitted ? maturityAmount : Math.max(principal, maturityAmount - totalTds);
+  const netMaturityWithTds = isCumulative
+    ? (form15HSubmitted ? maturityAmount : Math.max(principal, maturityAmount - totalTds))
+    : maturityAmount;
 
   return {
     depositType: 'FD',
+    payoutFrequency,
+    periodicPayoutAmount,
     appliedRate: annualRate,
     effectiveAnnualYield,
     totalInvested: principal,
@@ -370,6 +467,7 @@ export function calculateRDYield(
 
   return {
     depositType: 'RD',
+    payoutFrequency: 'maturity',
     appliedRate: annualRate,
     effectiveAnnualYield,
     totalInvested,
@@ -397,10 +495,11 @@ export function calculateYield(
   form15HSubmitted: boolean = false,
   depositType: DepositType = 'FD',
   panLinked: boolean = true,
-  tenureDays?: number
+  tenureDays?: number,
+  payoutFrequency: CompoundingFrequency = 'maturity'
 ): CalculationResult {
   if (depositType === 'RD') {
     return calculateRDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked, tenureDays);
   }
-  return calculateFDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked, tenureDays);
+  return calculateFDYield(amount, annualRate, tenureMonths, age, form15HSubmitted, panLinked, tenureDays, payoutFrequency);
 }

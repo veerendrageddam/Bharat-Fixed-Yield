@@ -30,7 +30,7 @@ export default function App() {
     principal: 500000,
     monthlyInstallment: 10000,
     tenureMonths: 36,
-    compounding: 'quarterly',
+    compounding: 'maturity',
     age: 62,
     gender: 'male',
     state: PAN_INDIA_OPTION.name,

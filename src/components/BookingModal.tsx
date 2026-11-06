@@ -55,7 +55,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
     persona.form15HSubmitted,
     persona.depositType,
     persona.panLinked,
-    tenureDays
+    tenureDays,
+    persona.compounding
   );
 
   const referenceId = `BFY-${bank.name.substring(0, 3).toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
@@ -187,8 +188,19 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
             </span>
           </div>
 
+          {persona.depositType === 'FD' && persona.compounding !== 'maturity' && calc.periodicPayoutAmount && (
+            <div className="flex justify-between items-center text-emerald-700 dark:text-emerald-400">
+              <span className="font-medium">Periodic Income Cashflow:</span>
+              <span className="font-extrabold tabular-nums text-sm">
+                ₹{formatINR(calc.periodicPayoutAmount)} / {persona.compounding === 'monthly' ? 'month' : 'quarter'}
+              </span>
+            </div>
+          )}
+
           <div className="flex justify-between items-center pt-2 border-t border-emerald-200/80 dark:border-emerald-800/80">
-            <span className="font-bold text-slate-900 dark:text-white">Guaranteed Net Maturity Value:</span>
+            <span className="font-bold text-slate-900 dark:text-white">
+              {persona.compounding === 'maturity' ? 'Guaranteed Net Maturity Value:' : 'Capital Returned at Maturity:'}
+            </span>
             <span className="text-base font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
               ₹{formatINR(calc.maturityAmount)}
             </span>

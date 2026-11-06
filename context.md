@@ -82,6 +82,7 @@ Bharat Fixed Yield is designed to be an **RBI/DICGC-indexed yield comparison pla
   - Bank interest rates in India are event-driven, changing 1–2 times per quarter per bank around RBI MPC meetings (bi-monthly) and bank ALCO circular releases.
   - Replaced DOM scraping with a **Sentinel Monitor + Structured Circular Ingestion Engine**:
     - **Sentinel Monitor** (`scripts/sentinel-monitor.ts`): Observes HTTP signatures (ETags, Last-Modified, content hashes) on official bank disclosure URLs.
+      - *Observability Hardening (Phase 18)*: Replaces "False Green" reporting with explicit status gating (100% Verified Clean vs. Degraded/Blind-Spot warnings), logs inline HTTP diagnostic error codes, sanitizes dynamic noise before hashing (DOM clean text hashing instead of raw 10k slice), and points endpoints directly to statutory ALCO rate disclosure subpaths rather than bot-protected root homepages.
     - **Circular Ingestion Engine** (`scripts/ingestion/circularEngine.ts` and `scripts/ingest-circular.ts`): Parses, validates (bounds 3.00%–11.50%), and merges official bank ALCO circulars (< ₹3 Cr retail limit) with audit diffs into `src/data/rates.json`.
     - **Audit Metadata**: Captures official `effectiveDate` (e.g. `w.e.f. Oct 15, 2024`), direct `circularUrl` links, `callable` flags, and `retailCapCr` (₹3 Cr).
     - **UI Transparency**: Bank cards display the exact `w.e.f.` date and a clickable link to inspect the official bank rate card.
@@ -246,27 +247,72 @@ gantt
   - Synchronized verified ALCO circular baselines across all 38 registered institutions (< ₹3 Cr retail limit).
   - Enforced audit schema (`effectiveDate`, `circularUrl`, `callable`, `retailCapCr`) and added transparent UI badges/links.
   - 40 passing unit tests (<1.2s), clean TypeScript check, and clean Vite build.
+- [x] **Phase 14: LLM Circular Extractor & Sentinel GitHub Actions** `[COMPLETED]`
+  - Built multimodal Gemini 2.0 Flash circular ingestion agent (`scripts/extract-circular-llm.ts`).
+  - Added scheduled GitHub Action `.github/workflows/sentinel-check.yml` for bi-weekly signature monitoring.
+- [x] **Phase 16: Depositor Crowdsource Verification Modal** `[COMPLETED]`
+  - Built accessible `ReportRateModal.tsx` for community rate flag submissions with zero PII storage.
+- [x] **Phase 17: Production Bundle Optimization & Code Splitting** `[COMPLETED]`
+  - Configured manual rollup chunking in `vite.config.ts` (`vendor-charts`, `vendor-react`, `vendor-motion`, `vendor-icons`).
+- [x] **Phase 18: Sentinel Resilience, Observability & Ingestion Hardening** `[COMPLETED]`
+  - Eliminated False Green defect, added inline real-time error logs, content normalization (50k chars clean DOM text), and statutory deposit rate URLs with redundant fallbacks across failing banks. Total 54 unit tests passing.
+- [x] **Phase 19: Domain Math & Banking Rules Precision Hardening** `[COMPLETED]`
+  - PORD 5-year exclusivity, RD odd-day disablement, Section 80C badge conditioning, `isTenureSupported` filtering, `TenureInspectionScreen` parameter sync. 57 passing tests.
+- [x] **Phase 20: Codebase Hygiene & Dead Code Elimination** `[COMPLETED]`
+  - Purged legacy `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), deduplicated `rates.json`, dropped unused font downloads.
+- [x] **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening** `[COMPLETED]`
+  - Automated PR/push CI gating (`ci.yml`), SPA routing rewrites & security headers (`vercel.json`), static assets in `public/` (favicon, robots.txt, sitemap.xml).
+- [x] **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** `[COMPLETED]`
+  - Implemented RBI discounted monthly interest formula and quarterly simple interest payout in `calculateFDYield()`.
+  - Added "Interest Payout & Compounding Plan" selector in Yield Command Center with dynamic cashflow badges (`₹{amount}/mo` or `₹{amount}/quarter`), Capital Returned at Maturity indicators, and synchronized Modals and Inspection Screen.
+  - 61 unit tests passing across 9 test suites.
+
+### Developer & Ingestion CLI Reference
+```bash
+# 1. Run the 61-test Vitest unit test suite (executes in <1.5s)
+npm test
+
+# 2. Run the 38-Institution ALCO Rate & Gazette Audit Report
+npm run audit:rates
+
+# 3. Test the Multimodal Gemini 2.0 Flash Circular Extractor in offline test mode
+npm run extract:circular -- --bank sbi-bank --offline --file scripts/extract-circular-llm.test.ts
+
+# 4. Run the Sentinel Rate-Change Monitor against bank disclosure signatures
+npm run monitor:sentinel
+
+# 5. Verify production TypeScript build & vendor chunk distribution
+npm run lint && npm run build
+```
 
 ---
 
 ## 7. Strategic Next Steps & Roadmap
 
 ```mermaid
-flowchart LR
-    A["Phase 14: LLM Circular Extractor & GitHub Actions Sentinel"] --> B["Phase 15: Public Bank SEO Landing Pages (Next.js/Astro SSG)"] --> C["Phase 16: Community & Depositor Crowdsource Verification"]
+flowchart TD
+    P19["Phase 19: Domain Math & Banking Rules Precision (P0)"] --> P20["Phase 20: Codebase Hygiene & Dead Code Cleanup (P1)"]
+    P20 --> P21["Phase 21: CI/CD Pipeline & Web Hosting Hardening (P1)"]
+    P21 --> P15["Phase 15: Public Pre-rendered Bank SEO Pages (P2)"]
+    P21 --> P22["Phase 22: Non-Cumulative Payout Engine (P2)"]
 ```
 
-1. **Phase 14: Automated Circular Extractor (Gemini 2.0 Flash) & Sentinel CI Workflow**
-   - Wire `scripts/sentinel-monitor.ts` into a scheduled GitHub Actions cron (weekly or post-RBI MPC release).
-   - When a sentinel alert triggers (page signature changes), trigger a Gemini 2.0 Flash agent to extract the structured table / PDF circular directly into the `BankCircularUpdate` schema.
-   - Automatically generate a GitHub Pull Request with the extracted rates, diff, and direct circular URL for 1-click human-in-the-loop (HITL) approval.
+1. **Phase 19: Domain Math & Banking Rules Precision Hardening (P0 Immediate Priority)**
+   - **Post Office PORD 5-Year Exclusivity**: Remove `12M`, `24M`, `36M` phantom rates from `rates.json` and `masterRegistry.ts`, ensuring PORD is offered strictly at 60M.
+   - **RD Odd-Day Disablement**: Prevent odd-day promotional schemes (222D–1001D) from being selected in RD mode, maintaining consistency with RBI and bank rules.
+   - **Section 80C Badge Conditioning**: Only display "Tax Saver 80C" when FD mode is active; label 60M RD as "Long-Term Savings".
+   - **Tenure Inspection Param Sync**: Pass `persona.tenureDays` to `getEffectiveRate` and `calculateYield` in `TenureInspectionScreen.tsx`.
 
-2. **Phase 15: Public Pre-rendered Bank SEO Pages (SSG / ISR)**
-   - As identified in Section 3, organic Google search (*"best SBI 1 year FD rate"*, *"post office time deposit interest rate"*) is the primary user acquisition channel.
-   - Introduce static pre-rendered routes (e.g., `/banks/sbi`, `/banks/hdfc`, `/tenure/1-year-fd`) using Next.js or Astro/Vite-SSG to capture long-tail organic search volume.
+2. **Phase 20: Codebase Hygiene & Dead Code Elimination (P1)**
+   - Purge unmounted legacy `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70 kB).
+   - Deduplicate `rates.json` by deprecating the redundant top-level `"rates"` key.
+   - Remove unused Google Fonts `Material Symbols Outlined` network download in `index.html`.
 
-3. **Phase 16: Depositor Community Crowdsource Verification & Flagging**
-   - Add a lightweight "Report Rate Update" modal on bank cards: depositors can upload a branch notice photo or paste a new circular link.
-   - Community submissions enter a review queue to be audited via `scripts/ingest-circular.ts`.
+3. **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment Hardening (P1)**
+   - Create `.github/workflows/ci.yml` to gate all PRs and pushes with `lint`, `test`, and `build`.
+   - Add `vercel.json` and `public/` files (`favicon.ico`, `robots.txt`, `sitemap.xml`) for clean SPA edge deployment and security header enforcement.
+
+4. **Phase 22: Non-Cumulative Yield Engine (P2)**
+   - Add monthly and quarterly discounted interest payout calculations for pensioner cash flow planning.
 
 

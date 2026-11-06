@@ -123,6 +123,8 @@ export interface TimelineDataPoint {
 
 export interface CalculationResult {
   depositType: DepositType;
+  payoutFrequency?: CompoundingFrequency;
+  periodicPayoutAmount?: number;
   appliedRate: number;
   effectiveAnnualYield: number;
   totalInvested: number;
