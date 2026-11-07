@@ -1,12 +1,12 @@
 import React from 'react';
-import { Sun, Moon, ShieldCheck, Menu, X, User } from 'lucide-react';
+import { Sun, Moon, ShieldCheck, Menu, X } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
-  onOpenSignIn: () => void;
+  onOpenSignIn?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -14,7 +14,6 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   isDarkMode,
   toggleDarkMode,
-  onOpenSignIn,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
 
@@ -106,23 +105,6 @@ export const Header: React.FC<HeaderProps> = ({
               title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
-            </button>
-
-            {/* Sign In CTA */}
-            <button
-              onClick={onOpenSignIn}
-              className="hidden lg:inline-flex items-center justify-center px-3.5 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-xs sm:text-sm font-semibold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
-            >
-              Sign In
-            </button>
-
-            {/* User Icon Avatar */}
-            <button
-              onClick={onOpenSignIn}
-              aria-label="User Account Profile"
-              className="w-8 h-8 rounded-full bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900 flex items-center justify-center hover:opacity-90 transition-opacity focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
-            >
-              <User className="w-4 h-4" />
             </button>
 
             {/* Mobile Menu Button */}

@@ -10,7 +10,6 @@ import { TaxGuideScreen } from './components/TaxGuideScreen';
 import { DicgcSafetyScreen } from './components/DicgcSafetyScreen';
 import { CompareDrawer } from './components/CompareDrawer';
 import { BookingModal } from './components/BookingModal';
-import { SignInModal } from './components/SignInModal';
 import { ReportRateModal } from './components/ReportRateModal';
 import { PAN_INDIA_OPTION } from './data/jurisdictions';
 
@@ -21,7 +20,6 @@ export default function App() {
   const [bookingBank, setBookingBank] = useState<BankData | null>(null);
   const [reportRateBank, setReportRateBank] = useState<BankData | null>(null);
   const [reportRateOpen, setReportRateOpen] = useState<boolean>(false);
-  const [signInOpen, setSignInOpen] = useState<boolean>(false);
   const [comparedBankIds, setComparedBankIds] = useState<string[]>([]);
 
   // Default Persona as shown in the user's provided screens
@@ -98,7 +96,6 @@ export default function App() {
         setActiveTab={setActiveTab}
         isDarkMode={isDarkMode}
         toggleDarkMode={toggleDarkMode}
-        onOpenSignIn={() => setSignInOpen(true)}
       />
 
       {/* Main Content Viewport with smooth transitions */}
@@ -196,12 +193,6 @@ export default function App() {
         bank={bookingBank}
         persona={persona}
         onClose={() => setBookingBank(null)}
-      />
-
-      {/* Sign In & Account Modal */}
-      <SignInModal
-        isOpen={signInOpen}
-        onClose={() => setSignInOpen(false)}
       />
 
       {/* Community Rate Revision & Circular Submission Modal */}

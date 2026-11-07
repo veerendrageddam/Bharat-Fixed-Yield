@@ -315,4 +315,48 @@ flowchart TD
 4. **Phase 22: Non-Cumulative Yield Engine (P2)**
    - Add monthly and quarterly discounted interest payout calculations for pensioner cash flow planning.
 
+---
+
+## 8. UI/UX Architecture Review & Pre-v1 Audit Findings
+
+Following a full-system audit conducted against `/core-engineering` and `/full-stack-engineering-standards`:
+
+### 8.1 Key Strengths
+- **Domain Mathematical Integrity**: RBI quarterly compounding formula, discounted monthly payout for pensioners, and statutory Section 194A TDS logic (with Form 15G/15H exemptions) operate flawlessly across 61 passing unit tests.
+- **DPDP Act 2023 Compliance**: Zero storage of Aadhaar/PAN; bank bookings utilize direct verified portal redirections (`target="_blank" rel="noopener noreferrer"`) or explicit-consent assisted callback requests.
+- **ALCO Circular Ingestion**: Real-time rate cards verified against official bank regulatory circulars and sovereign gazettes.
+
+### 8.2 UI/UX Gaps & Optimization Vectors
+1. **Control Density & Progressive Disclosure in Yield Command Center**:
+   - Section 1 stacked 8 dense control blocks (deposit type, sliders, presets, odd-day scheme matrices, custom rate modeling, compounding plans, and persona matrix), resulting in a ~1,400px vertical block before data visualizations or bank cards appeared.
+   - *Resolution*: Group controls into Tier 1 (Core Deposit Parameters) and Tier 2 (Progressive Disclosure for Personalization, State, and Tax Exemption).
+2. **Orphaned Deep-Dive View (`TenureInspectionScreen`)**:
+   - `onInspectBank` was accepted in props by `YieldCommandCenter` but never triggered by bank cards, leaving the comprehensive 623-line inspection view reachable only via the secondary DICGC screen.
+   - Bank cards contained a lightweight `Schedule` modal duplicating schedule data without the full tax breakdown and CSV export.
+   - *Resolution*: Direct bank card schedule/inspect actions to the comprehensive `TenureInspectionScreen`.
+3. **Data Visualization Hardcoding in Inspection View**:
+   - The 3-year compounding trajectory chart in `TenureInspectionScreen` rendered a static SVG polygon with hardcoded coordinates rather than dynamic user compounding data.
+   - *Resolution*: Power the visualizer with the dynamic Recharts `AreaChart` from `topCalculation.timelineData`.
+4. **Mobile Usability & Sticky Comparison Table**:
+   - The floating compare drawer overcrowded on 375px viewports; the side-by-side comparison modal lacked a sticky feature column, disorienting users scrolling past 2+ banks.
+   - *Resolution*: Implement `sticky left-0` on feature labels and compact the floating dock on small viewports.
+5. **Accessibility (WCAG 2.1 AA)**:
+   - Several inputs lacked explicit `htmlFor` / `id` associations. Modals lacked keyboard focus trapping (`Tab` / `Shift+Tab`).
+   - *Resolution*: Add semantic label bindings and modal focus containment.
+
+---
+
+## 9. Architectural Decision: Disabling Mock Login for v1 Release
+
+### 9.1 Evaluation: Are We Actually Using Login?
+**Verdict: No.** An architectural audit confirms that BFY has **zero backend, zero database, and zero session management**:
+- `SignInModal.tsx` was purely cosmetic: submitting the email form executed `setIsSubmitted(true)` and displayed a mock *"Magic Login Link Sent!"* message.
+- No network requests, API endpoints, tokens, cookies, or user profile stores exist or were ever integrated.
+
+### 9.2 The Architectural Trade-Off & Decision
+- **User Trust**: In a financial intelligence platform calculating statutory yields and DICGC insurance ceilings, presenting a fake login CTA undermines institutional credibility and violates user expectations.
+- **Governing Principle**: *Build the simplest production-quality solution that satisfies current requirements.* For v1, BFY is a **100% public, privacy-first, zero-friction client-side discovery engine**.
+- **Action**: **Disable and remove the mock "Sign In" button, user avatar, and `SignInModal` for the v1 production release.**
+- **v2 Roadmap Placement**: When real backend services (e.g., Supabase / Firebase / Postgres) are introduced in Phase 24, true authentication for saved portfolios, maturity alerts (SMS/Email), and personalized Form 15H vaulting will be engineered with end-to-end security.
+
 

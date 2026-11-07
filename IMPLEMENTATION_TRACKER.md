@@ -33,6 +33,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `COMPLETED` | 100% | Completed |
 | **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
 | **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
+| **Phase 23: Production v1 Hardening & UI/UX Optimization** | Disabling Mock Login, Header Clean-up, UI/UX Gap Resolution, Architecture Audit | `IN_PROGRESS` | 50% | In Progress |
 
 ---
 
@@ -566,6 +567,24 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 23: Production v1 Hardening & UI/UX Optimization
+*Target Files*: [`src/App.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/App.tsx), [`src/components/Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx), [`src/components/Header.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.test.tsx), [`context.md`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/context.md)
+
+- [x] **23.1 Disable Mock Login Component for v1 Release** `[COMPLETED]`
+  - Confirmed application operates with 0 backend, 0 DB, and 100% public client-side rate discovery.
+  - Removed mock "Sign In" button, user avatar, and unbacked `SignInModal` to preserve institutional depositor trust.
+  - Deferred real authentication (saved portfolios, SMS/email maturity alerts) to v2 roadmap.
+- [x] **23.2 Clean Up Header UI & Test Suite** `[COMPLETED]`
+  - Removed `onOpenSignIn` from `HeaderProps` and `Header.tsx`.
+  - Updated `Header.test.tsx` to verify clean v1 navigation and statutory trust chips (RBI Repo Rate & DICGC Insured); all 61 tests passing.
+- [ ] **23.3 Reconnect `TenureInspectionScreen` & Fix Hardcoded SVG**
+  - Connect bank card inspection action directly to `TenureInspectionScreen`.
+  - Replace static SVG curve with dynamic Recharts compounding timeline.
+- [ ] **23.4 Form Accessibility & Sticky Compare Table**
+  - Bind `<label htmlFor>` to all configuration inputs; add `sticky left-0` to comparison table features.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -593,6 +612,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-11-03** | Phase 20 | Codebase Hygiene & Dead Code Elimination | Purged unmounted `CalculatorScreen.tsx` and `LeaderboardScreen.tsx` (~70.8 kB), removed redundant Google Font `Material Symbols Outlined` download, cleaned up CSS rules. |
 | **2026-11-03** | Phase 21 | Production CI/CD Pipeline & Web Hosting Deployment Hardening | Created `.github/workflows/ci.yml` (automated lint, test, build gate), `vercel.json` (SPA routing & security headers), and `public/` assets (`favicon.svg`, `robots.txt`, `sitemap.xml`). |
 | **2026-11-06** | Phase 22 | Advanced Yield Modeling: Non-Cumulative Payout Engine | Implemented RBI discounted monthly interest formula, quarterly simple interest payout, compounding frequency selector UI in Section 1, periodic cashflow badges across command center, cards, modals, and inspection screen; added 4 new unit tests (61 tests passing). |
+| **2026-11-07** | Phase 23 | Production v1 UI/UX Audit & Mock Login Disablement | Completed full UI/UX architectural audit; verified zero backend/DB usage; disabled cosmetic `SignInModal`, Sign In button, and user avatar; documented audit findings in `context.md`; all 61 tests passing; verified zero-error TypeScript build. |
 
 
 

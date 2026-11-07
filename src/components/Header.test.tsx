@@ -9,7 +9,6 @@ describe('Header Component UI & Accessibility', () => {
     setActiveTab: vi.fn(),
     isDarkMode: false,
     toggleDarkMode: vi.fn(),
-    onOpenSignIn: vi.fn(),
   };
 
   it('renders the brand lockup and skip link', () => {
@@ -42,12 +41,11 @@ describe('Header Component UI & Accessibility', () => {
     expect(toggleDarkMode).toHaveBeenCalledTimes(1);
   });
 
-  it('opens sign in modal when Sign In CTA is clicked', () => {
-    const onOpenSignIn = vi.fn();
-    render(<Header {...defaultProps} onOpenSignIn={onOpenSignIn} />);
-    const signInBtn = screen.getByRole('button', { name: /^Sign In$/i });
-    fireEvent.click(signInBtn);
-    expect(onOpenSignIn).toHaveBeenCalledTimes(1);
+  it('renders statutory trust indicators (RBI Repo Rate and DICGC Insurance)', () => {
+    render(<Header {...defaultProps} />);
+    expect(screen.getByText(/RBI Repo Rate:/i)).toBeInTheDocument();
+    expect(screen.getByText('6.50%')).toBeInTheDocument();
+    expect(screen.getByText(/DICGC ₹5L Insured/i)).toBeInTheDocument();
   });
 
   it('toggles mobile menu on mobile menu button click', () => {
