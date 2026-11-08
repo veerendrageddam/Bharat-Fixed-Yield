@@ -22,7 +22,7 @@ interface ReportRateModalProps {
   onClose: () => void;
 }
 
-const STORAGE_KEY = 'bfy_community_rate_reports';
+const STORAGE_KEY = 'bdr_community_rate_reports';
 
 export function getStoredCommunityReports(): CommunityRateReport[] {
   try {
@@ -96,7 +96,7 @@ export function ReportRateModal({ bank, isOpen, onClose }: ReportRateModalProps)
       }
     }
 
-    const reportId = `BFY-REV-${Date.now().toString().slice(-6)}`;
+    const reportId = `BDR-REV-${Date.now().toString().slice(-6)}`;
     const report: CommunityRateReport = {
       id: reportId,
       bankId: currentBank.id,

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ShieldCheck } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
   onNavClick: (tab: string) => void;
@@ -12,12 +13,8 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
         {/* Top Header & Links */}
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-4">
           <div className="flex items-center gap-3">
-            <img
-              alt="Bharat Fixed Yield Logo"
-              className="h-8 w-auto object-contain"
-              src="https://lh3.googleusercontent.com/aida/AEtjO1WBAhIy1NZ4VvoiyE4brhlyXhFDBXuSSQOo59-fpOgU9WCH1iTm9iXiC28WlZFu1NODODbGY5FJsSkuuM8h1rjp7UU03nURffzu7_xlmS6-DOuvwAeetxe__zZCKlPVmSyI0n1FgizL4IlFgOhjLa8pPpJtFoe_PN8bhhltNQlSBMGBHB2hKlOPgzxSgnm47L93BcjyPga1JwfZjDrikgZrz2BgkjLuJByKz063bTv91vzbwPvlR6g2ffUo"
-            />
-            <span className="font-bold text-lg text-slate-900 dark:text-white">Bharat Fixed Yield</span>
+            <BrandLogo className="h-8 w-8" />
+            <span className="font-bold text-lg text-slate-900 dark:text-white">Bharat Deposit Radar</span>
           </div>
 
           <div className="flex flex-wrap items-center gap-4 sm:gap-6">
@@ -70,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavClick }) => {
             Yield analytics and compounding schedules comply with Reserve Bank of India (RBI) Master Directions on Interest
             Rates on Deposits. Figures displayed are for calculation and statutory illustrative purposes.
           </p>
-          <p className="shrink-0">© 2025 Bharat Fixed Yield Platform. All rights reserved.</p>
+          <p className="shrink-0">© 2026 Bharat Deposit Radar Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>

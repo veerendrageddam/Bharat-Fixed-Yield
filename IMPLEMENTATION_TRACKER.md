@@ -1,4 +1,4 @@
-# Bharat Fixed Yield (BFY) — Implementation & Task Tracker
+# Bharat Deposit Radar (BDR) — Implementation & Task Tracker
 
 > **Core Engineering Principle**: Build the simplest production-quality solution that satisfies current requirements, making deliberate decisions about maintainability, security, performance, scalability, UX, and future change.
 
@@ -33,7 +33,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 20: Codebase Hygiene & Dead Code Elimination** | Purge `CalculatorScreen`/`LeaderboardScreen`, Deduplicate `rates.json`, Drop Unused Font | `COMPLETED` | 100% | Completed |
 | **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
 | **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
-| **Phase 23: Production v1 Hardening & UI/UX Optimization** | Disabling Mock Login, Header Clean-up, UI/UX Gap Resolution, Architecture Audit | `IN_PROGRESS` | 50% | In Progress |
+| **Phase 23: Production v1 Hardening & UI/UX Optimization** | Rebranding to Bharat Deposit Radar, Login Disablement, Sticky Compare, Dynamic Charts, a11y | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -568,20 +568,32 @@ Status: **Production Ready (Phase 1–5 Complete)**
 ---
 
 ### Phase 23: Production v1 Hardening & UI/UX Optimization
-*Target Files*: [`src/App.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/App.tsx), [`src/components/Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx), [`src/components/Header.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.test.tsx), [`context.md`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/context.md)
+*Target Files*: [`src/App.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/App.tsx), [`src/components/Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx), [`src/components/Header.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.test.tsx), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/components/TenureInspectionScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/TenureInspectionScreen.tsx), [`src/components/CompareDrawer.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/CompareDrawer.tsx), [`context.md`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/context.md)
 
-- [x] **23.1 Disable Mock Login Component for v1 Release** `[COMPLETED]`
+- [x] **23.1 Full Rebranding to Bharat Deposit Radar (BDR)** `[COMPLETED]`
+  - Updated application brand name across `index.html`, `Header.tsx`, `Footer.tsx`, `BookingModal.tsx` (`BDR-...`), `ReportRateModal.tsx` (`BDR-REV-...`), and `package.json`.
+  - Upgraded marketing copy and SEO metadata to reflect active deposit surveillance positioning.
+- [x] **23.2 Disable Mock Login Component for v1 Release** `[COMPLETED]`
   - Confirmed application operates with 0 backend, 0 DB, and 100% public client-side rate discovery.
   - Removed mock "Sign In" button, user avatar, and unbacked `SignInModal` to preserve institutional depositor trust.
   - Deferred real authentication (saved portfolios, SMS/email maturity alerts) to v2 roadmap.
-- [x] **23.2 Clean Up Header UI & Test Suite** `[COMPLETED]`
+- [x] **23.3 Clean Up Header UI & Test Suite** `[COMPLETED]`
   - Removed `onOpenSignIn` from `HeaderProps` and `Header.tsx`.
   - Updated `Header.test.tsx` to verify clean v1 navigation and statutory trust chips (RBI Repo Rate & DICGC Insured); all 61 tests passing.
-- [ ] **23.3 Reconnect `TenureInspectionScreen` & Fix Hardcoded SVG**
-  - Connect bank card inspection action directly to `TenureInspectionScreen`.
-  - Replace static SVG curve with dynamic Recharts compounding timeline.
-- [ ] **23.4 Form Accessibility & Sticky Compare Table**
-  - Bind `<label htmlFor>` to all configuration inputs; add `sticky left-0` to comparison table features.
+- [x] **23.4 Reconnect `TenureInspectionScreen` & Fix Hardcoded SVG** `[COMPLETED]`
+  - Connected bank card inspection action and bank title clicks directly to `TenureInspectionScreen`.
+  - Added "Full Tax Breakdown & CSV Export" bridge in `AmortizationModal`.
+  - Replaced static SVG curve with dynamic Recharts compounding timeline driven by `calc.timelineData`.
+- [x] **23.5 Form Accessibility, Contextual Bridges & Sticky Compare Table** `[COMPLETED]`
+  - Added semantic `id="deposit-amount-input"` and `<label htmlFor="deposit-amount-input">`.
+  - Added contextual advisory bridge when total committed exceeds the ₹5L DICGC single-bank limit.
+  - Added direct link from Form 15G/15H checkbox to the Tax & TDS Guide screen.
+  - Implemented `sticky left-0` on the comparison modal's feature column for fluid mobile horizontal scrolling.
+- [x] **23.6 Production Vector Logo Integration (`BrandLogo.tsx` & `favicon.svg`)** `[COMPLETED]`
+  - Integrated Concept 1 ("The Radar Vault") as a native vector component [`src/components/BrandLogo.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/BrandLogo.tsx).
+  - Replaced external Google CDN dependency in [`Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx) and [`Footer.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Footer.tsx) with zero-latency inline SVG rendering.
+  - Updated [`public/favicon.svg`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/public/favicon.svg) to the approved Radar Vault squircle; 61 tests passing.
+
 
 ---
 
@@ -613,6 +625,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-11-03** | Phase 21 | Production CI/CD Pipeline & Web Hosting Deployment Hardening | Created `.github/workflows/ci.yml` (automated lint, test, build gate), `vercel.json` (SPA routing & security headers), and `public/` assets (`favicon.svg`, `robots.txt`, `sitemap.xml`). |
 | **2026-11-06** | Phase 22 | Advanced Yield Modeling: Non-Cumulative Payout Engine | Implemented RBI discounted monthly interest formula, quarterly simple interest payout, compounding frequency selector UI in Section 1, periodic cashflow badges across command center, cards, modals, and inspection screen; added 4 new unit tests (61 tests passing). |
 | **2026-11-07** | Phase 23 | Production v1 UI/UX Audit & Mock Login Disablement | Completed full UI/UX architectural audit; verified zero backend/DB usage; disabled cosmetic `SignInModal`, Sign In button, and user avatar; documented audit findings in `context.md`; all 61 tests passing; verified zero-error TypeScript build. |
+| **2026-11-08** | Phase 23.6 | Brand Logo Vector Architecture Integration | Approved Concept 1 ("The Radar Vault"); built standalone `BrandLogo.tsx`, replaced external Google CDN image URLs in `Header.tsx` & `Footer.tsx` with native vector rendering, updated `public/favicon.svg`; verified clean build (1.98s) and 61 tests passing. |
 
 
 

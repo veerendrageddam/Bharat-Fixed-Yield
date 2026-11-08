@@ -421,7 +421,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
           <div className="lg:col-span-7 flex flex-col gap-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+              <label htmlFor="deposit-amount-input" className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
                 {persona.depositType === 'RD' ? 'Monthly Installment Amount' : 'Principal Deposit Sum'}
               </label>
               <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
@@ -435,6 +435,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   ₹
                 </span>
                 <input
+                  id="deposit-amount-input"
                   type="text"
                   value={formatINR(currentAmount)}
                   onChange={(e) => {
@@ -484,6 +485,23 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 </button>
               ))}
             </div>
+
+            {/* DICGC Single Bank Limit Contextual Bridge */}
+            {topCalculation.totalInvested > 500000 && (
+              <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200">
+                <div className="flex items-center gap-1.5">
+                  <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <span>Capital (₹{formatLakhs(topCalculation.totalInvested)}) exceeds the ₹5L DICGC single-bank limit.</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => onNavigateTab('dicgc-index')}
+                  className="font-bold text-[#006c4a] dark:text-[#10b981] hover:underline whitespace-nowrap ml-2 cursor-pointer"
+                >
+                  Split safely →
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Quick Summary Pill for RD or FD */}
@@ -1031,7 +1049,16 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
           {/* Form 15G/15H Toggle */}
           <div className="flex flex-col justify-center gap-1.5">
-            <span className="font-bold text-slate-700 dark:text-slate-300">TDS Exemption (15G / 15H)</span>
+            <div className="flex items-center justify-between">
+              <span className="font-bold text-slate-700 dark:text-slate-300">TDS Exemption (15G / 15H)</span>
+              <button
+                type="button"
+                onClick={() => onNavigateTab('tax-guide')}
+                className="text-[11px] text-[#006c4a] dark:text-[#10b981] font-semibold hover:underline cursor-pointer"
+              >
+                Guide →
+              </button>
+            </div>
             <label className="flex items-center gap-2 cursor-pointer h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
               <input
                 type="checkbox"
@@ -1538,9 +1565,15 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
                   <div className="flex flex-col gap-1">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                        {bank.name}
-                      </h3>
+                      <button
+                        type="button"
+                        onClick={() => onInspectBank(bank)}
+                        className="text-base sm:text-lg font-bold text-slate-900 dark:text-white hover:text-[#006c4a] dark:hover:text-[#10b981] transition-colors text-left flex items-center gap-1 group cursor-pointer"
+                        title={`Inspect detailed schedule, FY tax deduction and CSV for ${bank.name}`}
+                      >
+                        <span>{bank.name}</span>
+                        <ChevronRight className="w-4 h-4 opacity-40 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all text-[#006c4a] dark:text-[#10b981]" />
+                      </button>
                       <span className="px-2.5 py-0.5 rounded-full bg-slate-100 dark:bg-slate-800 text-[11px] font-bold text-slate-600 dark:text-slate-300">
                         {bank.categoryTag}
                       </span>
@@ -1655,9 +1688,9 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
-                      onClick={() => setActiveModalBank(bank)}
-                      className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors"
-                      title="Inspect Amortization Schedule"
+                      onClick={() => onInspectBank(bank)}
+                      className="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold text-slate-700 dark:text-slate-300 transition-colors cursor-pointer"
+                      title="Inspect full schedule, tax deductions and export CSV"
                     >
                       Schedule
                     </button>
@@ -1710,6 +1743,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           persona={persona}
           onClose={() => setActiveModalBank(null)}
           onInvest={onInvest}
+          onInspect={onInspectBank}
         />
       )}
     </div>

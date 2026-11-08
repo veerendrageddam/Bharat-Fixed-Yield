@@ -1,5 +1,6 @@
 import React from 'react';
 import { Sun, Moon, ShieldCheck, Menu, X } from 'lucide-react';
+import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   activeTab: string;
@@ -42,17 +43,13 @@ export const Header: React.FC<HeaderProps> = ({
           {/* Brand Lockup */}
           <button
             onClick={() => handleNavClick('command-center')}
-            className="flex items-center gap-3 text-left rounded-xl p-1 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 group"
-            aria-label="Bharat Fixed Yield - Return to Yield Command Center"
+            className="flex items-center gap-3 text-left rounded-xl p-1 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 group cursor-pointer"
+            aria-label="Bharat Deposit Radar - Return to Yield Command Center"
           >
-            <img
-              alt="Bharat Fixed Yield Logo"
-              className="h-8 w-auto object-contain transition-transform group-hover:scale-105"
-              src="https://lh3.googleusercontent.com/aida/AEtjO1WBAhIy1NZ4VvoiyE4brhlyXhFDBXuSSQOo59-fpOgU9WCH1iTm9iXiC28WlZFu1NODODbGY5FJsSkuuM8h1rjp7UU03nURffzu7_xlmS6-DOuvwAeetxe__zZCKlPVmSyI0n1FgizL4IlFgOhjLa8pPpJtFoe_PN8bhhltNQlSBMGBHB2hKlOPgzxSgnm47L93BcjyPga1JwfZjDrikgZrz2BgkjLuJByKz063bTv91vzbwPvlR6g2ffUo"
-            />
+            <BrandLogo className="h-9 w-9 transition-transform group-hover:scale-105" />
             <div className="flex flex-col justify-center">
               <span className="font-bold text-lg sm:text-xl text-slate-900 dark:text-white leading-tight">
-                Bharat Fixed Yield
+                Bharat Deposit Radar
               </span>
               <span className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                 RBI/DICGC Indexed Bank Rates

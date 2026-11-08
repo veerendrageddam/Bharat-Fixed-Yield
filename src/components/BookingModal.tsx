@@ -59,7 +59,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
     persona.compounding
   );
 
-  const referenceId = `BFY-${bank.name.substring(0, 3).toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
+  const referenceId = `BDR-${bank.name.substring(0, 3).toUpperCase()}-${Math.floor(100000 + Math.random() * 900000)}`;
 
   const tenureDisplay = persona.tenureUnit === 'days' && persona.tenureDays
     ? `${persona.tenureDays} Days (${(persona.tenureDays / 365).toFixed(2)} Years)`
@@ -67,7 +67,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({ bank, persona, onClo
 
   const handleCopySummary = () => {
     const summaryText = [
-      `Bharat Fixed Yield - Deposit Summary`,
+      `Bharat Deposit Radar - Deposit Summary`,
       `Bank: ${bank.name}`,
       `Deposit Type: ${persona.depositType === 'RD' ? 'Recurring Deposit (RD)' : 'Fixed Deposit (FD)'}`,
       `Investment: ${persona.depositType === 'RD' ? `₹${formatINR(depositAmount)}/month` : `₹${formatINR(depositAmount)} lump sum`}`,

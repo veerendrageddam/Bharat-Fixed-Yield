@@ -1,4 +1,4 @@
-# Bharat Fixed Yield (BFY) — Production Readiness & Architecture Blueprint
+# Bharat Deposit Radar (BDR) — Production Readiness & Architecture Blueprint
 
 > **Governing Principle**: Build the simplest production-quality solution that satisfies the current requirements, while making deliberate decisions about maintainability, security, performance, scalability, UX, and future change.
 
@@ -6,7 +6,7 @@
 
 ## 1. Executive Summary & Current Architecture Audit
 
-Bharat Fixed Yield is designed to be an **RBI/DICGC-indexed yield comparison platform and calculator** for Indian fixed-income depositors (Fixed Deposits & Recurring Deposits).
+Bharat Deposit Radar (formerly Bharat Fixed Yield) is designed to be an **RBI/DICGC-indexed bank deposit rate surveillance platform and compounding calculator** for Indian fixed-income depositors (Fixed Deposits & Recurring Deposits).
 
 ### Current State (Prototype / Demo)
 - **Frontend**: Vite + React 19 + Tailwind CSS v4 SPA.

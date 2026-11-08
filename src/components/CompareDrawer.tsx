@@ -129,7 +129,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
               <table className="w-full text-left text-xs border-collapse">
                 <thead>
                   <tr className="border-b border-slate-200 dark:border-slate-800">
-                    <th className="py-3 px-4 text-slate-500 font-semibold w-40">Feature</th>
+                    <th className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 text-slate-500 font-semibold w-40 z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Feature
+                    </th>
                     {comparedBanks.map((b) => (
                       <th key={b.id} className="py-3 px-4 font-bold text-slate-900 dark:text-white min-w-[200px]">
                         <div className="flex items-center justify-between">
@@ -147,7 +149,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                 </thead>
                 <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Applied Interest Rate</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Applied Interest Rate
+                    </td>
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
@@ -159,7 +163,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Total Invested</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Total Invested
+                    </td>
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
@@ -172,7 +178,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Gross Maturity</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Gross Maturity
+                    </td>
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
@@ -185,7 +193,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Total Interest Gain</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Total Interest Gain
+                    </td>
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
@@ -198,7 +208,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Effective Annual Yield</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Effective Annual Yield
+                    </td>
                     {comparedBanks.map((b) => {
                       const tenureDays = persona.tenureUnit === 'days' ? persona.tenureDays : undefined;
                       const rate = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
@@ -211,7 +223,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     })}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Credit Rating</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Credit Rating
+                    </td>
                     {comparedBanks.map((b) => (
                       <td key={b.id} className="py-3 px-4 font-medium text-slate-700 dark:text-slate-300">
                         {b.rating}
@@ -219,7 +233,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Sector Classification</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Sector Classification
+                    </td>
                     {comparedBanks.map((b) => (
                       <td key={b.id} className="py-3 px-4 text-slate-600 dark:text-slate-400">
                         {b.categoryTag}
@@ -227,7 +243,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">Premature Penalty</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Premature Penalty
+                    </td>
                     {comparedBanks.map((b) => (
                       <td key={b.id} className="py-3 px-4 text-slate-600 dark:text-slate-400">
                         {b.exitPenalty} ({b.lockInDays}d lock-in)
@@ -235,7 +253,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-3 px-4 font-bold text-slate-900 dark:text-white">DICGC Insurance</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-3 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      DICGC Insurance
+                    </td>
                     {comparedBanks.map((b) => (
                       <td key={b.id} className="py-3 px-4 text-[#00714e] dark:text-[#a7f3d0] font-semibold">
                         <span className="flex items-center gap-1">
@@ -245,7 +265,9 @@ export const CompareDrawer: React.FC<CompareDrawerProps> = ({
                     ))}
                   </tr>
                   <tr>
-                    <td className="py-4 px-4 font-bold text-slate-900 dark:text-white">Action</td>
+                    <td className="sticky left-0 bg-white dark:bg-[#161b22] py-4 px-4 font-bold text-slate-900 dark:text-white z-10 border-r border-slate-200/80 dark:border-slate-800">
+                      Action
+                    </td>
                     {comparedBanks.map((b) => (
                       <td key={b.id} className="py-4 px-4">
                         <button

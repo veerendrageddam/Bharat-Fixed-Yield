@@ -13,7 +13,7 @@ describe('Header Component UI & Accessibility', () => {
 
   it('renders the brand lockup and skip link', () => {
     render(<Header {...defaultProps} />);
-    expect(screen.getByText('Bharat Fixed Yield')).toBeInTheDocument();
+    expect(screen.getByText('Bharat Deposit Radar')).toBeInTheDocument();
     expect(screen.getByText(/RBI\/DICGC Indexed Bank Rates/i)).toBeInTheDocument();
     expect(screen.getByText('Skip to main content')).toBeInTheDocument();
   });

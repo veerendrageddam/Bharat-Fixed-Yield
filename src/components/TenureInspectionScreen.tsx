@@ -16,8 +16,16 @@ import {
   Shield,
   FileText
 } from 'lucide-react';
+import {
+  ResponsiveContainer,
+  AreaChart,
+  Area,
+  XAxis,
+  YAxis,
+  Tooltip as RechartsTooltip,
+} from 'recharts';
 import { BankData, UserPersona } from '../types/bank';
-import { calculateYield, formatINR, getEffectiveRate } from '../utils/calculator';
+import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
 
 interface TenureInspectionScreenProps {
   bank: BankData;
@@ -228,41 +236,48 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
                   </span>
                 </div>
 
-                {/* SVG Visualizer */}
-                <div className="w-full py-4">
-                  <svg className="w-full h-32 overflow-visible" preserveAspectRatio="none" viewBox="0 0 540 140">
-                    <defs>
-                      <linearGradient id="yieldGrad" x1="0" x2="0" y1="0" y2="1">
-                        <stop offset="0%" stopColor="#006c4a" stopOpacity="0.25" />
-                        <stop offset="100%" stopColor="#006c4a" stopOpacity="0.00" />
-                      </linearGradient>
-                    </defs>
-                    <line stroke="#c5c6cd" strokeDasharray="3 3" strokeWidth="0.75" x1="0" x2="540" y1="20" y2="20" />
-                    <line stroke="#c5c6cd" strokeDasharray="3 3" strokeWidth="0.75" x1="0" x2="540" y1="65" y2="65" />
-                    <line stroke="#c5c6cd" strokeDasharray="3 3" strokeWidth="0.75" x1="0" x2="540" y1="110" y2="110" />
-
-                    <polygon
-                      fill="url(#yieldGrad)"
-                      points="0,110 45,103 90,96 135,89 180,81 225,73 270,64 315,55 360,45 405,34 450,22 495,10 540,0 540,120 0,120"
-                    />
-                    <path
-                      d="M0,110 C45,103 90,96 135,89 C180,81 225,73 270,64 C315,55 360,45 405,34 C450,22 495,10 540,0"
-                      fill="none"
-                      stroke="#006c4a"
-                      strokeLinecap="round"
-                      strokeWidth="3"
-                    />
-                    <circle cx="0" cy="110" fill="#006c4a" r="4" />
-                    <circle cx="180" cy="81" fill="#006c4a" r="4" />
-                    <circle cx="360" cy="45" fill="#006c4a" r="4" />
-                    <circle cx="540" cy="0" fill="#10b981" r="5" />
-                  </svg>
+                {/* Dynamic Recharts Compounding Trajectory Visualizer */}
+                <div className="w-full py-2">
+                  <div className="w-full h-36">
+                    <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+                      <AreaChart
+                        data={calc.timelineData}
+                        margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="tenureYieldGrad" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                            <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                          </linearGradient>
+                        </defs>
+                        <XAxis dataKey="period" stroke="#94a3b8" fontSize={11} />
+                        <YAxis
+                          stroke="#94a3b8"
+                          fontSize={11}
+                          tickFormatter={(val) => `₹${formatLakhs(val)}`}
+                        />
+                        <RechartsTooltip
+                          formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
+                          labelFormatter={(label) => `Timeline: ${label}`}
+                        />
+                        <Area
+                          type="monotone"
+                          dataKey="balance"
+                          name="Account Balance"
+                          stroke="#006c4a"
+                          strokeWidth={2.5}
+                          fillOpacity={1}
+                          fill="url(#tenureYieldGrad)"
+                        />
+                      </AreaChart>
+                    </ResponsiveContainer>
+                  </div>
                   <div className="flex justify-between items-center text-slate-500 dark:text-slate-400 text-[11px] pt-2 tabular-nums">
-                    <span>Start: ₹{formatINR(persona.principal)} (Q0)</span>
-                    <span>End Y1: ₹{formatINR(persona.principal + calc.annualInterestFY1)} (Q4)</span>
-                    <span>End Y2: ₹{formatINR(persona.principal + calc.annualInterestFY1 + calc.annualInterestFY2)} (Q8)</span>
+                    <span>Initial Deposit: ₹{formatINR(calc.totalInvested)}</span>
                     <span className="text-[#006c4a] dark:text-[#10b981] font-bold">
-                      Maturity: ₹{formatINR(calc.maturityAmount)} (Q12)
+                      {persona.compounding === 'maturity'
+                        ? `Maturity Corpus: ₹${formatINR(calc.maturityAmount)}`
+                        : `Total Delivered: ₹${formatINR(calc.totalInvested + calc.totalInterest)}`}
                     </span>
                   </div>
                 </div>

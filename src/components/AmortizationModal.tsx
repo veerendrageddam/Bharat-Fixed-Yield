@@ -8,6 +8,7 @@ interface AmortizationModalProps {
   persona: UserPersona;
   onClose: () => void;
   onInvest: (bank: BankData) => void;
+  onInspect?: (bank: BankData) => void;
 }
 
 export const AmortizationModal: React.FC<AmortizationModalProps> = ({
@@ -15,6 +16,7 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
   persona,
   onClose,
   onInvest,
+  onInspect,
 }) => {
   React.useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -203,23 +205,37 @@ export const AmortizationModal: React.FC<AmortizationModalProps> = ({
         </div>
 
         {/* Buttons */}
-        <div className="flex items-center justify-end gap-3 pt-2">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
-          >
-            Close
-          </button>
-          <button
-            onClick={() => {
-              onClose();
-              onInvest(bank);
-            }}
-            className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 dark:hover:bg-[#059669] transition-all flex items-center gap-1.5 shadow-sm"
-          >
-            <span>Proceed to Official Booking</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2">
+          {onInspect && (
+            <button
+              type="button"
+              onClick={() => {
+                onClose();
+                onInspect(bank);
+              }}
+              className="text-xs font-bold text-[#006c4a] dark:text-[#10b981] hover:underline flex items-center gap-1 self-start sm:self-auto cursor-pointer"
+            >
+              <span>Full Tax Breakdown &amp; CSV Export →</span>
+            </button>
+          )}
+          <div className="flex items-center justify-end gap-3 ml-auto">
+            <button
+              onClick={onClose}
+              className="px-4 py-2 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+            >
+              Close
+            </button>
+            <button
+              onClick={() => {
+                onClose();
+                onInvest(bank);
+              }}
+              className="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 dark:hover:bg-[#059669] transition-all flex items-center gap-1.5 shadow-sm"
+            >
+              <span>Proceed to Official Booking</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
         </div>
       </div>
     </div>
