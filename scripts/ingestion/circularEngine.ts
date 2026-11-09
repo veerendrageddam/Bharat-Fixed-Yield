@@ -29,6 +29,7 @@ export interface BankCircularUpdate {
   baseRate?: number;     // Standard tenure rate (e.g. 36M or highest standard)
   ratesByTenure: Record<string, number>; // Required core matrix: at least 12M and 36M or 60M
   rdRatesByTenure?: Record<string, number>;
+  seniorBonusByTenure?: Record<string, number>;
   specialTenure?: string;
   specialSchemes?: SpecialScheme[];
   seniorBonus?: number;
@@ -535,13 +536,14 @@ export const AUDITED_CIRCULAR_BASELINES: BankCircularUpdate[] = [
   },
   {
     bankId: 'indusind-bank',
-    effectiveDate: 'w.e.f. September 10, 2024',
-    circularUrl: 'https://www.indusind.com/in/en/personal/rates.html',
+    effectiveDate: 'w.e.f. October 30, 2024',
+    circularUrl: 'https://www.indusind.com/in/en/personal/rates/deposit-rates.html',
     baseRate: 7.25,
-    ratesByTenure: { '12': 7.75, '24': 7.75, '36': 7.25, '60': 7.25 },
-    specialTenure: '1Y 7M (7.75%)',
+    ratesByTenure: { '12': 6.75, '24': 7.25, '36': 6.65, '60': 6.65 },
+    seniorBonusByTenure: { '24': 0.60 },
+    specialTenure: '2 Years to < 3 Years (7.25%)',
     specialSchemes: [
-      { name: 'IndusInd 1Y7M', days: 579, rate: 7.75, badge: 'Peak IndusInd 7.75%' },
+      { name: 'IndusInd 2Y-3Y Peak', days: 730, rate: 7.25, seniorBonus: 0.60, superSeniorBonus: 0.75, badge: 'Peak IndusInd 7.25%' },
     ],
     seniorBonus: 0.50,
     superSeniorBonus: 0.75,

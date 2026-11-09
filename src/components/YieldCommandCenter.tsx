@@ -284,10 +284,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
   // Rate spread comparison data
   const spreadData = useMemo(() => {
-    const sfbTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'sfb')[0];
-    const pvtTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'private')[0];
-    const psuTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'psu')[0];
-    const postTop = depositTypeAndStateFilteredBanks.filter(b => b.category === 'post_office')[0];
+    const getTopRateBank = (cat: string) => {
+      const matches = depositTypeAndStateFilteredBanks.filter(b => b.category === cat);
+      if (matches.length === 0) return undefined;
+      return matches.reduce((best, curr) => {
+        const rateBest = getEffectiveRate(best, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
+        const rateCurr = getEffectiveRate(curr, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
+        return rateCurr > rateBest ? curr : best;
+      }, matches[0]);
+    };
+
+    const sfbTop = getTopRateBank('sfb');
+    const pvtTop = getTopRateBank('private');
+    const psuTop = getTopRateBank('psu');
+    const postTop = getTopRateBank('post_office');
 
     const data: Array<{ name: string; rate: number; bank: string }> = [];
 

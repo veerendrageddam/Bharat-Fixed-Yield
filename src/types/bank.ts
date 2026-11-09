@@ -48,6 +48,7 @@ export interface BankData {
   // Multi-tenure rate matrix: tenure in months -> annual interest rate %
   ratesByTenure?: Record<number, number>;
   rdRatesByTenure?: Record<number, number>;
+  seniorBonusByTenure?: Record<number, number>;
   // Geographic jurisdiction
   operatingStates?: string[];
   isPanIndia?: boolean;

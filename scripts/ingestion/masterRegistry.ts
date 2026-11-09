@@ -614,30 +614,31 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
     "status": "active",
     "baseRate": 7.25,
     "ratesByTenure": {
-      "12": 7.75,
-      "24": 7.75,
-      "36": 7.25,
-      "60": 7.25
+      "12": 6.75,
+      "24": 7.25,
+      "36": 6.65,
+      "60": 6.65
     },
-    "specialTenure": "1 Year 7 Months (7.75%)",
+    "seniorBonusByTenure": {
+      "24": 0.60
+    },
+    "specialTenure": "2 Years to < 3 Years (7.25%)",
     "specialSchemes": [
       {
-        "name": "IndusInd 1Y7M",
-        "days": 575,
-        "rate": 7.75,
-        "badge": "Peak Private 7.75%"
-      },
-      {
-        "name": "IndusInd 2Y9M",
-        "days": 1000,
-        "rate": 7.75
+        "name": "IndusInd 2Y-3Y Peak",
+        "days": 730,
+        "rate": 7.25,
+        "seniorBonus": 0.60,
+        "superSeniorBonus": 0.75,
+        "badge": "Peak IndusInd 7.25%"
       }
     ],
     "seniorBonus": 0.5,
     "superSeniorBonus": 0.75,
     "womenBonus": 0,
-    "lastVerified": "2026-10-28T04:32:01.388Z",
-    "sourceUrl": "https://www.indusind.com/"
+    "lastVerified": "2026-11-09T05:30:00.000Z",
+    "sourceUrl": "https://www.indusind.com/",
+    "circularUrl": "https://www.indusind.com/in/en/personal/rates/deposit-rates.html"
   },
   "yes-bank": {
     "id": "yes-bank",

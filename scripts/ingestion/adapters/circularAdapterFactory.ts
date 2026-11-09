@@ -15,6 +15,7 @@ import { MASTER_BANK_REGISTRY } from '../masterRegistry';
 import { AUDITED_CIRCULAR_BASELINES } from '../circularEngine';
 import { fetchWithResilience } from '../http';
 import { extractStandardTenureRates } from './cheerioHelper';
+import { CATEGORY_RATE_CEILINGS, isValidRate } from '../validator';
 
 export function createCircularBankAdapter(bankId: string): BankRateAdapter {
   const masterDef = MASTER_BANK_REGISTRY[bankId];
@@ -44,12 +45,21 @@ export function createCircularBankAdapter(bankId: string): BankRateAdapter {
 
         if (res.ok && res.text) {
           const $ = cheerio.load(res.text);
-          const parsed = extractStandardTenureRates($);
+          const parsed = extractStandardTenureRates($, 'table', masterDef.category);
           if (Object.keys(parsed.ratesByTenure).length >= 2) {
-            ratesByTenure = parsed.ratesByTenure;
-            seniorBonus = parsed.seniorBonus || seniorBonus;
-            superSeniorBonus = parsed.superSeniorBonus || superSeniorBonus;
-            liveRatesExtracted = true;
+            const ceiling = CATEGORY_RATE_CEILINGS[masterDef.category] ?? 8.5;
+            const ratesAreClean = Object.values(parsed.ratesByTenure).every(
+              (r) => isValidRate(r, masterDef.category) && r <= ceiling
+            );
+
+            if (ratesAreClean) {
+              ratesByTenure = parsed.ratesByTenure;
+              seniorBonus = parsed.seniorBonus || seniorBonus;
+              superSeniorBonus = parsed.superSeniorBonus || superSeniorBonus;
+              liveRatesExtracted = true;
+            } else {
+              console.warn(`[${bankId}] Live scraped rates exceeded category ceiling (${ceiling}%). Retaining verified circular baseline.`);
+            }
           }
         }
       } catch {
@@ -65,6 +75,7 @@ export function createCircularBankAdapter(bankId: string): BankRateAdapter {
           specialSchemes: baseline.specialSchemes,
           seniorBonus,
           superSeniorBonus,
+          seniorBonusByTenure: baseline.seniorBonusByTenure,
           womenBonus: baseline.womenBonus ?? 0.00,
           effectiveDate: baseline.effectiveDate,
           circularUrl: this.sourceUrl,
@@ -83,6 +94,7 @@ export function createCircularBankAdapter(bankId: string): BankRateAdapter {
           specialSchemes: baseline.specialSchemes,
           seniorBonus: baseline.seniorBonus ?? masterDef.seniorBonus,
           superSeniorBonus: baseline.superSeniorBonus ?? masterDef.superSeniorBonus,
+          seniorBonusByTenure: baseline.seniorBonusByTenure ?? masterDef.seniorBonusByTenure,
           womenBonus: baseline.womenBonus ?? masterDef.womenBonus,
           effectiveDate: baseline.effectiveDate,
           circularUrl: baseline.circularUrl,

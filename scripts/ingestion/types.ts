@@ -24,6 +24,7 @@ export interface BankRateData {
   baseRate: number;
   ratesByTenure: Record<string, number>;
   rdRatesByTenure?: Record<string, number>;
+  seniorBonusByTenure?: Record<string, number>;
   specialTenure?: string;
   specialSchemes?: SpecialScheme[];
   seniorBonus: number;
@@ -82,6 +83,7 @@ export interface BankMasterDefinition {
   baseRate: number;
   ratesByTenure: Record<string, number>;
   rdRatesByTenure?: Record<string, number>;
+  seniorBonusByTenure?: Record<string, number>;
   specialTenure?: string;
   specialSchemes?: SpecialScheme[];
   seniorBonus: number;
@@ -110,6 +112,7 @@ export interface ScrapedRateResult {
   baseRate?: number;
   ratesByTenure?: Record<string, number>;
   rdRatesByTenure?: Record<string, number>;
+  seniorBonusByTenure?: Record<string, number>;
   specialTenure?: string;
   specialSchemes?: SpecialScheme[];
   seniorBonus?: number;

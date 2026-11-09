@@ -10,7 +10,7 @@ import {
 } from './types';
 import { MASTER_BANK_REGISTRY, MERGED_BANKS_CATALOG } from './masterRegistry';
 import { ACTIVE_BANK_ADAPTERS } from './adapters';
-import { isValidRate, validateRateMatrix, sanitizeSpecialSchemes } from './validator';
+import { isValidRate, validateRateMatrix, sanitizeSpecialSchemes, isRateAnomaly } from './validator';
 
 export const RATES_FILE_PATH = path.resolve(process.cwd(), 'src/data/rates.json');
 
@@ -43,6 +43,7 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
     const baseRate = existingBank?.baseRate ?? masterDef.baseRate ?? 7.00;
     const ratesByTenure = existingBank?.ratesByTenure ?? masterDef.ratesByTenure ?? { '12': 6.80, '24': 7.00, '36': 7.10, '60': 6.90 };
     const rdRatesByTenure = existingBank?.rdRatesByTenure ?? masterDef.rdRatesByTenure;
+    const seniorBonusByTenure = existingBank?.seniorBonusByTenure ?? masterDef.seniorBonusByTenure;
     const specialTenure = existingBank?.specialTenure ?? masterDef.specialTenure;
     const specialSchemes = existingBank?.specialSchemes ?? masterDef.specialSchemes ?? [];
     const seniorBonus = existingBank?.seniorBonus ?? masterDef.seniorBonus ?? 0.50;
@@ -63,6 +64,7 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       baseRate,
       ratesByTenure,
       rdRatesByTenure,
+      seniorBonusByTenure,
       specialTenure,
       specialSchemes,
       seniorBonus,
@@ -85,6 +87,7 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       baseRate,
       ratesByTenure,
       rdRatesByTenure,
+      seniorBonusByTenure,
       specialTenure,
       specialSchemes,
       seniorBonus,
@@ -144,23 +147,35 @@ export async function runIngestionEngine(): Promise<IngestionSummary> {
       let hasDiff = false;
 
       // Base rate diff
-      if (isValidRate(scraped.baseRate) && scraped.baseRate !== bank.baseRate) {
-        hasDiff = true;
-        diffNotes.push(`baseRate: ${bank.baseRate}% -> ${scraped.baseRate}%`);
-        bank.baseRate = scraped.baseRate;
+      if (isValidRate(scraped.baseRate, bank.category) && scraped.baseRate !== bank.baseRate) {
+        if (!isRateAnomaly(scraped.baseRate, bank.baseRate)) {
+          hasDiff = true;
+          diffNotes.push(`baseRate: ${bank.baseRate}% -> ${scraped.baseRate}%`);
+          bank.baseRate = scraped.baseRate;
+        } else {
+          console.warn(`[CIRCUIT BREAKER] ${bankId} baseRate jumped anomalously: ${bank.baseRate}% -> ${scraped.baseRate}%. Retaining baseline.`);
+        }
       }
 
       // Tenure rates diff
       if (scraped.ratesByTenure) {
-        const validatedTenures = validateRateMatrix(scraped.ratesByTenure);
+        const validatedTenures = validateRateMatrix(scraped.ratesByTenure, bank.category);
         for (const [tenure, newRate] of Object.entries(validatedTenures)) {
           const oldRate = bank.ratesByTenure?.[tenure];
           if (oldRate !== newRate) {
-            hasDiff = true;
-            diffNotes.push(`${tenure}M: ${oldRate ?? 'N/A'}% -> ${newRate}%`);
-            bank.ratesByTenure[tenure] = newRate;
+            if (!oldRate || !isRateAnomaly(newRate, oldRate)) {
+              hasDiff = true;
+              diffNotes.push(`${tenure}M: ${oldRate ?? 'N/A'}% -> ${newRate}%`);
+              bank.ratesByTenure[tenure] = newRate;
+            } else {
+              console.warn(`[CIRCUIT BREAKER] ${bankId} ${tenure}M rate jumped anomalously: ${oldRate}% -> ${newRate}%. Retaining baseline.`);
+            }
           }
         }
+      }
+
+      if (scraped.seniorBonusByTenure) {
+        bank.seniorBonusByTenure = scraped.seniorBonusByTenure;
       }
 
       // RD rates diff

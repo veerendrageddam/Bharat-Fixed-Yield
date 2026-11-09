@@ -39,17 +39,20 @@ export function getEffectiveRate(
 
   const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
   let rate = bank.baseRate ?? 0;
+  let matchedScheme: import('../types/bank').SpecialScheme | undefined;
 
   // Use RD tenure rates if user selected RD and bank defines distinct RD rates
   const ratesMatrix = (persona.depositType === 'RD' && bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
     ? bank.rdRatesByTenure
     : bank.ratesByTenure;
 
+  const targetTenure = tenureMonths ?? persona.tenureMonths;
+
   // 1. Check if an odd-day special high-yield scheme matches (e.g. 222D, 399D, 400D, 444D, 555D, 1001D)
   // Odd-day promotional schemes are strictly for Term Deposits (FDs), not Recurring Deposits
   if (persona.depositType !== 'RD' && effectiveDays && bank.specialSchemes && bank.specialSchemes.length > 0) {
     // Exact or nearest special scheme within 10 days
-    const matchedScheme = bank.specialSchemes.find(
+    matchedScheme = bank.specialSchemes.find(
       (s) => Math.abs(s.days - effectiveDays) <= 10
     );
     if (matchedScheme) {
@@ -62,17 +65,40 @@ export function getEffectiveRate(
       }
     }
   } else {
-    const targetTenure = tenureMonths ?? persona.tenureMonths;
     if (ratesMatrix && ratesMatrix[targetTenure] !== undefined) {
       rate = ratesMatrix[targetTenure];
     }
+    // Also check if any special scheme matches this standard tenure (e.g. 24M matches ~730 days)
+    if (persona.depositType !== 'RD' && bank.specialSchemes && bank.specialSchemes.length > 0) {
+      const approxDays = Math.round(targetTenure * 30.41);
+      const schemeForTenure = bank.specialSchemes.find(
+        (s) => Math.abs(s.days - approxDays) <= 15
+      );
+      if (schemeForTenure) {
+        matchedScheme = schemeForTenure;
+      }
+    }
+  }
+
+  // Age bonuses resolution:
+  // Precedence: tenure-specific senior bonus -> matchedScheme bonus -> bank global senior bonus
+  let seniorBonus = bank.seniorBonus ?? 0;
+  if (targetTenure && bank.seniorBonusByTenure && bank.seniorBonusByTenure[targetTenure] !== undefined) {
+    seniorBonus = bank.seniorBonusByTenure[targetTenure];
+  } else if (matchedScheme && typeof matchedScheme.seniorBonus === 'number') {
+    seniorBonus = matchedScheme.seniorBonus;
+  }
+
+  let superSeniorBonus = bank.superSeniorBonus ?? seniorBonus;
+  if (matchedScheme && typeof matchedScheme.superSeniorBonus === 'number') {
+    superSeniorBonus = matchedScheme.superSeniorBonus;
   }
 
   // Age bonuses
   if (persona.age >= 80) {
-    rate += (bank.superSeniorBonus ?? bank.seniorBonus ?? 0);
+    rate += superSeniorBonus;
   } else if (persona.age >= 60) {
-    rate += (bank.seniorBonus ?? 0);
+    rate += seniorBonus;
   }
 
   // Women depositor bonus

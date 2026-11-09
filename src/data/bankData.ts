@@ -66,6 +66,7 @@ export const INITIAL_BANKS: BankData[] = Object.values(
     lockInDays: b.lockInDays ?? 7,
     ratesByTenure: parseTenureRates(b.ratesByTenure),
     rdRatesByTenure: parseTenureRates(b.rdRatesByTenure),
+    seniorBonusByTenure: parseTenureRates(b.seniorBonusByTenure),
     isPanIndia: b.isPanIndia ?? false,
     operatingStates: b.operatingStates ?? ['ALL'],
     portalUrl: b.portalUrl,

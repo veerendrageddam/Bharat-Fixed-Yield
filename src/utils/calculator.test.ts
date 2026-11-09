@@ -9,6 +9,7 @@ import {
   formatLakhs,
 } from './calculator';
 import { BankData, UserPersona } from '../types/bank';
+import { INITIAL_BANKS } from '../data/bankData';
 
 describe('Calculator Core Engineering & Math Engine', () => {
   describe('formatINR & formatLakhs', () => {
@@ -353,6 +354,96 @@ describe('Calculator Core Engineering & Math Engine', () => {
       expect(rd.payoutFrequency).toBe('maturity');
       expect(rd.depositType).toBe('RD');
       expect(rd.maturityAmount).toBeGreaterThan(rd.totalInvested);
+    });
+  });
+
+  describe('Official Bank Rate Card & IndusInd Verification Suite', () => {
+    it('verifies IndusInd Bank rates accurately match official website (7.25% general, 7.85% senior peak)', () => {
+      const indusind = INITIAL_BANKS.find((b: any) => b.id === 'indusind-bank');
+      expect(indusind).toBeDefined();
+      if (!indusind) return;
+
+      const generalPersona: UserPersona = {
+        depositType: 'FD',
+        principal: 500000,
+        tenureMonths: 24,
+        compounding: 'maturity',
+        age: 35,
+        gender: 'male',
+        state: 'ALL',
+        residency: 'resident',
+        panLinked: true,
+        form15HSubmitted: false,
+      };
+
+      const seniorPersona: UserPersona = {
+        ...generalPersona,
+        age: 62,
+      };
+
+      // 24 Months (Peak Tenure)
+      const general24 = getEffectiveRate(indusind, generalPersona, 24);
+      const senior24 = getEffectiveRate(indusind, seniorPersona, 24);
+      expect(general24).toBe(7.25);
+      expect(senior24).toBe(7.85); // Official peak senior citizen yield
+
+      // 12 Months
+      const general12 = getEffectiveRate(indusind, generalPersona, 12);
+      const senior12 = getEffectiveRate(indusind, seniorPersona, 12);
+      expect(general12).toBe(6.75);
+      expect(senior12).toBe(7.25);
+
+      // 36 Months
+      const general36 = getEffectiveRate(indusind, generalPersona, 36);
+      const senior36 = getEffectiveRate(indusind, seniorPersona, 36);
+      expect(general36).toBe(6.65);
+      expect(senior36).toBe(7.15);
+
+      // 60 Months (Tax Saver)
+      const general60 = getEffectiveRate(indusind, generalPersona, 60);
+      const senior60 = getEffectiveRate(indusind, seniorPersona, 60);
+      expect(general60).toBe(6.65);
+      expect(senior60).toBe(7.15);
+
+      // Base rate should be realistic (7.25%), NOT lending/MCLR rate (9.95%)
+      expect(indusind.baseRate).toBeLessThanOrEqual(7.50);
+      expect(indusind.baseRate).toBeGreaterThanOrEqual(6.50);
+    });
+
+    it('verifies all 38 banks in the catalog satisfy category interest rate ceilings', () => {
+      expect(INITIAL_BANKS.length).toBe(38);
+
+      const ceilings: Record<string, number> = {
+        psu: 7.75,
+        private: 8.25,
+        sfb: 9.25,
+        rrb: 7.75,
+        post_office: 7.75,
+      };
+
+      for (const bank of INITIAL_BANKS) {
+        const ceiling = ceilings[bank.category];
+        expect(ceiling).toBeDefined();
+
+        // Base rate must be within ceiling
+        expect(bank.baseRate).toBeLessThanOrEqual(ceiling);
+
+        // All tenure rates must be within ceiling
+        if (bank.ratesByTenure) {
+          for (const [tenure, rate] of Object.entries(bank.ratesByTenure)) {
+            expect(rate).toBeLessThanOrEqual(ceiling);
+            expect(rate).toBeGreaterThanOrEqual(3.0);
+          }
+        }
+
+        // Special schemes must be within ceiling
+        if (bank.specialSchemes) {
+          for (const scheme of bank.specialSchemes) {
+            expect(scheme.rate).toBeLessThanOrEqual(ceiling);
+            expect(scheme.rate).toBeGreaterThanOrEqual(3.0);
+          }
+        }
+      }
     });
   });
 });

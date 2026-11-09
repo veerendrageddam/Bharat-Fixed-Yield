@@ -635,7 +635,7 @@
       "name": "IndusInd Bank",
       "subTitle": "Premier Scheduled Private Lender • Industry-Leading Private Sector FD Yields",
       "category": "private",
-      "badge": "Highest Private Bank Yield (7.75%)",
+      "badge": "Top Private Bank Yield (7.25% / 7.85% Senior)",
       "categoryTag": "Private Bank (CRISIL AA+)",
       "ratingAgency": "CRISIL",
       "rating": "AA+ / Stable",
@@ -656,32 +656,37 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 9.95,
+      "baseRate": 7.25,
       "ratesByTenure": {
-        "12": 9.75,
-        "24": 9.95,
-        "36": 9.95,
+        "12": 6.75,
+        "24": 7.25,
+        "36": 6.65,
         "60": 6.65
       },
-      "specialTenure": "1Y 7M (7.75%)",
+      "seniorBonusByTenure": {
+        "24": 0.60
+      },
+      "specialTenure": "2 Years to < 3 Years (7.25%)",
       "specialSchemes": [
         {
-          "name": "IndusInd 1Y7M",
-          "days": 579,
-          "rate": 7.75,
-          "badge": "Peak IndusInd 7.75%"
+          "name": "IndusInd 2Y-3Y Peak",
+          "days": 730,
+          "rate": 7.25,
+          "seniorBonus": 0.60,
+          "superSeniorBonus": 0.75,
+          "badge": "Peak IndusInd 7.25%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:40:40.682Z",
+      "lastVerified": "2026-11-09T05:30:00.000Z",
       "sourceUrl": "https://www.indusind.com/",
-      "circularUrl": "https://www.indusind.com/in/en/personal/rates.html",
-      "effectiveDate": "w.e.f. September 10, 2024",
+      "circularUrl": "https://www.indusind.com/in/en/personal/rates/deposit-rates.html",
+      "effectiveDate": "w.e.f. October 30, 2024",
       "callable": true,
       "retailCapCr": 3,
-      "verificationStatus": "live_synced"
+      "verificationStatus": "circular_verified"
     },
     "yes-bank": {
       "id": "yes-bank",
@@ -2502,32 +2507,37 @@
       "verificationStatus": "circular_verified"
     },
     "indusind-bank": {
-      "baseRate": 9.95,
+      "baseRate": 7.25,
       "ratesByTenure": {
-        "12": 9.75,
-        "24": 9.95,
-        "36": 9.95,
+        "12": 6.75,
+        "24": 7.25,
+        "36": 6.65,
         "60": 6.65
       },
-      "specialTenure": "1Y 7M (7.75%)",
+      "seniorBonusByTenure": {
+        "24": 0.60
+      },
+      "specialTenure": "2 Years to < 3 Years (7.25%)",
       "specialSchemes": [
         {
-          "name": "IndusInd 1Y7M",
-          "days": 579,
-          "rate": 7.75,
-          "badge": "Peak IndusInd 7.75%"
+          "name": "IndusInd 2Y-3Y Peak",
+          "days": 730,
+          "rate": 7.25,
+          "seniorBonus": 0.60,
+          "superSeniorBonus": 0.75,
+          "badge": "Peak IndusInd 7.25%"
         }
       ],
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "circularUrl": "https://www.indusind.com/in/en/personal/rates.html",
-      "effectiveDate": "w.e.f. September 10, 2024",
+      "circularUrl": "https://www.indusind.com/in/en/personal/rates/deposit-rates.html",
+      "effectiveDate": "w.e.f. October 30, 2024",
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indusind.com/",
-      "lastVerified": "2026-11-02T08:40:40.682Z",
-      "verificationStatus": "live_synced"
+      "lastVerified": "2026-11-09T05:30:00.000Z",
+      "verificationStatus": "circular_verified"
     },
     "yes-bank": {
       "baseRate": 7.25,
