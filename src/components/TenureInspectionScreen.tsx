@@ -26,6 +26,7 @@ import {
 } from 'recharts';
 import { BankData, UserPersona } from '../types/bank';
 import { calculateYield, formatINR, formatLakhs, getEffectiveRate } from '../utils/calculator';
+import { useTheme } from '../context/ThemeContext';
 
 interface TenureInspectionScreenProps {
   bank: BankData;
@@ -40,6 +41,7 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
   onBack,
   onInvest,
 }) => {
+  const { isDark } = useTheme();
   const [form15HSubmitted, setForm15HSubmitted] = useState<boolean>(persona.form15HSubmitted);
 
   const depositAmount = persona.depositType === 'RD' ? (persona.monthlyInstallment ?? persona.principal) : persona.principal;
@@ -259,12 +261,23 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
                         <RechartsTooltip
                           formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
                           labelFormatter={(label) => `Timeline: ${label}`}
+                          contentStyle={{
+                            backgroundColor: isDark ? '#161b22' : '#ffffff',
+                            borderColor: isDark ? '#30363d' : '#e2e8f0',
+                            color: isDark ? '#f0f3f6' : '#191c1e',
+                            borderRadius: '0.75rem',
+                            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                            fontSize: '12px',
+                            fontWeight: 600,
+                          }}
+                          itemStyle={{ color: isDark ? '#f0f3f6' : '#191c1e' }}
+                          labelStyle={{ color: isDark ? '#9ba3af' : '#64748b', fontWeight: 700 }}
                         />
                         <Area
                           type="monotone"
                           dataKey="balance"
                           name="Account Balance"
-                          stroke="#006c4a"
+                          stroke={isDark ? '#10b981' : '#006c4a'}
                           strokeWidth={2.5}
                           fillOpacity={1}
                           fill="url(#tenureYieldGrad)"

@@ -15,7 +15,6 @@ import { PAN_INDIA_OPTION } from './data/jurisdictions';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<string>('command-center');
-  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
   const [selectedBankForInspection, setSelectedBankForInspection] = useState<BankData>(INITIAL_BANKS[0]);
   const [bookingBank, setBookingBank] = useState<BankData | null>(null);
   const [reportRateBank, setReportRateBank] = useState<BankData | null>(null);
@@ -36,18 +35,6 @@ export default function App() {
     panLinked: true,
     form15HSubmitted: false,
   });
-
-  // Dark mode handler
-  useEffect(() => {
-    const root = document.documentElement;
-    if (isDarkMode) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
-    }
-  }, [isDarkMode]);
-
-  const toggleDarkMode = () => setIsDarkMode((prev) => !prev);
 
   // Compare toggle
   const handleToggleCompare = (bank: BankData) => {
@@ -94,8 +81,6 @@ export default function App() {
       <Header
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        isDarkMode={isDarkMode}
-        toggleDarkMode={toggleDarkMode}
       />
 
       {/* Main Content Viewport with smooth transitions */}

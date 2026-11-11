@@ -1,5 +1,18 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-brand-primary: #006c4a;
+  --color-brand-primary-hover: #005137;
+  --color-brand-accent: #10b981;
+  --color-brand-accent-light: #a7f3d0;
+  --color-surface-card-light: #ffffff;
+  --color-surface-card-dark: #161b22;
+  --color-surface-bg-light: #f7f9fb;
+  --color-surface-bg-dark: #0e1217;
+}
+
 @layer base {
   :root {
     --color-surface: #f7f9fb;

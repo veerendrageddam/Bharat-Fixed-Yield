@@ -53,6 +53,7 @@ import { calculateYield, formatINR, formatLakhs, getEffectiveRate, isTenureSuppo
 import { INDIAN_STATES, UNION_TERRITORIES, PAN_INDIA_OPTION } from '../data/jurisdictions';
 import { LATEST_RATES_METADATA, MERGED_BANKS_REGISTRY } from '../data/bankData';
 import { AmortizationModal } from './AmortizationModal';
+import { useTheme } from '../context/ThemeContext';
 
 const BankLogo: React.FC<{ src: string; name: string }> = ({ src, name }) => {
   const [hasError, setHasError] = useState(false);
@@ -97,12 +98,35 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   onNavigateTab,
   onReportRate,
 }) => {
+  const { isDark } = useTheme();
   const [selectedCategory, setSelectedCategory] = useState<BankCategory>('all');
   const [minRatingFilter, setMinRatingFilter] = useState<string>('all');
   const [dicgcOnly, setDicgcOnly] = useState<boolean>(true);
   const [activeModalBank, setActiveModalBank] = useState<BankData | null>(null);
   const [activeChartTab, setActiveChartTab] = useState<'donut' | 'trajectory' | 'spread'>('donut');
   const [searchQuery, setSearchQuery] = useState('');
+
+  const chartTooltipStyle = useMemo(
+    () => ({
+      contentStyle: {
+        backgroundColor: isDark ? '#161b22' : '#ffffff',
+        borderColor: isDark ? '#30363d' : '#e2e8f0',
+        color: isDark ? '#f0f3f6' : '#191c1e',
+        borderRadius: '0.75rem',
+        boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+        fontSize: '12px',
+        fontWeight: 600,
+      },
+      itemStyle: {
+        color: isDark ? '#f0f3f6' : '#191c1e',
+      },
+      labelStyle: {
+        color: isDark ? '#9ba3af' : '#64748b',
+        fontWeight: 700,
+      },
+    }),
+    [isDark]
+  );
 
 
 
@@ -1239,6 +1263,9 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                       </Pie>
                       <RechartsTooltip
                         formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
+                        contentStyle={chartTooltipStyle.contentStyle}
+                        itemStyle={chartTooltipStyle.itemStyle}
+                        labelStyle={chartTooltipStyle.labelStyle}
                       />
                     </PieChart>
                   </ResponsiveContainer>
@@ -1303,6 +1330,9 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   <RechartsTooltip
                     formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
                     labelFormatter={(label) => `Timeline: ${label}`}
+                    contentStyle={chartTooltipStyle.contentStyle}
+                    itemStyle={chartTooltipStyle.itemStyle}
+                    labelStyle={chartTooltipStyle.labelStyle}
                   />
                   <Area
                     type="monotone"
@@ -1322,8 +1352,13 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 <BarChart data={spreadData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                   <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
                   <YAxis stroke="#94a3b8" fontSize={11} domain={[5, 10]} tickFormatter={(v) => `${v}%`} />
-                  <RechartsTooltip formatter={(val: any) => `${Number(val).toFixed(2)}% p.a.`} />
-                  <Bar dataKey="rate" name="Annual Interest Rate (%)" fill="#006c4a" radius={[6, 6, 0, 0]}>
+                  <RechartsTooltip
+                    formatter={(val: any) => `${Number(val).toFixed(2)}% p.a.`}
+                    contentStyle={chartTooltipStyle.contentStyle}
+                    itemStyle={chartTooltipStyle.itemStyle}
+                    labelStyle={chartTooltipStyle.labelStyle}
+                  />
+                  <Bar dataKey="rate" name="Annual Interest Rate (%)" fill={isDark ? '#10b981' : '#006c4a'} radius={[6, 6, 0, 0]}>
                     {spreadData.map((entry, index) => (
                       <Cell
                         key={`cell-${index}`}

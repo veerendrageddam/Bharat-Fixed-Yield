@@ -1,22 +1,39 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Sun, Moon, ShieldCheck, Menu, X } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
+import { useTheme } from '../context/ThemeContext';
 
 interface HeaderProps {
   activeTab: string;
   setActiveTab: (tab: string) => void;
-  isDarkMode: boolean;
-  toggleDarkMode: () => void;
+  isDarkMode?: boolean;
+  toggleDarkMode?: () => void;
   onOpenSignIn?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
-  isDarkMode,
-  toggleDarkMode,
+  isDarkMode: propIsDarkMode,
+  toggleDarkMode: propToggleDarkMode,
 }) => {
-  const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false);
+  const { isDark: contextIsDark, toggleTheme: contextToggleTheme } = useTheme();
+  const isDarkMode = propIsDarkMode !== undefined ? propIsDarkMode : contextIsDark;
+  const toggleDarkMode = propToggleDarkMode || contextToggleTheme;
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Close mobile drawer on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setMobileMenuOpen(false);
+      }
+    };
+    if (mobileMenuOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { id: 'command-center', label: 'Yield Command Center (FD & RD)' },
@@ -68,9 +85,9 @@ export const Header: React.FC<HeaderProps> = ({
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
                   aria-current={isActive ? 'page' : undefined}
-                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 whitespace-nowrap focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 ${
+                  className={`px-3.5 py-2 rounded-lg text-sm font-semibold transition-all duration-150 whitespace-nowrap focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer ${
                     isActive
-                      ? 'bg-slate-200/70 dark:bg-slate-800 text-slate-900 dark:text-white shadow-2xs'
+                      ? 'bg-slate-200/70 dark:bg-slate-800 text-slate-900 dark:text-white shadow-2xs font-bold'
                       : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-slate-900 dark:hover:text-white'
                   }`}
                 >
@@ -98,7 +115,7 @@ export const Header: React.FC<HeaderProps> = ({
             <button
               onClick={toggleDarkMode}
               aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
-              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
               title={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-700" />}
@@ -107,7 +124,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Mobile Menu Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="xl:hidden p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500"
+              className="xl:hidden p-2 rounded-lg text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus:outline-hidden focus-visible:ring-2 focus-visible:ring-emerald-500 cursor-pointer"
               aria-label={mobileMenuOpen ? 'Close mobile menu' : 'Open mobile menu'}
               aria-expanded={mobileMenuOpen}
             >
@@ -116,32 +133,63 @@ export const Header: React.FC<HeaderProps> = ({
           </div>
         </div>
 
-      {/* Mobile Drawer Navigation */}
-      {mobileMenuOpen && (
-        <div className="xl:hidden bg-white dark:bg-[#161b22] border-b border-slate-200 dark:border-slate-800 px-4 py-4 flex flex-col gap-2">
-          {navItems.map((item) => {
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleNavClick(item.id)}
-                className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors ${
-                  isActive
-                    ? 'bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
-                    : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
-                }`}
-              >
-                {item.label}
-              </button>
-            );
-          })}
-          <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500">
-            <span>RBI Repo: 6.50%</span>
-            <span className="text-emerald-700 dark:text-emerald-400 font-bold">DICGC ₹5 Lakh Insured</span>
-          </div>
-        </div>
-      )}
-    </header>
-  </>
+        {/* Mobile Drawer Navigation with backdrop */}
+        {mobileMenuOpen && (
+          <>
+            <div
+              className="fixed inset-0 top-20 bg-slate-900/50 backdrop-blur-xs z-30 xl:hidden"
+              onClick={() => setMobileMenuOpen(false)}
+              aria-hidden="true"
+            />
+            <div className="xl:hidden relative z-40 bg-white dark:bg-[#161b22] border-b border-slate-200 dark:border-slate-800 px-4 py-4 flex flex-col gap-3 shadow-xl">
+              {navItems.map((item) => {
+                const isActive = activeTab === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    onClick={() => handleNavClick(item.id)}
+                    className={`w-full text-left px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors cursor-pointer ${
+                      isActive
+                        ? 'bg-slate-200 dark:bg-slate-800 text-slate-900 dark:text-white font-bold'
+                        : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800'
+                    }`}
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+
+              {/* Mobile Appearance Toggle */}
+              <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs">
+                <span className="font-semibold text-slate-700 dark:text-slate-300">Theme</span>
+                <button
+                  type="button"
+                  onClick={toggleDarkMode}
+                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 font-bold hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors cursor-pointer"
+                  aria-label={isDarkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+                >
+                  {isDarkMode ? (
+                    <>
+                      <Sun className="w-4 h-4 text-amber-400" />
+                      <span>Light Mode</span>
+                    </>
+                  ) : (
+                    <>
+                      <Moon className="w-4 h-4 text-slate-700" />
+                      <span>Dark Mode</span>
+                    </>
+                  )}
+                </button>
+              </div>
+
+              <div className="pt-2 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+                <span>RBI Repo: 6.50%</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">DICGC ₹5 Lakh Insured</span>
+              </div>
+            </div>
+          </>
+        )}
+      </header>
+    </>
   );
 };
