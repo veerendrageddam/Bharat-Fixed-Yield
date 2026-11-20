@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2026-11-02T08:42:40.292Z",
+  "lastUpdated": "2026-11-16T08:50:32.763Z",
   "version": "2.2.0",
   "source": "RBI Scheduled Bank Disclosures, MoF Gazettes & Official Rate Cards",
   "banks": {
@@ -114,7 +114,11 @@
       "womenBonus": 0.1,
       "fdSupported": true,
       "lastVerified": "2026-10-29T04:46:29.853Z",
-      "sourceUrl": "https://www.suryoday.bank.in/",
+      "sourceUrl": "https://suryoday.bank.in/p/fixed-deposit",
+      "fallbackUrls": [
+        "https://www.suryoday.bank.in/",
+        "https://www.suryodaybank.com/rates/"
+      ],
       "circularUrl": "https://suryoday.bank.in/p/fixed-deposit",
       "effectiveDate": "w.e.f. September 4, 2024",
       "callable": true,
@@ -287,7 +291,11 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
       "lastVerified": "2026-10-29T04:46:29.853Z",
-      "sourceUrl": "https://www.aubank.in/",
+      "sourceUrl": "https://www.aubank.in/interest-rates/fixed-deposit",
+      "fallbackUrls": [
+        "https://www.aubank.in/interest-rates",
+        "https://www.aubank.in/"
+      ],
       "circularUrl": "https://www.au.bank.in/interest-rates",
       "effectiveDate": "w.e.f. September 15, 2024",
       "callable": true,
@@ -340,7 +348,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-11-02T08:40:05.429Z",
+      "lastVerified": "2026-11-16T08:47:55.408Z",
       "sourceUrl": "https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits",
       "circularUrl": "https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -562,7 +570,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:40:36.238Z",
+      "lastVerified": "2026-11-16T08:48:27.100Z",
       "sourceUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
       "circularUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
       "effectiveDate": "w.e.f. August 20, 2024",
@@ -621,7 +629,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:40:38.148Z",
+      "lastVerified": "2026-11-16T08:48:29.925Z",
       "sourceUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
       "circularUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
       "effectiveDate": "w.e.f. October 16, 2024",
@@ -680,7 +688,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-09T05:30:00.000Z",
+      "lastVerified": "2026-11-16T08:48:32.231Z",
       "sourceUrl": "https://www.indusind.com/",
       "circularUrl": "https://www.indusind.com/in/en/personal/rates/deposit-rates.html",
       "effectiveDate": "w.e.f. October 30, 2024",
@@ -734,7 +742,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:40:41.551Z",
+      "lastVerified": "2026-11-16T08:48:33.604Z",
       "sourceUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
       "circularUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
       "effectiveDate": "w.e.f. August 5, 2024",
@@ -769,12 +777,12 @@
       "fdSupported": true,
       "rdSupported": true,
       "status": "active",
-      "baseRate": 6.35,
+      "baseRate": 6.7,
       "ratesByTenure": {
-        "12": 6.35,
-        "24": 6.6,
-        "36": 7,
-        "60": 6.5
+        "12": 6.6,
+        "24": 6.9,
+        "36": 6.7,
+        "60": 6.6
       },
       "specialTenure": "400 Days (7.40%)",
       "specialSchemes": [
@@ -788,7 +796,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:40:44.635Z",
+      "lastVerified": "2026-11-16T08:48:36.321Z",
       "sourceUrl": "https://www.federalbank.co.in/",
       "circularUrl": "https://www.federalbank.co.in/deposit-rate",
       "effectiveDate": "w.e.f. September 16, 2024",
@@ -902,7 +910,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
-      "lastVerified": "2026-11-02T08:41:04.962Z",
+      "lastVerified": "2026-11-16T08:48:56.794Z",
       "sourceUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
       "circularUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
       "effectiveDate": "w.e.f. October 3, 2024",
@@ -956,7 +964,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
-      "lastVerified": "2026-11-02T08:41:06.253Z",
+      "lastVerified": "2026-11-16T08:49:01.093Z",
       "sourceUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
       "circularUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1010,8 +1018,11 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-11-02T08:41:22.755Z",
+      "lastVerified": "2026-11-16T08:49:17.595Z",
       "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
+      "fallbackUrls": [
+        "https://www.unionbankofindia.co.in/"
+      ],
       "circularUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
       "effectiveDate": "w.e.f. August 22, 2024",
       "callable": true,
@@ -1064,7 +1075,7 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.75,
       "womenBonus": 0.1,
-      "lastVerified": "2026-11-02T08:41:24.431Z",
+      "lastVerified": "2026-11-16T08:49:19.276Z",
       "sourceUrl": "https://canarabank.com/interest-rates-deposit",
       "circularUrl": "https://canarabank.com/interest-rates-deposit",
       "effectiveDate": "w.e.f. October 5, 2024",
@@ -1123,8 +1134,12 @@
       "seniorBonus": 0.5,
       "superSeniorBonus": 0.65,
       "womenBonus": 0.1,
-      "lastVerified": "2026-11-02T08:41:24.498Z",
+      "lastVerified": "2026-11-16T08:49:19.389Z",
       "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
+      "fallbackUrls": [
+        "https://bankofindia.co.in/deposit-interest-rates",
+        "https://bankofindia.co.in/"
+      ],
       "circularUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
       "effectiveDate": "w.e.f. September 1, 2024",
       "callable": true,
@@ -1180,7 +1195,7 @@
           "badge": "Special 400D (7.30%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:41:28.378Z",
+      "lastVerified": "2026-11-16T08:49:22.924Z",
       "sourceUrl": "https://www.saraswatbank.com/",
       "circularUrl": "https://www.saraswatbank.com/",
       "effectiveDate": "w.e.f. September 10, 2024",
@@ -1234,7 +1249,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:41:30.143Z",
+      "lastVerified": "2026-11-16T08:49:24.835Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
@@ -1288,7 +1303,7 @@
       "seniorBonus": 0,
       "superSeniorBonus": 0,
       "womenBonus": 0,
-      "lastVerified": "2026-11-02T08:41:31.253Z",
+      "lastVerified": "2026-11-16T08:49:25.921Z",
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "circularUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
       "effectiveDate": "w.e.f. October 1, 2024 (MoF Order Q3 FY25)",
@@ -1344,7 +1359,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:41:33.333Z",
+      "lastVerified": "2026-11-16T08:49:27.943Z",
       "circularUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
       "effectiveDate": "w.e.f. October 1, 2024",
       "callable": true,
@@ -1417,7 +1432,10 @@
       "superSeniorBonus": 0.5,
       "womenBonus": 0,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:41:35.113Z",
+      "fallbackUrls": [
+        "https://tgb.bank.in/"
+      ],
+      "lastVerified": "2026-11-16T08:49:29.560Z",
       "circularUrl": "https://tgb.bank.in/deposit-interest-rates",
       "effectiveDate": "w.e.f. August 1, 2024",
       "callable": true,
@@ -1471,7 +1489,7 @@
           "badge": "Special 444D (7.25%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:41:35.830Z",
+      "lastVerified": "2026-11-16T08:49:30.384Z",
       "sourceUrl": "https://keralagbank.com/",
       "circularUrl": "https://keralagbank.com/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1526,7 +1544,7 @@
           "badge": "Special 444D (7.25%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:41:38.129Z",
+      "lastVerified": "2026-11-16T08:49:32.987Z",
       "sourceUrl": "https://karnatakagraminbank.com/",
       "circularUrl": "https://karnatakagraminbank.com/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1581,8 +1599,11 @@
           "badge": "Special 400D (7.15%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:41:54.631Z",
+      "lastVerified": "2026-11-16T08:49:49.489Z",
       "sourceUrl": "https://mahagramin.bank.in/",
+      "fallbackUrls": [
+        "https://mahagramin.in/"
+      ],
       "circularUrl": "https://mahagramin.bank.in/",
       "effectiveDate": "w.e.f. September 15, 2024",
       "callable": true,
@@ -1636,7 +1657,7 @@
           "badge": "Special 399D (7.20%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:42:11.133Z",
+      "lastVerified": "2026-11-16T08:50:05.992Z",
       "sourceUrl": "https://bggb.in/",
       "circularUrl": "https://bggb.in/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1691,7 +1712,7 @@
           "badge": "Special 666D (7.25%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:42:12.119Z",
+      "lastVerified": "2026-11-16T08:50:07.641Z",
       "sourceUrl": "https://aryavart-rrb.com/",
       "circularUrl": "https://aryavart-rrb.com/",
       "effectiveDate": "w.e.f. September 1, 2024",
@@ -1747,7 +1768,7 @@
           "badge": "Special 444D (7.20%)"
         }
       ],
-      "lastVerified": "2026-11-02T08:42:15.303Z",
+      "lastVerified": "2026-11-16T08:50:10.629Z",
       "sourceUrl": "https://jkgb.in/",
       "circularUrl": "https://jkgb.in/",
       "effectiveDate": "w.e.f. September 15, 2024",
@@ -1803,7 +1824,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://dbgb.in/",
-      "lastVerified": "2026-11-02T08:42:17.110Z",
+      "lastVerified": "2026-11-16T08:50:12.711Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://dbgb.in/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1858,7 +1879,10 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://odishabank.in/",
-      "lastVerified": "2026-11-02T08:42:18.297Z",
+      "fallbackUrls": [
+        "https://odishabank.bank.in/"
+      ],
+      "lastVerified": "2026-11-16T08:50:13.876Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://odishabank.in/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -1913,7 +1937,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://rmgb.in/",
-      "lastVerified": "2026-11-02T08:42:34.800Z",
+      "lastVerified": "2026-11-16T08:50:30.379Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://rmgb.in/",
       "effectiveDate": "w.e.f. June 15, 2024",
@@ -1968,7 +1992,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://bgvb.in/",
-      "lastVerified": "2026-11-02T08:42:38.209Z",
+      "lastVerified": "2026-11-16T08:50:30.775Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://bgvb.in/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -2023,7 +2047,7 @@
       "superSeniorBonus": 0.8,
       "womenBonus": 0.15,
       "sourceUrl": "https://agvbank.co.in/",
-      "lastVerified": "2026-11-02T08:42:38.767Z",
+      "lastVerified": "2026-11-16T08:50:31.324Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://agvbank.co.in/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -2078,7 +2102,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://www.tamilnadugramabank.com/",
-      "lastVerified": "2026-11-02T08:42:39.719Z",
+      "lastVerified": "2026-11-16T08:50:32.197Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://www.tamilnadugramabank.com/",
       "effectiveDate": "w.e.f. October 1, 2024",
@@ -2133,7 +2157,7 @@
       "superSeniorBonus": 0.75,
       "womenBonus": 0.15,
       "sourceUrl": "https://mgbank.co.in/",
-      "lastVerified": "2026-11-02T08:42:40.292Z",
+      "lastVerified": "2026-11-16T08:50:32.763Z",
       "verificationStatus": "circular_verified",
       "circularUrl": "https://mgbank.co.in/",
       "effectiveDate": "w.e.f. June 15, 2024",
@@ -2228,7 +2252,7 @@
       "effectiveDate": "w.e.f. September 4, 2024",
       "callable": true,
       "retailCapCr": 3,
-      "sourceUrl": "https://www.suryoday.bank.in/",
+      "sourceUrl": "https://suryoday.bank.in/p/fixed-deposit",
       "lastVerified": "2026-10-29T04:46:29.853Z",
       "verificationStatus": "circular_verified"
     },
@@ -2323,7 +2347,7 @@
       "effectiveDate": "w.e.f. September 15, 2024",
       "callable": true,
       "retailCapCr": 3,
-      "sourceUrl": "https://www.aubank.in/",
+      "sourceUrl": "https://www.aubank.in/interest-rates/fixed-deposit",
       "lastVerified": "2026-10-29T04:46:29.853Z",
       "verificationStatus": "circular_verified"
     },
@@ -2352,7 +2376,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.ujjivansfb.bank.in/personal/deposits/regular-fixed-deposits",
-      "lastVerified": "2026-11-02T08:40:05.429Z",
+      "lastVerified": "2026-11-16T08:47:55.408Z",
       "verificationStatus": "live_synced"
     },
     "hdfc-bank": {
@@ -2470,7 +2494,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.kotak.com/en/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rate.html",
-      "lastVerified": "2026-11-02T08:40:36.238Z",
+      "lastVerified": "2026-11-16T08:48:27.100Z",
       "verificationStatus": "circular_verified"
     },
     "idfc-first-bank": {
@@ -2503,7 +2527,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.idfcfirstbank.com/interest-rate/deposits",
-      "lastVerified": "2026-11-02T08:40:38.148Z",
+      "lastVerified": "2026-11-16T08:48:29.925Z",
       "verificationStatus": "circular_verified"
     },
     "indusind-bank": {
@@ -2536,8 +2560,8 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indusind.com/",
-      "lastVerified": "2026-11-09T05:30:00.000Z",
-      "verificationStatus": "circular_verified"
+      "lastVerified": "2026-11-16T08:48:32.231Z",
+      "verificationStatus": "live_synced"
     },
     "yes-bank": {
       "baseRate": 7.25,
@@ -2564,16 +2588,16 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.yesbank.in/personal-banking/deposits/fixed-deposit/fixed-deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:40:41.551Z",
+      "lastVerified": "2026-11-16T08:48:33.604Z",
       "verificationStatus": "circular_verified"
     },
     "federal-bank": {
-      "baseRate": 6.35,
+      "baseRate": 6.7,
       "ratesByTenure": {
-        "12": 6.35,
-        "24": 6.6,
-        "36": 7,
-        "60": 6.5
+        "12": 6.6,
+        "24": 6.9,
+        "36": 6.7,
+        "60": 6.6
       },
       "specialTenure": "400 Days (7.40%)",
       "specialSchemes": [
@@ -2592,7 +2616,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.federalbank.co.in/",
-      "lastVerified": "2026-11-02T08:40:44.635Z",
+      "lastVerified": "2026-11-16T08:48:36.321Z",
       "verificationStatus": "live_synced"
     },
     "sbi-bank": {
@@ -2654,7 +2678,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.bankofbaroda.in/interest-rates-and-service-charges/deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:41:04.962Z",
+      "lastVerified": "2026-11-16T08:48:56.794Z",
       "verificationStatus": "circular_verified"
     },
     "pnb-bank": {
@@ -2682,7 +2706,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.pnbindia.in/deposit-interest-rates.html",
-      "lastVerified": "2026-11-02T08:41:06.253Z",
+      "lastVerified": "2026-11-16T08:49:01.093Z",
       "verificationStatus": "circular_verified"
     },
     "union-bank": {
@@ -2710,7 +2734,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
-      "lastVerified": "2026-11-02T08:41:22.755Z",
+      "lastVerified": "2026-11-16T08:49:17.595Z",
       "verificationStatus": "circular_verified"
     },
     "canara-bank": {
@@ -2738,7 +2762,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://canarabank.com/interest-rates-deposit",
-      "lastVerified": "2026-11-02T08:41:24.431Z",
+      "lastVerified": "2026-11-16T08:49:19.276Z",
       "verificationStatus": "circular_verified"
     },
     "bank-of-india": {
@@ -2771,7 +2795,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
-      "lastVerified": "2026-11-02T08:41:24.498Z",
+      "lastVerified": "2026-11-16T08:49:19.389Z",
       "verificationStatus": "circular_verified"
     },
     "saraswat-bank": {
@@ -2799,7 +2823,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.saraswatbank.com/",
-      "lastVerified": "2026-11-02T08:41:28.378Z",
+      "lastVerified": "2026-11-16T08:49:22.924Z",
       "verificationStatus": "circular_verified"
     },
     "post-office-potd": {
@@ -2827,7 +2851,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-11-02T08:41:30.143Z",
+      "lastVerified": "2026-11-16T08:49:24.835Z",
       "verificationStatus": "official_gazette"
     },
     "post-office-pord": {
@@ -2855,7 +2879,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.indiapost.gov.in/Financial/Pages/Content/Post-Office-Saving-Schemes.aspx",
-      "lastVerified": "2026-11-02T08:41:31.253Z",
+      "lastVerified": "2026-11-16T08:49:25.921Z",
       "verificationStatus": "official_gazette"
     },
     "apgb-bank": {
@@ -2883,7 +2907,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:41:33.333Z",
+      "lastVerified": "2026-11-16T08:49:27.943Z",
       "verificationStatus": "live_synced"
     },
     "tgb-bank": {
@@ -2929,7 +2953,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-      "lastVerified": "2026-11-02T08:41:35.113Z",
+      "lastVerified": "2026-11-16T08:49:29.560Z",
       "verificationStatus": "live_synced"
     },
     "kgb-bank": {
@@ -2957,7 +2981,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://keralagbank.com/",
-      "lastVerified": "2026-11-02T08:41:35.830Z",
+      "lastVerified": "2026-11-16T08:49:30.384Z",
       "verificationStatus": "circular_verified"
     },
     "kagb-bank": {
@@ -2985,7 +3009,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://karnatakagraminbank.com/",
-      "lastVerified": "2026-11-02T08:41:38.129Z",
+      "lastVerified": "2026-11-16T08:49:32.987Z",
       "verificationStatus": "circular_verified"
     },
     "mgb-bank": {
@@ -3013,7 +3037,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://mahagramin.bank.in/",
-      "lastVerified": "2026-11-02T08:41:54.631Z",
+      "lastVerified": "2026-11-16T08:49:49.489Z",
       "verificationStatus": "circular_verified"
     },
     "bggb-bank": {
@@ -3041,7 +3065,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://bggb.in/",
-      "lastVerified": "2026-11-02T08:42:11.133Z",
+      "lastVerified": "2026-11-16T08:50:05.992Z",
       "verificationStatus": "circular_verified"
     },
     "aryavart-bank": {
@@ -3069,7 +3093,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://aryavart-rrb.com/",
-      "lastVerified": "2026-11-02T08:42:12.119Z",
+      "lastVerified": "2026-11-16T08:50:07.641Z",
       "verificationStatus": "circular_verified"
     },
     "jkgb-bank": {
@@ -3097,7 +3121,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://jkgb.in/",
-      "lastVerified": "2026-11-02T08:42:15.303Z",
+      "lastVerified": "2026-11-16T08:50:10.629Z",
       "verificationStatus": "circular_verified"
     },
     "dbgb-bank": {
@@ -3125,7 +3149,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://dbgb.in/",
-      "lastVerified": "2026-11-02T08:42:17.110Z",
+      "lastVerified": "2026-11-16T08:50:12.711Z",
       "verificationStatus": "circular_verified"
     },
     "ogb-bank": {
@@ -3153,7 +3177,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://odishabank.in/",
-      "lastVerified": "2026-11-02T08:42:18.297Z",
+      "lastVerified": "2026-11-16T08:50:13.876Z",
       "verificationStatus": "circular_verified"
     },
     "rmgb-bank": {
@@ -3181,7 +3205,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://rmgb.in/",
-      "lastVerified": "2026-11-02T08:42:34.800Z",
+      "lastVerified": "2026-11-16T08:50:30.379Z",
       "verificationStatus": "circular_verified"
     },
     "bgvb-bank": {
@@ -3209,7 +3233,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://bgvb.in/",
-      "lastVerified": "2026-11-02T08:42:38.209Z",
+      "lastVerified": "2026-11-16T08:50:30.775Z",
       "verificationStatus": "circular_verified"
     },
     "agvb-bank": {
@@ -3237,7 +3261,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://agvbank.co.in/",
-      "lastVerified": "2026-11-02T08:42:38.767Z",
+      "lastVerified": "2026-11-16T08:50:31.324Z",
       "verificationStatus": "circular_verified"
     },
     "tngb-bank": {
@@ -3265,7 +3289,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://www.tamilnadugramabank.com/",
-      "lastVerified": "2026-11-02T08:42:39.719Z",
+      "lastVerified": "2026-11-16T08:50:32.197Z",
       "verificationStatus": "circular_verified"
     },
     "mgb-mp-bank": {
@@ -3293,7 +3317,7 @@
       "callable": true,
       "retailCapCr": 3,
       "sourceUrl": "https://mgbank.co.in/",
-      "lastVerified": "2026-11-02T08:42:40.292Z",
+      "lastVerified": "2026-11-16T08:50:32.763Z",
       "verificationStatus": "circular_verified"
     }
   }
