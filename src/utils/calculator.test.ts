@@ -115,6 +115,8 @@ describe('Calculator Core Engineering & Math Engine', () => {
         24: 7.3,
         36: 7.5,
         60: 7.2,
+        84: 7.1,
+        120: 7.1,
       },
       specialSchemes: [
         { days: 444, name: 'Special 444D', rate: 8.1 },
@@ -162,13 +164,21 @@ describe('Calculator Core Engineering & Math Engine', () => {
       expect(seniorRate).toBe(8.6); // 8.1 + 0.5
     });
 
-    it('respects useCustomRate and customRate when enabled', () => {
+    it('preserves genuine bank rate without leaky useCustomRate override', () => {
       const rate = getEffectiveRate(
         mockBank,
         { ...basePersona, useCustomRate: true, customRate: 8.45 },
         36
       );
-      expect(rate).toBe(8.45);
+      expect(rate).toBe(7.5); // Genuine bank rate preserved, not overridden by simulation target
+    });
+
+    it('resolves expanded long-term tenures: 84 months (7Y) and 120 months (10Y)', () => {
+      expect(getEffectiveRate(mockBank, basePersona, 84)).toBe(7.1);
+      expect(getEffectiveRate(mockBank, basePersona, 120)).toBe(7.1);
+      // Senior citizen rates for 7Y and 10Y
+      expect(getEffectiveRate(mockBank, { ...basePersona, age: 65 }, 84)).toBe(7.6);
+      expect(getEffectiveRate(mockBank, { ...basePersona, age: 65 }, 120)).toBe(7.6);
     });
 
     it('does not resolve special odd-day schemes when depositType is RD', () => {

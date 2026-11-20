@@ -97,5 +97,53 @@ describe('YieldCommandCenter Component UI, Accessibility & Search Interactions',
     expect(screen.getByText('Unity Small Finance Bank')).toBeInTheDocument();
     expect(screen.queryByText('State Bank of India (Amrit Vrishti)')).not.toBeInTheDocument();
   });
+
+  it('renders standardized age tiers in sticky ribbon and updates persona on change', () => {
+    const setPersonaMock = vi.fn();
+    render(<YieldCommandCenter {...defaultProps} setPersona={setPersonaMock} />);
+
+    const ageSelect = screen.getByLabelText(/Depositor Age Category/i);
+    expect(ageSelect).toBeInTheDocument();
+    expect(ageSelect).toHaveValue('60'); // mockPersona age is 62 -> '60'
+
+    fireEvent.change(ageSelect, { target: { value: '80' } });
+    expect(setPersonaMock).toHaveBeenCalled();
+  });
+
+  it('displays dynamic transparency pills on bank cards for senior citizens and women depositors', () => {
+    const seniorFemalePersona: UserPersona = {
+      ...mockPersona,
+      age: 65,
+      gender: 'female',
+      state: 'All India (Pan-India)',
+    };
+    render(<YieldCommandCenter {...defaultProps} persona={seniorFemalePersona} />);
+
+    // Should render senior citizen breakdown badges
+    expect(screen.getAllByText(/\+0\.50% Senior Citizen \(60\+\)/i).length).toBeGreaterThan(0);
+    // Should render women depositor breakdown badges on eligible banks
+    expect(screen.getAllByText(/\+0\.15% Women Depositor/i).length).toBeGreaterThan(0);
+  });
+
+  it('toggles regional banks only filter to focus on state RRBs and cooperative institutions', () => {
+    render(<YieldCommandCenter {...defaultProps} />);
+
+    const regionalToggleBtn = screen.getByRole('button', { name: /Regional Banks/i });
+    expect(regionalToggleBtn).toBeInTheDocument();
+
+    // Toggle on
+    fireEvent.click(regionalToggleBtn);
+    expect(screen.getByText(/🏛️ Regional Banks Only/i)).toBeInTheDocument();
+  });
+
+  it('supports expanded 10-year and 7-year statutory tenure horizon', () => {
+    render(<YieldCommandCenter {...defaultProps} />);
+
+    // Expect 7Y and 10Y buttons to exist in the milestone chips
+    expect(screen.getByText('7Y')).toBeInTheDocument();
+    expect(screen.getByText('84M')).toBeInTheDocument();
+    expect(screen.getByText('10Y')).toBeInTheDocument();
+    expect(screen.getByText('Max RBI')).toBeInTheDocument();
+  });
 });
 

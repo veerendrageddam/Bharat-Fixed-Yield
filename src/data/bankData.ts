@@ -94,6 +94,6 @@ export const TAX_SAVER_BANKS: BankData[] = INITIAL_BANKS
     tenureMonths: 60,
     badge: 'Section 80C Tax Saver',
     categoryTag: '5-Year Non-Callable Lock-in',
-    baseRate: b.ratesByTenure?.[60] ?? Number((b.baseRate - 0.35).toFixed(2)),
+    baseRate: b.ratesByTenure?.[60] ?? b.baseRate,
     notes: 'Eligible for tax deduction up to ₹1,50,000 under Section 80C. Mandatory non-callable 5-year lock-in.',
   }));

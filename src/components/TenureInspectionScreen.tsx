@@ -79,6 +79,21 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
   const exemptionLimit = isSenior ? 50000 : 40000;
   const exceedsFY3 = calc.annualInterestFY3 > exemptionLimit;
 
+  // Group quarters dynamically by fiscal year for tenures extending up to 10 years (40 quarters)
+  const fyBreakdown = React.useMemo(() => {
+    const map = new Map<string, { label: string; interest: number; startQ: number; endQ: number }>();
+    calc.quarters.forEach((q) => {
+      const fy = q.fyLabel || `FY ${Math.ceil(q.quarter / 4)}`;
+      if (!map.has(fy)) {
+        map.set(fy, { label: fy, interest: 0, startQ: q.quarter, endQ: q.quarter });
+      }
+      const entry = map.get(fy)!;
+      entry.interest += q.interestEarned;
+      entry.endQ = q.quarter;
+    });
+    return Array.from(map.values());
+  }, [calc.quarters]);
+
   return (
     <div className="w-full min-h-screen bg-[#f7f9fb] dark:bg-[#0e1217] py-6 sm:py-10 px-4 sm:px-6 lg:px-12 flex justify-center transition-colors">
       <div className="w-full max-w-6xl flex flex-col gap-6">
@@ -227,7 +242,7 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
                 <div className="flex items-center justify-between pb-3">
                   <div>
                     <h2 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">
-                      3-Year Compounding Acceleration
+                      {effectiveDays ? `${effectiveDays}-Day` : `${(persona.tenureMonths / 12).toFixed(persona.tenureMonths % 12 === 0 ? 0 : 1)}Y (${persona.tenureMonths}M)`} Compounding Acceleration
                     </h2>
                     <p className="text-xs text-slate-500 dark:text-slate-400">
                       Quarter-on-quarter capital base progression via continuous reinvestment
@@ -295,41 +310,29 @@ export const TenureInspectionScreen: React.FC<TenureInspectionScreenProps> = ({
                   </div>
                 </div>
 
-                {/* Annualized Breakdown Strips */}
-                <div className="grid grid-cols-3 gap-2.5 pt-2">
-                  <div className="p-3 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200/60 dark:border-slate-800 flex flex-col">
-                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">FY 1 (Q1-Q4)</span>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white tabular-nums">
-                      ₹{formatINR(calc.annualInterestFY1)}
-                    </span>
-                    <span className="text-[11px] text-[#006c4a] dark:text-[#10b981]">
-                      {((calc.annualInterestFY1 / persona.principal) * 100).toFixed(2)}% yield
-                    </span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200/60 dark:border-slate-800 flex flex-col">
-                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">FY 2 (Q5-Q8)</span>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white tabular-nums">
-                      ₹{formatINR(calc.annualInterestFY2)}
-                    </span>
-                    <span className="text-[11px] text-[#006c4a] dark:text-[#10b981]">
-                      {((calc.annualInterestFY2 / persona.principal) * 100).toFixed(2)}% on orig.
-                    </span>
-                  </div>
-
-                  <div className="p-3 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200/60 dark:border-slate-800 flex flex-col">
-                    <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">FY 3 (Q9-Q12)</span>
-                    <span className="text-sm font-bold text-slate-900 dark:text-white tabular-nums">
-                      ₹{formatINR(calc.annualInterestFY3)}
-                    </span>
-                    <span
-                      className={`text-[11px] font-semibold ${
-                        exceedsFY3 ? 'text-rose-600 dark:text-rose-400' : 'text-[#006c4a] dark:text-[#10b981]'
-                      }`}
-                    >
-                      {exceedsFY3 ? `Exceeds ₹${Math.round(exemptionLimit / 1000)}k` : 'Exempt'}
-                    </span>
-                  </div>
+                {/* Dynamic Annualized Breakdown Strips (FY1 through FY10) */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 pt-2 max-h-48 overflow-y-auto">
+                  {fyBreakdown.map((fy) => {
+                    const exceedsExemption = fy.interest > exemptionLimit;
+                    const yieldPct = ((fy.interest / depositAmount) * 100).toFixed(2);
+                    return (
+                      <div key={fy.label} className="p-3 rounded-xl bg-white dark:bg-[#161b22] border border-slate-200/60 dark:border-slate-800 flex flex-col">
+                        <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">
+                          {fy.label} (Q{fy.startQ}-Q{fy.endQ})
+                        </span>
+                        <span className="text-sm font-bold text-slate-900 dark:text-white tabular-nums">
+                          ₹{formatINR(fy.interest)}
+                        </span>
+                        <span
+                          className={`text-[11px] font-semibold ${
+                            exceedsExemption ? 'text-rose-600 dark:text-rose-400' : 'text-[#006c4a] dark:text-[#10b981]'
+                          }`}
+                        >
+                          {yieldPct}% • {exceedsExemption ? `> ₹${Math.round(exemptionLimit / 1000)}k` : 'Exempt'}
+                        </span>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
 

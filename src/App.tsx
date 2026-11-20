@@ -28,7 +28,7 @@ export default function App() {
     monthlyInstallment: 10000,
     tenureMonths: 36,
     compounding: 'maturity',
-    age: 62,
+    age: 35,
     gender: 'male',
     state: PAN_INDIA_OPTION.name,
     residency: 'resident',

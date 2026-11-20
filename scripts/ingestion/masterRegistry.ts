@@ -36,7 +36,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.85,
       "24": 8,
       "36": 8.15,
-      "60": 7.75
+      "60": 7.75,
+        "84": 7.5,
+        "120": 7.5
     },
     "specialTenure": "1001 Days (8.40%)",
     "specialSchemes": [
@@ -95,7 +97,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.75,
       "24": 8.1,
       "36": 8,
-      "60": 7.5
+      "60": 7.5,
+        "84": 7.25,
+        "120": 7.25
     },
     "specialTenure": "2 Years 2 Days (8.25%)",
     "specialSchemes": [
@@ -148,7 +152,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.75,
       "24": 8,
       "36": 8,
-      "60": 7.5
+      "60": 7.5,
+        "84": 7,
+        "120": 7
     },
     "specialTenure": "1500 Days (8.25%)",
     "specialSchemes": [
@@ -202,7 +208,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.6,
       "24": 7.8,
       "36": 7.9,
-      "60": 7.25
+      "60": 7.25,
+        "84": 7.25,
+        "120": 7.25
     },
     "specialTenure": "444 Days (8.15%)",
     "specialSchemes": [
@@ -257,7 +265,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.25,
       "24": 8,
       "36": 7.5,
-      "60": 7.25
+      "60": 7.25,
+        "84": 7.25,
+        "120": 7.25
     },
     "specialTenure": "24 Months (8.00%)",
     "specialSchemes": [
@@ -315,7 +325,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.75,
       "24": 8,
       "36": 7.75,
-      "60": 7.2
+      "60": 7.2,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "15 Months (8.25%)",
     "specialSchemes": [
@@ -369,7 +381,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.9,
       "24": 7.15,
       "36": 7.25,
-      "60": 7
+      "60": 7,
+        "84": 7,
+        "120": 7
     },
     "specialTenure": "55 Months (7.40%)",
     "seniorBonus": 0.5,
@@ -411,7 +425,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.85,
       "24": 7.1,
       "36": 7.25,
-      "60": 7
+      "60": 7,
+        "84": 6.9,
+        "120": 6.9
     },
     "specialTenure": "15 Months (7.25%)",
     "seniorBonus": 0.5,
@@ -453,7 +469,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.7,
       "24": 7.1,
       "36": 7.1,
-      "60": 7
+      "60": 7,
+        "84": 7,
+        "120": 7
     },
     "specialTenure": "17 Months Special (7.20%)",
     "specialSchemes": [
@@ -508,7 +526,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.15,
       "36": 7,
-      "60": 6.2
+      "60": 6.2,
+        "84": 6.2,
+        "120": 6.2
     },
     "specialTenure": "390 Days Active FD (7.40%)",
     "specialSchemes": [
@@ -562,7 +582,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.5,
       "24": 7.5,
       "36": 7.25,
-      "60": 7
+      "60": 7,
+        "84": 7,
+        "120": 7
     },
     "specialTenure": "500 Days Peak Return (7.90%)",
     "specialSchemes": [
@@ -617,7 +639,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.75,
       "24": 7.25,
       "36": 6.65,
-      "60": 6.65
+      "60": 6.65,
+        "84": 6.65,
+        "120": 6.65
     },
     "seniorBonusByTenure": {
       "24": 0.60
@@ -672,7 +696,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.25,
       "24": 7.5,
       "36": 7.25,
-      "60": 7.25
+      "60": 7.25,
+        "84": 7.25,
+        "120": 7.25
     },
     "specialTenure": "18 Months Special (7.75%)",
     "specialSchemes": [
@@ -726,7 +752,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.8,
       "24": 7.05,
       "36": 7,
-      "60": 6.6
+      "60": 6.6,
+        "84": 6.6,
+        "120": 6.6
     },
     "specialTenure": "400 Days Federal Special (7.40%)",
     "specialSchemes": [
@@ -775,7 +803,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.8,
       "24": 7,
       "36": 7.1,
-      "60": 6.9
+      "60": 6.9,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days Amrit Vrishti (7.25%)",
     "specialSchemes": [
@@ -830,7 +860,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.85,
       "24": 7.05,
       "36": 7.15,
-      "60": 6.8
+      "60": 6.8,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "399 Days BoB Tiranga (7.25%)",
     "specialSchemes": [
@@ -884,7 +916,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.8,
       "24": 7,
       "36": 7.05,
-      "60": 6.75
+      "60": 6.75,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "400 Days PNB Uttam (7.25%)",
     "specialSchemes": [
@@ -938,7 +972,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.75,
       "24": 7,
       "36": 7.3,
-      "60": 6.5
+      "60": 6.5,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "333 Days Union Samriddhi (7.40%)",
     "specialSchemes": [
@@ -996,7 +1032,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.85,
       "24": 6.85,
       "36": 6.8,
-      "60": 6.7
+      "60": 6.7,
+        "84": 6.7,
+        "120": 6.7
     },
     "specialTenure": "444 Days Canara Special (7.25%)",
     "specialSchemes": [
@@ -1045,7 +1083,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.8,
       "24": 6.75,
       "36": 6.5,
-      "60": 6
+      "60": 6,
+        "84": 6,
+        "120": 6
     },
     "specialTenure": "333 Days Star Dhan Vriddhi (7.30%)",
     "specialSchemes": [
@@ -1106,7 +1146,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.4,
       "24": 7.75,
       "36": 7.6,
-      "60": 7.15
+      "60": 7.15,
+        "84": 6.75,
+        "120": 6.75
     },
     "specialTenure": "2 Years (7.75%)",
     "seniorBonus": 0.5,
@@ -1263,7 +1305,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7,
       "24": 6.65,
       "36": 6.65,
-      "60": 6.65
+      "60": 6.65,
+        "84": 6.65,
+        "120": 6.65
     },
     "specialTenure": "1 Year (7.00%)",
     "specialSchemes": [
@@ -1313,7 +1357,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 6.45,
       "24": 6.45,
       "36": 6.5,
-      "60": 7
+      "60": 7,
+        "84": 7,
+        "120": 7
     },
     "specialTenure": "1000 Days TGB Sahasra (7.50%)",
     "specialSchemes": [
@@ -1383,7 +1429,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.2,
       "24": 7.45,
       "36": 7.6,
-      "60": 7.1
+      "60": 7.1,
+        "84": 6.7,
+        "120": 6.7
     },
     "specialTenure": "444 Days KGB Special (7.75%)",
     "seniorBonus": 0.5,
@@ -1426,7 +1474,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.35,
       "36": 7.5,
-      "60": 7
+      "60": 7,
+        "84": 6.7,
+        "120": 6.7
     },
     "specialTenure": "555 Days KaGB Golden (7.65%)",
     "seniorBonus": 0.5,
@@ -1469,7 +1519,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.35,
       "36": 7.5,
-      "60": 7
+      "60": 7,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days Maha Special (7.60%)",
     "seniorBonus": 0.5,
@@ -1515,7 +1567,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.05,
       "24": 7.3,
       "36": 7.45,
-      "60": 6.95
+      "60": 6.95,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "399 Days Gujarat Gramin (7.55%)",
     "seniorBonus": 0.5,
@@ -1558,7 +1612,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.35,
       "36": 7.5,
-      "60": 7
+      "60": 7,
+        "84": 6,
+        "120": 6
     },
     "specialTenure": "444 Days Aryavart Special (7.65%)",
     "seniorBonus": 0.5,
@@ -1602,7 +1658,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.35,
       "36": 7.5,
-      "60": 6.95
+      "60": 6.95,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "400 Days JKGB Amrit (7.60%)",
     "seniorBonus": 0.5,
@@ -1645,7 +1703,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7,
       "24": 7.25,
       "36": 7.5,
-      "60": 6.75
+      "60": 6.75,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "400 Days (7.65%)",
     "specialSchemes": [
@@ -1696,7 +1756,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.3,
       "36": 7.5,
-      "60": 6.8
+      "60": 6.8,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days (7.60%)",
     "specialSchemes": [
@@ -1750,7 +1812,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7,
       "24": 7.2,
       "36": 7.4,
-      "60": 6.8
+      "60": 6.8,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days (7.50%)",
     "specialSchemes": [
@@ -1801,7 +1865,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.1,
       "24": 7.3,
       "36": 7.5,
-      "60": 6.75
+      "60": 6.75,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "400 Days (7.60%)",
     "specialSchemes": [
@@ -1852,7 +1918,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7,
       "24": 7.25,
       "36": 7.45,
-      "60": 6.7
+      "60": 6.7,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days (7.55%)",
     "specialSchemes": [
@@ -1903,7 +1971,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7.15,
       "24": 7.35,
       "36": 7.5,
-      "60": 6.8
+      "60": 6.8,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "444 Days (7.65%)",
     "specialSchemes": [
@@ -1954,7 +2024,9 @@ export const MASTER_BANK_REGISTRY: Record<string, BankMasterDefinition> = {
       "12": 7,
       "24": 7.2,
       "36": 7.45,
-      "60": 6.75
+      "60": 6.75,
+        "84": 6.5,
+        "120": 6.5
     },
     "specialTenure": "400 Days (7.55%)",
     "specialSchemes": [

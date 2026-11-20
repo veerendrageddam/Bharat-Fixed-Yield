@@ -105,6 +105,8 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const [activeModalBank, setActiveModalBank] = useState<BankData | null>(null);
   const [activeChartTab, setActiveChartTab] = useState<'donut' | 'trajectory' | 'spread'>('donut');
   const [searchQuery, setSearchQuery] = useState('');
+  const [regionalOnly, setRegionalOnly] = useState<boolean>(false);
+  const [tenureDisplayUnit, setTenureDisplayUnit] = useState<'years' | 'months'>('years');
 
   const chartTooltipStyle = useMemo(
     () => ({
@@ -232,6 +234,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       if (minRatingFilter === 'AAA' && !b.rating.includes('AAA') && !b.rating.includes('Highest')) return false;
       if (minRatingFilter === 'A+' && !b.rating.includes('AAA') && !b.rating.includes('A+') && !b.rating.includes('Highest')) return false;
 
+      if (regionalOnly) {
+        if (b.category !== 'rrb' && b.isPanIndia) return false;
+      }
+
       if (dicgcOnly && !b.dicgcCovered) return false;
 
       return true;
@@ -240,11 +246,11 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
     // Sort by actual offered bank rate descending (unbiased by custom rate)
     return [...list].sort((a, b) => {
       const tenureDays = persona.tenureUnit === 'days' ? (persona.tenureDays || 444) : undefined;
-      const rateA = getEffectiveRate(a, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
-      const rateB = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, tenureDays);
+      const rateA = getEffectiveRate(a, persona, persona.tenureMonths, tenureDays);
+      const rateB = getEffectiveRate(b, persona, persona.tenureMonths, tenureDays);
       return rateB - rateA;
     });
-  }, [depositTypeAndStateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice]);
+  }, [depositTypeAndStateFilteredBanks, selectedCategory, minRatingFilter, dicgcOnly, persona, searchQuery, activeMergerNotice, regionalOnly]);
 
   // Category counts based on active state and deposit type (eliminating phantom +1 counts from other deposit types)
   const categoryCounts = useMemo(() => {
@@ -276,7 +282,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   // Top Yield Bank calculation
   const topBank = filteredAndRankedBanks[0] || banks[0];
   const peakMarketRate = topBank 
-    ? getEffectiveRate(topBank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) 
+    ? getEffectiveRate(topBank, persona, persona.tenureMonths, activeTenureDays) 
     : 8.40;
 
   // Active Simulation Rate: driven by custom rate if enabled, else peak market rate
@@ -333,36 +339,64 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       });
     }
 
-    data.push(
-      {
+    if (sfbTop) {
+      data.push({
         name: 'Top SFB',
-        rate: sfbTop ? getEffectiveRate(sfbTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 8.15,
-        bank: sfbTop ? sfbTop.name.split(' ')[0] : 'SFB',
-      },
-      {
+        rate: getEffectiveRate(sfbTop, persona, persona.tenureMonths, activeTenureDays),
+        bank: sfbTop.name.split(' ')[0],
+      });
+    }
+    if (pvtTop) {
+      data.push({
         name: 'Top Private',
-        rate: pvtTop ? getEffectiveRate(pvtTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.75,
-        bank: pvtTop ? pvtTop.name.split(' ')[0] : 'Private',
-      },
-      {
+        rate: getEffectiveRate(pvtTop, persona, persona.tenureMonths, activeTenureDays),
+        bank: pvtTop.name.split(' ')[0],
+      });
+    }
+    if (psuTop) {
+      data.push({
         name: 'Top PSU',
-        rate: psuTop ? getEffectiveRate(psuTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.40,
-        bank: psuTop ? psuTop.name.split(' ')[0] : 'PSU',
-      },
-      {
+        rate: getEffectiveRate(psuTop, persona, persona.tenureMonths, activeTenureDays),
+        bank: psuTop.name.split(' ')[0],
+      });
+    }
+    if (postTop) {
+      data.push({
         name: 'India Post',
-        rate: postTop ? getEffectiveRate(postTop, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays) : 7.10,
+        rate: getEffectiveRate(postTop, persona, persona.tenureMonths, activeTenureDays),
         bank: 'Sovereign PO',
-      },
-      {
-        name: 'RBI Repo',
-        rate: 6.50,
-        bank: 'Benchmark',
-      }
-    );
+      });
+    }
+    data.push({
+      name: 'RBI Repo',
+      rate: 6.50,
+      bank: 'Benchmark',
+    });
 
     return data;
   }, [depositTypeAndStateFilteredBanks, persona, activeTenureDays]);
+
+  // Statutory tenures (1Y to 10Y)
+  const statutoryTenures = [
+    { years: 1, months: 12, label: '1Y', sub: '12M' },
+    { years: 2, months: 24, label: '2Y', sub: '24M' },
+    { years: 3, months: 36, label: '3Y', sub: 'Peak Yield' },
+    { years: 5, months: 60, label: '5Y', sub: persona.depositType === 'RD' ? 'Long-Term' : '80C Tax Saver' },
+    { years: 7, months: 84, label: '7Y', sub: '84M' },
+    { years: 10, months: 120, label: '10Y', sub: 'Max RBI' },
+  ];
+
+  // Active verified ALCO promotional odd-day schemes (222D purged)
+  const promotionalOddDaySchemes = [
+    { days: 333, label: '333D', name: 'Union / BOI', rate: '7.40%' },
+    { days: 399, label: '399D', name: 'BoB Tiranga', rate: '7.25%' },
+    { days: 400, label: '400D', name: 'SBI Kalash', rate: '7.10%' },
+    { days: 444, label: '444D', name: 'Canara / APGB', rate: '7.25%-7.65%' },
+    { days: 555, label: '555D', name: 'BoB Special', rate: '7.30%' },
+    { days: 666, label: '666D', name: 'BOI Star Vriddhi', rate: '7.30%' },
+    { days: 777, label: '777D', name: 'Utkarsh SFB', rate: '8.15%' },
+    { days: 1001, label: '1001D', name: 'Unity Shrestha', rate: '8.40%' },
+  ];
 
   // Quick preset chips
   const fdPresets = [50000, 100000, 200000, 500000, 1000000];
@@ -373,7 +407,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
   const banksMeetingTargetCount = useMemo(() => {
     if (!persona.useCustomRate || persona.customRate === undefined) return 0;
     return filteredAndRankedBanks.filter(b => {
-      const rate = getEffectiveRate(b, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
+      const rate = getEffectiveRate(b, persona, persona.tenureMonths, activeTenureDays);
       return rate >= (persona.customRate ?? 0);
     }).length;
   }, [filteredAndRankedBanks, persona, activeTenureDays]);
@@ -403,611 +437,41 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
         </div>
       </div>
 
-      {/* SECTION 1: INTERACTIVE CALCULATOR CONTROLS */}
-      <section className="w-full bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs p-5 sm:p-7 flex flex-col gap-6 transition-colors">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100 dark:border-slate-800">
-          {/* Dual-Mode Selector (FD vs RD) */}
-          <div className="flex items-center gap-1.5 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 self-start sm:self-auto">
+      {/* PERSISTENT STICKY CONTROL RIBBON (PERSONA & JURISDICTION) */}
+      <div className="sticky top-20 z-30 bg-white/95 dark:bg-[#161b22]/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm transition-colors">
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+          {/* Deposit Type Toggle */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shrink-0">
             <button
               type="button"
               onClick={() => handleDepositTypeChange('FD')}
-              className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 persona.depositType === 'FD'
                   ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <Wallet className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
-              <span>Fixed Deposit (Lump Sum)</span>
+              <Wallet className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981]" />
+              <span>Fixed Deposit (FD)</span>
             </button>
-
             <button
               type="button"
               onClick={() => handleDepositTypeChange('RD')}
-              className={`px-4 py-2 rounded-lg text-xs sm:text-sm font-bold transition-all flex items-center gap-2 ${
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
                 persona.depositType === 'RD'
                   ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
                   : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
               }`}
             >
-              <Percent className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
-              <span>Recurring Deposit (Monthly)</span>
+              <Percent className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981]" />
+              <span>Recurring Deposit (RD)</span>
             </button>
           </div>
 
-          {/* Persona Age & Gender Badges */}
-          <div className="flex items-center gap-2 flex-wrap text-xs">
-            <span className="px-2.5 py-1 rounded-full bg-slate-100 dark:bg-slate-800 font-bold text-slate-700 dark:text-slate-300">
-              {persona.age >= 80 ? 'Super Senior (80+ yrs)' : persona.age >= 60 ? 'Senior (60–79 yrs)' : 'General (<60 yrs)'}
-            </span>
-            {persona.gender === 'female' && (
-              <span className="px-2.5 py-1 rounded-full bg-pink-100 dark:bg-pink-950/70 font-bold text-pink-700 dark:text-pink-300">
-                Women Bonus Active
-              </span>
-            )}
-            <span className="px-2.5 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/70 font-bold text-emerald-800 dark:text-emerald-300">
-              {persona.state}
-            </span>
-          </div>
-        </div>
-
-        {/* Amount Input & Slider */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <div className="lg:col-span-7 flex flex-col gap-3">
-            <div className="flex items-center justify-between">
-              <label htmlFor="deposit-amount-input" className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-                {persona.depositType === 'RD' ? 'Monthly Installment Amount' : 'Principal Deposit Sum'}
-              </label>
-              <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">
-                {persona.depositType === 'RD' ? 'Min ₹1,000 / mo' : 'Min ₹10,000'}
-              </span>
-            </div>
-
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1">
-                <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-base">
-                  ₹
-                </span>
-                <input
-                  id="deposit-amount-input"
-                  type="text"
-                  value={formatINR(currentAmount)}
-                  onChange={(e) => {
-                    const clean = e.target.value.replace(/[^0-9]/g, '');
-                    const val = parseInt(clean, 10);
-                    if (!isNaN(val)) handleAmountSlider(val);
-                  }}
-                  className="w-full h-12 pl-9 pr-4 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-extrabold text-slate-900 dark:text-white text-lg focus:ring-2 focus:ring-[#006c4a] focus:outline-hidden"
-                />
-              </div>
-
-              <div className="hidden sm:flex flex-col justify-center px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 text-right">
-                <span className="text-[10px] text-slate-400 uppercase font-bold">In Words</span>
-                <span className="text-xs font-bold text-slate-800 dark:text-slate-200 whitespace-nowrap">
-                  {formatLakhs(currentAmount)}
-                </span>
-              </div>
-            </div>
-
-            {/* Slider */}
-            <input
-              type="range"
-              min={persona.depositType === 'RD' ? 1000 : 10000}
-              max={persona.depositType === 'RD' ? 100000 : 2500000}
-              step={persona.depositType === 'RD' ? 1000 : 25000}
-              value={currentAmount}
-              onChange={(e) => handleAmountSlider(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#006c4a] dark:accent-[#10b981]"
-              aria-label="Deposit amount slider"
-            />
-
-            {/* Quick Presets */}
-            <div className="flex items-center gap-2 flex-wrap pt-1">
-              <span className="text-[11px] text-slate-400 font-medium">Quick Pick:</span>
-              {(persona.depositType === 'RD' ? rdPresets : fdPresets).map((amt) => (
-                <button
-                  key={amt}
-                  type="button"
-                  onClick={() => handleAmountSlider(amt)}
-                  className={`px-2.5 py-1 rounded-lg text-xs font-semibold transition-all ${
-                    currentAmount === amt
-                      ? 'bg-[#006c4a] text-white dark:bg-[#10b981] dark:text-slate-950 font-bold'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-                  }`}
-                >
-                  ₹{formatLakhs(amt)} {persona.depositType === 'RD' ? '/mo' : ''}
-                </button>
-              ))}
-            </div>
-
-            {/* DICGC Single Bank Limit Contextual Bridge */}
-            {topCalculation.totalInvested > 500000 && (
-              <div className="flex items-center justify-between p-2.5 rounded-xl bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 text-xs text-amber-900 dark:text-amber-200">
-                <div className="flex items-center gap-1.5">
-                  <ShieldAlert className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
-                  <span>Capital (₹{formatLakhs(topCalculation.totalInvested)}) exceeds the ₹5L DICGC single-bank limit.</span>
-                </div>
-                <button
-                  type="button"
-                  onClick={() => onNavigateTab('dicgc-index')}
-                  className="font-bold text-[#006c4a] dark:text-[#10b981] hover:underline whitespace-nowrap ml-2 cursor-pointer"
-                >
-                  Split safely →
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Quick Summary Pill for RD or FD */}
-          <div className="lg:col-span-5 p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 flex flex-col gap-2.5 text-xs">
-            <div className="flex justify-between items-center">
-              <span className="text-slate-500 dark:text-slate-400">Total Capital Committed:</span>
-              <span className="font-extrabold text-slate-900 dark:text-white tabular-nums text-sm">
-                ₹{formatINR(topCalculation.totalInvested)}
-              </span>
-            </div>
-            {persona.depositType === 'RD' && (
-              <div className="flex justify-between items-center text-slate-500">
-                <span>Monthly Schedule:</span>
-                <span>{persona.tenureMonths} Monthly Installments of ₹{formatINR(currentAmount)}</span>
-              </div>
-            )}
-            <div className="flex justify-between items-center">
-              <span className="text-slate-500 dark:text-slate-400">Selected Horizon:</span>
-              <span className="font-bold text-slate-800 dark:text-slate-200">
-                {persona.tenureUnit === 'days'
-                  ? `${activeTenureDays} Days (${((activeTenureDays || 444) / 365).toFixed(2)} Years)`
-                  : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)} Years)`}
-              </span>
-            </div>
-            {persona.depositType === 'FD' && persona.compounding !== 'maturity' && topCalculation.periodicPayoutAmount && (
-              <div className="flex justify-between items-center text-emerald-700 dark:text-emerald-400 font-semibold">
-                <span>Periodic Cashflow:</span>
-                <span className="font-extrabold tabular-nums">
-                  ₹{formatINR(topCalculation.periodicPayoutAmount)} / {persona.compounding === 'monthly' ? 'month' : 'quarter'}
-                </span>
-              </div>
-            )}
-            <div className="flex justify-between items-center pt-2 border-t border-slate-200 dark:border-slate-800">
-              <div className="flex items-center gap-1.5">
-                <span className="font-bold text-slate-900 dark:text-white">Active Simulation Yield:</span>
-                <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${
-                  persona.useCustomRate 
-                    ? 'bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300' 
-                    : 'bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300'
-                }`}>
-                  {persona.useCustomRate ? 'Custom Target' : 'Peak Market Rate'}
-                </span>
-              </div>
-              <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] text-sm tabular-nums">
-                {activeSimulationRate.toFixed(2)}% p.a.
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* TENURE SELECTOR: STANDARD MONTHS VS SPECIAL ODD-DAY SCHEMES */}
-        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
-              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-                Tenure Horizon & Special Bank Schemes
-              </label>
-            </div>
-
-            {/* Toggle: Standard Months vs Special Odd-Day Schemes */}
-            {persona.depositType === 'RD' ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 self-start sm:self-auto font-medium">
-                <Info className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981] shrink-0" />
-                <span>Odd-day schemes (222D–1001D) are exclusive to Fixed Deposits</span>
-              </div>
-            ) : (
-              <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
-                <button
-                  type="button"
-                  onClick={() => setPersona((prev) => ({ ...prev, tenureUnit: 'months' }))}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition-all ${
-                    persona.tenureUnit !== 'days'
-                      ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  Standard (Months)
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setPersona((prev) => ({ 
-                    ...prev, 
-                    tenureUnit: 'days',
-                    tenureDays: prev.tenureDays || 444
-                  }))}
-                  className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                    persona.tenureUnit === 'days'
-                      ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
-                      : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                  }`}
-                >
-                  <Flame className="w-3.5 h-3.5 text-amber-500" />
-                  <span>Special Schemes (Odd Days)</span>
-                </button>
-              </div>
-            )}
-          </div>
-
-          {/* Standard Months Selector */}
-          {persona.tenureUnit !== 'days' ? (
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              {[
-                { months: 12, label: '1 Year (12M)', badge: 'Short Horizon' },
-                { months: 24, label: '2 Years (24M)', badge: 'Balanced Growth' },
-                { months: 36, label: '3 Years (36M)', badge: 'Highest Regular Yield' },
-                { 
-                  months: 60, 
-                  label: '5 Years (60M)', 
-                  badge: persona.depositType === 'RD' ? 'Long-Term Savings' : 'Tax Saver 80C' 
-                },
-              ].map((t) => (
-                <button
-                  key={t.months}
-                  type="button"
-                  onClick={() => setPersona((prev) => ({ ...prev, tenureMonths: t.months }))}
-                  className={`p-3 rounded-xl border flex flex-col items-center text-center transition-all ${
-                    persona.tenureMonths === t.months
-                      ? 'border-[#006c4a] bg-emerald-50/60 dark:bg-emerald-950/40 text-slate-900 dark:text-white shadow-xs'
-                      : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
-                  }`}
-                >
-                  <span className="text-xs font-bold">{t.label}</span>
-                  <span className="text-[10px] text-[#006c4a] dark:text-[#10b981] font-semibold mt-0.5">
-                    {t.badge}
-                  </span>
-                </button>
-              ))}
-            </div>
-          ) : (
-            /* Special Bank Schemes (Odd Days) Grid & Custom Days Input */
-            <div className="flex flex-col gap-3">
-              <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2">
-                {[
-                  { days: 222, label: '222 Days', badge: 'Short Sprint' },
-                  { days: 333, label: '333 Days', badge: 'Special Fest' },
-                  { days: 399, label: '399 Days', badge: 'BoB Tiranga (7.25%)' },
-                  { days: 400, label: '400 Days', badge: 'SBI Kalash (7.10%)' },
-                  { days: 444, label: '444 Days', badge: 'SBI Vrishti / APGB' },
-                  { days: 555, label: '555 Days', badge: 'Sovereign High' },
-                  { days: 777, label: '777 Days', badge: 'Utkarsh (8.15%)' },
-                  { days: 1001, label: '1001 Days', badge: 'Unity Peak (8.40%)' },
-                ].map((s) => (
-                  <button
-                    key={s.days}
-                    type="button"
-                    onClick={() => setPersona((prev) => ({
-                      ...prev,
-                      tenureUnit: 'days',
-                      tenureDays: s.days,
-                      tenureMonths: Math.round(s.days / 30.416)
-                    }))}
-                    className={`p-2.5 rounded-xl border flex flex-col items-center text-center transition-all ${
-                      activeTenureDays === s.days
-                        ? 'border-amber-500 bg-amber-50/80 dark:bg-amber-950/40 text-slate-900 dark:text-white ring-1 ring-amber-500 shadow-xs'
-                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <span className="text-xs font-extrabold">{s.label}</span>
-                    <span className="text-[9px] text-amber-700 dark:text-amber-300 font-semibold mt-0.5 truncate w-full">
-                      {s.badge}
-                    </span>
-                  </button>
-                ))}
-              </div>
-
-              {/* Custom Odd-Days Direct Input */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800">
-                <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">Custom Days Input:</span>
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setPersona((prev) => ({
-                        ...prev,
-                        tenureDays: Math.max(30, (prev.tenureDays || 444) - 15),
-                        tenureMonths: Math.round(Math.max(30, (prev.tenureDays || 444) - 15) / 30.416)
-                      }))}
-                      className="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
-                    >
-                      -15D
-                    </button>
-                    <input
-                      type="number"
-                      min={7}
-                      max={3650}
-                      value={activeTenureDays || 444}
-                      onChange={(e) => {
-                        const days = parseInt(e.target.value, 10);
-                        if (!isNaN(days) && days > 0) {
-                          setPersona((prev) => ({
-                            ...prev,
-                            tenureDays: days,
-                            tenureMonths: Math.round(days / 30.416)
-                          }));
-                        }
-                      }}
-                      className="w-24 h-9 px-3 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center font-extrabold text-sm text-slate-900 dark:text-white focus:outline-hidden focus:ring-2 focus:ring-[#006c4a]"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setPersona((prev) => ({
-                        ...prev,
-                        tenureDays: (prev.tenureDays || 444) + 15,
-                        tenureMonths: Math.round(((prev.tenureDays || 444) + 15) / 30.416)
-                      }))}
-                      className="px-2 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
-                    >
-                      +15D
-                    </button>
-                  </div>
-                  <span className="text-xs text-slate-500 font-medium">Days ({( (activeTenureDays || 444) / 365).toFixed(2)} Years)</span>
-                </div>
-
-                <div className="text-[11px] text-slate-500 dark:text-slate-400">
-                  Compounding: <strong>Quarterly (Fractional Quarters)</strong> as per RBI Master Directions
-                </div>
-              </div>
-
-              {/* Informational Callout on ALM */}
-              <div className="p-3 rounded-xl bg-amber-50/70 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/50 flex items-start gap-2.5 text-xs text-amber-900 dark:text-amber-200">
-                <Info className="w-4 h-4 shrink-0 text-amber-600 mt-0.5" />
-                <p>
-                  <strong>Why Odd Days (222D, 399D, 444D, 555D, 777D, 1001D)?</strong> Banks launch non-standard tenures for Asset-Liability Management (ALM) to match commercial loan maturities and festive liquidity without raising card rates across standard 1Y–5Y tenures. For odd days D, interest compounds every 90 days via A = P(1 + r/400)^(4 × D / 365).
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* CUSTOM RATE MODELING MODULE */}
-        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Target className="w-4 h-4 text-purple-600 dark:text-purple-400" />
-              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-                Interest Rate Modeling: Live Market vs Custom Target (%)
-              </label>
-            </div>
-
-            {/* Toggle: Best Market Rate vs Custom Rate */}
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
-              <button
-                type="button"
-                onClick={() => setPersona((prev) => ({ ...prev, useCustomRate: false }))}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  !persona.useCustomRate
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Zap className="w-3.5 h-3.5 text-emerald-500" />
-                <span>Auto-Sync Best Market Rate ({peakMarketRate.toFixed(2)}%)</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setPersona((prev) => ({
-                  ...prev,
-                  useCustomRate: true,
-                  customRate: prev.customRate || 8.00
-                }))}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  persona.useCustomRate
-                    ? 'bg-white dark:bg-[#1c2128] text-purple-700 dark:text-purple-300 shadow-xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <Target className="w-3.5 h-3.5 text-purple-500" />
-                <span>Custom Target Rate (%)</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Custom Rate Interactive Panel */}
-          {persona.useCustomRate && (
-            <div className="p-4 rounded-xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-200 dark:border-purple-800/50 flex flex-col gap-3">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-xs font-bold text-slate-700 dark:text-slate-300">
-                    Your Target Interest Rate:
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => setPersona((prev) => ({
-                        ...prev,
-                        customRate: Math.max(3.0, Number(((prev.customRate || 8.0) - 0.10).toFixed(2)))
-                      }))}
-                      className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
-                    >
-                      -0.10%
-                    </button>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        step="0.05"
-                        min="3.0"
-                        max="15.0"
-                        value={persona.customRate ?? 8.0}
-                        onChange={(e) => {
-                          const val = parseFloat(e.target.value);
-                          if (!isNaN(val)) {
-                            setPersona((prev) => ({ ...prev, customRate: val }));
-                          }
-                        }}
-                        className="w-24 h-9 pl-3 pr-7 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-center font-extrabold text-sm text-purple-700 dark:text-purple-300 focus:outline-hidden focus:ring-2 focus:ring-purple-500"
-                      />
-                      <span className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400">
-                        %
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setPersona((prev) => ({
-                        ...prev,
-                        customRate: Math.min(15.0, Number(((prev.customRate || 8.0) + 0.10).toFixed(2)))
-                      }))}
-                      className="px-2.5 py-1 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300 hover:bg-slate-100"
-                    >
-                      +0.10%
-                    </button>
-                  </div>
-                </div>
-
-                {/* Quick rate chips */}
-                <div className="flex items-center gap-1.5 flex-wrap">
-                  <span className="text-[11px] text-slate-400 font-medium">Quick Target:</span>
-                  {customRateQuickPicks.map((rate) => (
-                    <button
-                      key={rate}
-                      type="button"
-                      onClick={() => setPersona((prev) => ({ ...prev, customRate: rate }))}
-                      className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all ${
-                        persona.customRate === rate
-                          ? 'bg-purple-600 text-white shadow-2xs'
-                          : 'bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-slate-700 hover:bg-slate-100'
-                      }`}
-                    >
-                      {rate.toFixed(2)}%
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Slider for smooth dragging */}
-              <input
-                type="range"
-                min="4.00"
-                max="12.00"
-                step="0.05"
-                value={persona.customRate ?? 8.0}
-                onChange={(e) => setPersona((prev) => ({ ...prev, customRate: parseFloat(e.target.value) }))}
-                className="w-full h-2 bg-purple-200 dark:bg-purple-900/60 rounded-lg appearance-none cursor-pointer accent-purple-600"
-                aria-label="Custom percentage rate slider"
-              />
-
-              {/* Live Target Analysis readout */}
-              <div className="flex items-center justify-between text-xs pt-1">
-                <span className="text-slate-600 dark:text-slate-300">
-                  {banksMeetingTargetCount > 0 ? (
-                    <span className="text-emerald-700 dark:text-emerald-400 font-bold flex items-center gap-1">
-                      <Check className="w-3.5 h-3.5" /> {banksMeetingTargetCount} bank(s) offer rates meeting or beating your {(persona.customRate ?? 8.0).toFixed(2)}% target!
-                    </span>
-                  ) : (
-                    <span className="text-amber-700 dark:text-amber-400 font-semibold flex items-center gap-1">
-                      <Info className="w-3.5 h-3.5" /> Highest bank offer is {peakMarketRate.toFixed(2)}% (Unity SFB). Your {(persona.customRate ?? 8.0).toFixed(2)}% target exceeds market offers.
-                    </span>
-                  )}
-                </span>
-                <span className="text-[11px] text-slate-400 font-medium">
-                  Directly drives all maturity growth simulations and timeline charts
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* INTEREST PAYOUT & COMPOUNDING PLAN (Monthly / Quarterly / Maturity) */}
-        <div className="flex flex-col gap-3.5 pt-3 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-            <div className="flex items-center gap-2">
-              <Wallet className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
-              <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
-                Interest Payout &amp; Compounding Plan
-              </label>
-            </div>
-
-            {persona.depositType === 'RD' ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 self-start sm:self-auto font-medium">
-                <Info className="w-3.5 h-3.5 text-[#006c4a] dark:text-[#10b981] shrink-0" />
-                <span>Recurring Deposits are strictly Cumulative (Quarterly Reinvestment at Maturity)</span>
-              </div>
-            ) : (
-              <span className="text-[11px] text-slate-500 dark:text-slate-400">
-                Select regular income cashflow or compounding wealth creation
-              </span>
-            )}
-          </div>
-
-          {persona.depositType === 'FD' && (
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-              {[
-                {
-                  id: 'maturity' as const,
-                  title: 'Cumulative (At Maturity)',
-                  badge: 'Highest Total Wealth',
-                  desc: 'Quarterly reinvestment. Full interest + capital paid at maturity.',
-                  stat: `₹${formatINR(topCalculation.maturityAmount)} at maturity`,
-                },
-                {
-                  id: 'monthly' as const,
-                  title: 'Monthly Income Payout',
-                  badge: 'Pensioners & Retirees',
-                  desc: 'RBI discounted monthly interest credited to your savings account.',
-                  stat: topCalculation.payoutFrequency === 'monthly' && topCalculation.periodicPayoutAmount
-                    ? `₹${formatINR(topCalculation.periodicPayoutAmount)} / month`
-                    : `~₹${formatINR(Math.round(currentAmount * (Math.pow(1 + activeSimulationRate / 400, 1 / 3) - 1)))} / month`,
-                },
-                {
-                  id: 'quarterly' as const,
-                  title: 'Quarterly Payout',
-                  badge: 'Quarterly Cashflow',
-                  desc: 'Simple interest credited every 3 months. Principal returned at maturity.',
-                  stat: topCalculation.payoutFrequency === 'quarterly' && topCalculation.periodicPayoutAmount
-                    ? `₹${formatINR(topCalculation.periodicPayoutAmount)} / quarter`
-                    : `~₹${formatINR(Math.round(currentAmount * (activeSimulationRate / 400)))} / quarter`,
-                },
-              ].map((p) => {
-                const isSelected = persona.compounding === p.id;
-                return (
-                  <button
-                    key={p.id}
-                    type="button"
-                    onClick={() => setPersona((prev) => ({ ...prev, compounding: p.id }))}
-                    className={`p-3.5 rounded-xl border flex flex-col text-left transition-all cursor-pointer ${
-                      isSelected
-                        ? 'border-[#006c4a] bg-emerald-50/70 dark:bg-emerald-950/40 text-slate-900 dark:text-white ring-1 ring-[#006c4a] shadow-xs'
-                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-300'
-                    }`}
-                  >
-                    <div className="flex items-center justify-between gap-1">
-                      <span className="text-xs font-bold text-slate-900 dark:text-white">{p.title}</span>
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        isSelected
-                          ? 'bg-emerald-200/80 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100'
-                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400'
-                      }`}>
-                        {p.badge}
-                      </span>
-                    </div>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 line-clamp-2">
-                      {p.desc}
-                    </p>
-                    <div className="mt-2 pt-2 border-t border-slate-200/60 dark:border-slate-800 flex items-center justify-between text-xs">
-                      <span className="text-[10px] text-slate-400 uppercase font-semibold">Expected Cashflow:</span>
-                      <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
-                        {p.stat}
-                      </span>
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Persona Matrix Controls (Age, Gender, State, Form 15H) */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
-          {/* Age Tier */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="persona-age-select" className="font-bold text-slate-700 dark:text-slate-300">
-              Depositor Age Category
+          {/* Age Category */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <label htmlFor="persona-age-select" className="font-bold text-slate-600 dark:text-slate-400">
+              Age:
             </label>
             <div className="relative">
               <select
@@ -1015,20 +479,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 aria-label="Depositor Age Category"
                 value={persona.age >= 80 ? '80' : persona.age >= 60 ? '60' : '35'}
                 onChange={(e) => setPersona((prev) => ({ ...prev, age: Number(e.target.value) }))}
-                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+                className="h-9 pl-2.5 pr-8 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
               >
-                <option value="35">General Citizen (&lt;60 yrs) - Card Rate</option>
-                <option value="65">Senior Citizen (60–79 yrs) - +0.50%</option>
-                <option value="82">Super Senior (80+ yrs) - +0.75%</option>
+                <option value="35">General (&lt;60 yrs)</option>
+                <option value="60">Senior (60–79 yrs) • +0.50%</option>
+                <option value="80">Super Senior (80+ yrs) • +0.75%</option>
               </select>
-              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
           {/* Gender */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="persona-gender-select" className="font-bold text-slate-700 dark:text-slate-300">
-              Gender Specification
+          <div className="flex items-center gap-1.5 shrink-0">
+            <label htmlFor="persona-gender-select" className="font-bold text-slate-600 dark:text-slate-400">
+              Gender:
             </label>
             <div className="relative">
               <select
@@ -1036,20 +500,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 aria-label="Gender Specification"
                 value={persona.gender}
                 onChange={(e) => setPersona((prev) => ({ ...prev, gender: e.target.value as 'female' | 'male' | 'other' }))}
-                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+                className="h-9 pl-2.5 pr-8 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a]"
               >
-                <option value="female">Female (Women Bonus +0.15% & MSSC)</option>
-                <option value="male">Male (Standard Card)</option>
+                <option value="male">Male</option>
+                <option value="female">Female (+0.15% &amp; MSSC)</option>
                 <option value="other">Other</option>
               </select>
-              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
           {/* State / Jurisdiction */}
-          <div className="flex flex-col gap-1.5">
-            <label htmlFor="persona-state-select" className="font-bold text-slate-700 dark:text-slate-300">
-              State / Bank Jurisdiction
+          <div className="flex items-center gap-1.5 shrink-0">
+            <label htmlFor="persona-state-select" className="font-bold text-slate-600 dark:text-slate-400">
+              Location:
             </label>
             <div className="relative">
               <select
@@ -1057,7 +521,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 aria-label="State and Bank Jurisdiction"
                 value={persona.state}
                 onChange={(e) => setPersona((prev) => ({ ...prev, state: e.target.value }))}
-                className="w-full h-10 pl-3 pr-9 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] dark:focus-visible:ring-[#10b981]"
+                className="h-9 pl-2.5 pr-8 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white font-semibold appearance-none cursor-pointer focus:outline-hidden focus-visible:ring-2 focus-visible:ring-[#006c4a] max-w-[170px] truncate"
               >
                 <optgroup label="Pan-India">
                   <option value={PAN_INDIA_OPTION.name}>{PAN_INDIA_OPTION.name}</option>
@@ -1077,304 +541,624 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   ))}
                 </optgroup>
               </select>
-              <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <ChevronDown className="w-3.5 h-3.5 text-slate-400 absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>
           </div>
 
+          {/* Regional Only Toggle Button */}
+          <button
+            type="button"
+            aria-label="Filter Regional Banks Only"
+            onClick={() => setRegionalOnly((prev) => !prev)}
+            className={`h-9 px-3 rounded-xl border font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+              regionalOnly
+                ? 'bg-amber-100 dark:bg-amber-950/80 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200 shadow-2xs'
+                : 'bg-slate-100 dark:bg-slate-900 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800'
+            }`}
+            title="Toggle between All Banks and Regional Rural / State-specific Banks only"
+          >
+            <Building className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+            <span>{regionalOnly ? '🏛️ Regional Banks Only' : 'All in State'}</span>
+          </button>
+
           {/* Form 15G/15H Toggle */}
-          <div className="flex flex-col justify-center gap-1.5">
-            <div className="flex items-center justify-between">
-              <span className="font-bold text-slate-700 dark:text-slate-300">TDS Exemption (15G / 15H)</span>
-              <button
-                type="button"
-                onClick={() => onNavigateTab('tax-guide')}
-                className="text-[11px] text-[#006c4a] dark:text-[#10b981] font-semibold hover:underline cursor-pointer"
-              >
-                Guide →
-              </button>
-            </div>
-            <label className="flex items-center gap-2 cursor-pointer h-10 px-3 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700">
+          <label className="flex items-center gap-1.5 cursor-pointer h-9 px-2.5 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-semibold text-slate-800 dark:text-slate-200">
+            <input
+              type="checkbox"
+              checked={persona.form15HSubmitted}
+              onChange={(e) => setPersona((prev) => ({ ...prev, form15HSubmitted: e.target.checked }))}
+              className="w-3.5 h-3.5 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+            />
+            <span className="whitespace-nowrap">Form 15G/H (0% TDS)</span>
+          </label>
+        </div>
+      </div>
+
+      {/* SECTION 1: 2-COLUMN MINIMALIST CALCULATOR CANVAS (GROWW / FINTECH PATTERN) */}
+      <section className="w-full bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs p-5 sm:p-7 transition-colors">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          {/* LEFT COLUMN: 3 Standardized Slider Rows + Compounding Selector */}
+          <div className="lg:col-span-7 flex flex-col gap-6">
+            {/* ROW 1: TOTAL INVESTMENT / MONTHLY INSTALLMENT */}
+            <div className="flex flex-col gap-2.5">
+              <div className="flex items-center justify-between">
+                <label htmlFor="deposit-amount-input" className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                  {persona.depositType === 'RD' ? 'Monthly Installment Amount' : 'Principal Deposit Sum'}
+                </label>
+                <div className="flex items-center gap-2">
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 font-bold text-sm">₹</span>
+                    <input
+                      id="deposit-amount-input"
+                      type="text"
+                      value={formatINR(currentAmount)}
+                      onChange={(e) => {
+                        const clean = e.target.value.replace(/[^0-9]/g, '');
+                        const val = parseInt(clean, 10);
+                        if (!isNaN(val)) handleAmountSlider(val);
+                      }}
+                      className="w-36 h-9 pl-7 pr-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 font-extrabold text-slate-900 dark:text-white text-sm text-right focus:ring-2 focus:ring-[#006c4a] focus:outline-hidden"
+                    />
+                  </div>
+                  <span className="hidden sm:inline-block px-2.5 py-1 rounded-md bg-emerald-50 dark:bg-emerald-950/60 text-[#006c4a] dark:text-[#10b981] text-xs font-bold whitespace-nowrap">
+                    {formatLakhs(currentAmount)}
+                  </span>
+                </div>
+              </div>
+
               <input
-                type="checkbox"
-                checked={persona.form15HSubmitted}
-                onChange={(e) => setPersona((prev) => ({ ...prev, form15HSubmitted: e.target.checked }))}
-                className="w-4 h-4 text-emerald-600 rounded border-slate-300 focus:ring-emerald-500"
+                type="range"
+                min={persona.depositType === 'RD' ? 1000 : 10000}
+                max={persona.depositType === 'RD' ? 100000 : 2500000}
+                step={persona.depositType === 'RD' ? 1000 : 25000}
+                value={currentAmount}
+                onChange={(e) => handleAmountSlider(Number(e.target.value))}
+                className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#006c4a] dark:accent-[#10b981]"
+                aria-label="Deposit amount slider"
               />
-              <span className="font-semibold text-slate-800 dark:text-slate-200">
-                {persona.form15HSubmitted ? 'Form 15G/H Active (0% TDS)' : 'No Form Submitted'}
-              </span>
-            </label>
+
+              <div className="flex items-center justify-between flex-wrap gap-2 text-xs">
+                <div className="flex items-center gap-1.5 flex-wrap">
+                  <span className="text-[11px] text-slate-400 font-medium">Quick Pick:</span>
+                  {(persona.depositType === 'RD' ? rdPresets : fdPresets).map((amt) => (
+                    <button
+                      key={amt}
+                      type="button"
+                      onClick={() => handleAmountSlider(amt)}
+                      className={`px-2 py-0.5 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                        currentAmount === amt
+                          ? 'bg-[#006c4a] text-white dark:bg-[#10b981] dark:text-slate-950 font-bold'
+                          : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+                      }`}
+                    >
+                      ₹{formatLakhs(amt)}{persona.depositType === 'RD' ? '/mo' : ''}
+                    </button>
+                  ))}
+                </div>
+
+                {topCalculation.totalInvested > 500000 && (
+                  <div className="flex items-center gap-1.5 text-amber-600 dark:text-amber-400 font-semibold text-[11px]">
+                    <ShieldAlert className="w-3.5 h-3.5 shrink-0" />
+                    <span>&gt; ₹5L limit.</span>
+                    <button
+                      type="button"
+                      onClick={() => onNavigateTab('dicgc-index')}
+                      className="text-[#006c4a] dark:text-[#10b981] hover:underline font-bold cursor-pointer"
+                    >
+                      Split safely →
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* ROW 2: TIME PERIOD (HYBRID SMART SLIDER: 1Y TO 10Y) */}
+            <div className="flex flex-col gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                    Tenure Horizon &amp; Special Bank Schemes
+                  </label>
+                  <div className="relative">
+                    <select
+                      value={tenureDisplayUnit}
+                      onChange={(e) => setTenureDisplayUnit(e.target.value as 'years' | 'months')}
+                      className="h-6 pl-2 pr-5 rounded-md bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-[11px] font-bold text-slate-700 dark:text-slate-300 appearance-none cursor-pointer"
+                    >
+                      <option value="years">Years</option>
+                      <option value="months">Months</option>
+                    </select>
+                    <ChevronDown className="w-3 h-3 text-slate-400 absolute right-1.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span className="px-3 py-1 rounded-lg bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200/80 dark:border-emerald-800/60 text-[#006c4a] dark:text-[#10b981] font-extrabold text-xs">
+                    {persona.tenureUnit === 'days'
+                      ? `${activeTenureDays} Days (${((activeTenureDays || 444) / 365).toFixed(2)} Years)`
+                      : tenureDisplayUnit === 'years'
+                        ? `${(persona.tenureMonths / 12).toFixed(persona.tenureMonths % 12 === 0 ? 0 : 1)} Years (${persona.tenureMonths}M)`
+                        : `${persona.tenureMonths} Months (${(persona.tenureMonths / 12).toFixed(1)}Y)`}
+                  </span>
+                  {persona.tenureUnit === 'days' && (
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({ ...prev, tenureUnit: 'months', tenureDays: undefined }))}
+                      className="text-[11px] text-amber-600 dark:text-amber-400 hover:underline font-bold cursor-pointer"
+                      title="Clear odd days and switch to standard years"
+                    >
+                      ✕ Standard
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              {/* Slider (1 to 10 Years, snap to statutory milestones) */}
+              <input
+                type="range"
+                min={1}
+                max={10}
+                step={1}
+                value={Math.min(10, Math.max(1, Math.round(persona.tenureMonths / 12)))}
+                onChange={(e) => {
+                  const y = Number(e.target.value);
+                  const validYear = [1, 2, 3, 5, 7, 10].reduce((prev, curr) =>
+                    Math.abs(curr - y) < Math.abs(prev - y) ? curr : prev
+                  );
+                  setPersona((prev) => ({
+                    ...prev,
+                    tenureUnit: 'months',
+                    tenureMonths: validYear * 12,
+                    tenureDays: undefined,
+                  }));
+                }}
+                className="w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-[#006c4a] dark:accent-[#10b981]"
+                aria-label="Time period slider"
+              />
+
+              {/* Statutory Milestone Tick Chips */}
+              <div className="grid grid-cols-6 gap-1.5 pt-0.5">
+                {statutoryTenures.map((st) => {
+                  const isSelected = persona.tenureUnit !== 'days' && persona.tenureMonths === st.months;
+                  return (
+                    <button
+                      key={st.months}
+                      type="button"
+                      onClick={() =>
+                        setPersona((prev) => ({
+                          ...prev,
+                          tenureUnit: 'months',
+                          tenureMonths: st.months,
+                          tenureDays: undefined,
+                        }))
+                      }
+                      className={`py-1.5 px-1 rounded-lg border text-center transition-all cursor-pointer flex flex-col items-center justify-center ${
+                        isSelected
+                          ? 'border-[#006c4a] bg-emerald-50 dark:bg-emerald-950/40 text-[#006c4a] dark:text-[#10b981] font-extrabold shadow-2xs'
+                          : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                      }`}
+                    >
+                      <span className="text-xs font-bold">{st.label}</span>
+                      <span className="text-[9px] text-slate-400 dark:text-slate-500 font-semibold truncate w-full">
+                        {st.sub}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Promotional High-Yield Scheme Quick Chips (Exclusive to FD) */}
+              {persona.depositType === 'FD' && (
+                <div className="flex flex-col gap-1.5 pt-1">
+                  <div className="flex items-center gap-1.5 text-[11px] font-bold text-amber-700 dark:text-amber-400">
+                    <Flame className="w-3.5 h-3.5" />
+                    <span>Special Promotional Schemes (Odd Days):</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    {promotionalOddDaySchemes.map((scheme) => {
+                      const isSelected = persona.tenureUnit === 'days' && activeTenureDays === scheme.days;
+                      return (
+                        <button
+                          key={scheme.days}
+                          type="button"
+                          onClick={() =>
+                            setPersona((prev) => ({
+                              ...prev,
+                              tenureUnit: 'days',
+                              tenureDays: scheme.days,
+                              tenureMonths: Math.round(scheme.days / 30.416),
+                            }))
+                          }
+                          className={`px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer flex items-center gap-1 ${
+                            isSelected
+                              ? 'bg-amber-500 text-white shadow-2xs'
+                              : 'bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800/60 text-amber-900 dark:text-amber-200 hover:bg-amber-100'
+                          }`}
+                        >
+                          <span>⚡ {scheme.label}</span>
+                          <span className="text-[10px] opacity-80 font-normal">({scheme.name} {scheme.rate})</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* ROW 3: RATE OF INTEREST (P.A.) */}
+            <div className="flex flex-col gap-2.5 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex items-center justify-between flex-wrap gap-2">
+                <div className="flex items-center gap-2">
+                  <label className="text-xs sm:text-sm font-bold text-slate-800 dark:text-slate-200">
+                    Rate of interest (p.a.)
+                  </label>
+                  <div className="flex items-center gap-1 p-0.5 rounded-lg bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-[11px]">
+                    <button
+                      type="button"
+                      onClick={() => setPersona((prev) => ({ ...prev, useCustomRate: false }))}
+                      className={`px-2 py-0.5 rounded-md font-bold transition-all cursor-pointer ${
+                        !persona.useCustomRate
+                          ? 'bg-white dark:bg-[#1c2128] text-[#006c4a] dark:text-[#10b981] shadow-2xs'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Auto-Sync Market ({peakMarketRate.toFixed(2)}%)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setPersona((prev) => ({
+                          ...prev,
+                          useCustomRate: true,
+                          customRate: prev.customRate || peakMarketRate,
+                        }))
+                      }
+                      className={`px-2 py-0.5 rounded-md font-bold transition-all cursor-pointer ${
+                        persona.useCustomRate
+                          ? 'bg-white dark:bg-[#1c2128] text-purple-700 dark:text-purple-300 shadow-2xs'
+                          : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+                      }`}
+                    >
+                      Custom Target %
+                    </button>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <input
+                    type="number"
+                    step={0.05}
+                    min={4.0}
+                    max={12.0}
+                    disabled={!persona.useCustomRate}
+                    value={activeSimulationRate.toFixed(2)}
+                    onChange={(e) => {
+                      const val = parseFloat(e.target.value);
+                      if (!isNaN(val)) {
+                        setPersona((prev) => ({
+                          ...prev,
+                          useCustomRate: true,
+                          customRate: Math.max(3, Math.min(15, val)),
+                        }));
+                      }
+                    }}
+                    className={`w-24 h-8 px-2 rounded-lg border font-extrabold text-sm text-right focus:outline-hidden ${
+                      persona.useCustomRate
+                        ? 'bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800 text-purple-900 dark:text-purple-200 focus:ring-2 focus:ring-purple-500'
+                        : 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-[#006c4a] dark:text-[#10b981]'
+                    }`}
+                  />
+                  <span className="absolute right-7 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none opacity-60">
+                    %
+                  </span>
+                </div>
+              </div>
+
+              {/* Rate Slider */}
+              <input
+                type="range"
+                min={4.0}
+                max={12.0}
+                step={0.05}
+                disabled={!persona.useCustomRate}
+                value={activeSimulationRate}
+                onChange={(e) => {
+                  const val = parseFloat(e.target.value);
+                  setPersona((prev) => ({ ...prev, useCustomRate: true, customRate: val }));
+                }}
+                className={`w-full h-2 rounded-lg appearance-none cursor-pointer ${
+                  persona.useCustomRate
+                    ? 'bg-purple-200 dark:bg-purple-950 accent-purple-600'
+                    : 'bg-slate-200 dark:bg-slate-700 accent-[#006c4a] opacity-80'
+                }`}
+                aria-label="Rate of interest slider"
+              />
+
+              {/* Custom Rate Quick Pick Pills or Auto-Sync Status */}
+              <div className="flex items-center justify-between text-xs flex-wrap gap-2">
+                {persona.useCustomRate ? (
+                  <div className="flex items-center gap-1.5 flex-wrap">
+                    <span className="text-[11px] text-slate-400 font-medium">Target:</span>
+                    {customRateQuickPicks.map((r) => (
+                      <button
+                        key={r}
+                        type="button"
+                        onClick={() => setPersona((prev) => ({ ...prev, useCustomRate: true, customRate: r }))}
+                        className={`px-2 py-0.5 rounded-md text-[11px] font-semibold transition-all cursor-pointer ${
+                          persona.customRate === r
+                            ? 'bg-purple-600 text-white font-bold'
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200'
+                        }`}
+                      >
+                        {r.toFixed(2)}%
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <span className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1">
+                    <Zap className="w-3 h-3 text-emerald-500" />
+                    <span>Auto-pegged to Rank #1 lender ({topBank?.name ?? 'Top SFB'} @ {peakMarketRate.toFixed(2)}%)</span>
+                  </span>
+                )}
+
+                {persona.useCustomRate && (
+                  <span className="text-[11px] font-bold text-purple-700 dark:text-purple-300">
+                    {banksMeetingTargetCount} of {depositTypeAndStateFilteredBanks.length} banks meet/beat target
+                  </span>
+                )}
+              </div>
+            </div>
+
+            {/* ROW 4: PAYOUT & COMPOUNDING PLAN (FD ONLY) */}
+            {persona.depositType === 'FD' && (
+              <div className="flex flex-col gap-2 pt-3 border-t border-slate-100 dark:border-slate-800">
+                <label className="text-xs font-bold text-slate-700 dark:text-slate-300">
+                  Interest Payout Plan
+                </label>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                  {[
+                    { id: 'maturity' as const, title: 'At Maturity', sub: 'Quarterly Reinvestment', badge: 'Max Wealth' },
+                    { id: 'monthly' as const, title: 'Monthly Payout', sub: 'Discounted Cashflow', badge: 'Regular Income' },
+                    { id: 'quarterly' as const, title: 'Quarterly Payout', sub: 'Simple Interest', badge: 'Periodic' },
+                  ].map((p) => {
+                    const isSelected = persona.compounding === p.id;
+                    return (
+                      <button
+                        key={p.id}
+                        type="button"
+                        onClick={() => setPersona((prev) => ({ ...prev, compounding: p.id }))}
+                        className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                          isSelected
+                            ? 'border-[#006c4a] bg-emerald-50/70 dark:bg-emerald-950/40 text-slate-900 dark:text-white shadow-2xs'
+                            : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/60'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-bold text-xs">{p.title}</span>
+                          <span className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                            isSelected ? 'bg-emerald-200 dark:bg-emerald-900 text-emerald-900 dark:text-emerald-100' : 'bg-slate-100 dark:bg-slate-800'
+                          }`}>
+                            {p.badge}
+                          </span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 mt-0.5">{p.sub}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* RIGHT COLUMN: VISUAL RETURN CANVAS (DONUT + BREAKDOWN + DIRECT CTA) */}
+          <div className="lg:col-span-5 bg-slate-50 dark:bg-slate-900/60 rounded-2xl border border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 flex flex-col justify-between gap-5 shadow-2xs">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-slate-800">
+                <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                  Return Canvas &amp; Growth
+                </span>
+                <span className="text-xs font-extrabold text-[#006c4a] dark:text-[#10b981]">
+                  {activeSimulationRate.toFixed(2)}% p.a.
+                </span>
+              </div>
+
+              {/* Integrated Recharts Donut */}
+              <div className="relative w-full h-44 my-2 flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={donutData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={52}
+                      outerRadius={74}
+                      paddingAngle={3}
+                      dataKey="value"
+                    >
+                      {donutData.map((entry, index) => (
+                        <Cell key={`donut-${index}`} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <RechartsTooltip
+                      formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
+                      contentStyle={chartTooltipStyle.contentStyle}
+                      itemStyle={chartTooltipStyle.itemStyle}
+                      labelStyle={chartTooltipStyle.labelStyle}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+                <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">
+                    {persona.compounding === 'maturity' ? 'Net Maturity' : 'Total Delivered'}
+                  </span>
+                  <span className="text-sm font-extrabold text-slate-900 dark:text-white">
+                    ₹{formatLakhs(topCalculation.maturityAmount + (persona.compounding === 'maturity' ? 0 : topCalculation.totalInterest))}
+                  </span>
+                </div>
+              </div>
+
+              {/* Metric Breakdown Strips */}
+              <div className="flex flex-col gap-2.5 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                    <span>Invested Amount:</span>
+                  </span>
+                  <span className="font-bold text-slate-900 dark:text-white tabular-nums">
+                    ₹{formatINR(topCalculation.totalInvested)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center">
+                  <span className="text-slate-600 dark:text-slate-400 flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+                    <span>Est. Returns (Interest Gain):</span>
+                  </span>
+                  <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
+                    +₹{formatINR(topCalculation.totalInterest)}
+                  </span>
+                </div>
+
+                {persona.depositType === 'FD' && persona.compounding !== 'maturity' && topCalculation.periodicPayoutAmount && (
+                  <div className="flex justify-between items-center py-1 border-t border-slate-200/60 dark:border-slate-800">
+                    <span className="text-slate-600 dark:text-slate-400">Regular Cashflow:</span>
+                    <span className="font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums">
+                      ₹{formatINR(topCalculation.periodicPayoutAmount)} / {persona.compounding === 'monthly' ? 'month' : 'quarter'}
+                    </span>
+                  </div>
+                )}
+
+                <div className="flex justify-between items-center pt-2 border-t border-slate-200/80 dark:border-slate-800">
+                  <span className="font-bold text-slate-800 dark:text-slate-200">Total Maturity Value:</span>
+                  <span className="font-extrabold text-base text-slate-900 dark:text-white tabular-nums">
+                    ₹{formatINR(topCalculation.maturityAmount)}
+                  </span>
+                </div>
+
+                <div className="flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400">
+                  <span>Effective Annual Yield:</span>
+                  <span className="font-bold text-slate-700 dark:text-slate-300">
+                    {topCalculation.effectiveAnnualYield}% p.a.
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Direct Action CTA */}
+            <a
+              href="#bank-leaderboard"
+              className="w-full py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-center text-xs sm:text-sm shadow-xs transition-all flex items-center justify-center gap-2 cursor-pointer"
+            >
+              <span>Compare {filteredAndRankedBanks.length} Scheduled Banks Below</span>
+              <ChevronDown className="w-4 h-4" />
+            </a>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: INTERACTIVE VISUAL ANALYTICS DASHBOARD */}
-      <section className="w-full grid grid-cols-1 lg:grid-cols-12 gap-6">
-        {/* Left Side: Summary Metrics & ROI Highlight */}
-        <div className="lg:col-span-4 flex flex-col gap-4">
-          <div className="p-6 rounded-2xl bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col gap-5">
-            <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800">
-              <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-                Maturity Projection
-              </span>
-              <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-bold ${
-                persona.useCustomRate
-                  ? 'bg-purple-100 dark:bg-purple-950 text-purple-700 dark:text-purple-300'
-                  : 'bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0]'
-              }`}>
-                {activeSimulationRate.toFixed(2)}% p.a. {persona.useCustomRate ? '(Custom Target)' : 'Compounded'}
-              </span>
-            </div>
+      {/* SECTION 2: DEEP-DIVE VISUAL ANALYTICS (TRAJECTORY & RATE SPREAD) */}
+      <section className="w-full bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 rounded-2xl shadow-xs p-5 sm:p-6 transition-colors">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-2">
+            <BarChart3 className="w-4 h-4 text-[#006c4a] dark:text-[#10b981]" />
+            <h2 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">
+              Visual Analytics: Compounding Trajectory &amp; Sector Benchmark
+            </h2>
+          </div>
 
-            <div>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {persona.compounding === 'maturity'
-                  ? 'Guaranteed Maturity Payout'
-                  : persona.compounding === 'monthly'
-                  ? 'Monthly Income Cashflow'
-                  : 'Quarterly Cashflow Payout'}
-              </span>
-              <p className="text-3xl font-extrabold text-[#006c4a] dark:text-[#10b981] tabular-nums mt-0.5">
-                {persona.compounding === 'maturity'
-                  ? `₹${formatINR(topCalculation.maturityAmount)}`
-                  : `₹${formatINR(topCalculation.periodicPayoutAmount || 0)}`}
-                {persona.compounding === 'monthly' && (
-                  <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 ml-1">/ mo</span>
-                )}
-                {persona.compounding === 'quarterly' && (
-                  <span className="text-sm font-semibold text-slate-500 dark:text-slate-400 ml-1">/ quarter</span>
-                )}
-              </p>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                {persona.compounding === 'maturity'
-                  ? `Net after TDS: ₹${formatINR(topCalculation.netMaturityWithTds)}`
-                  : `Capital Returned at Maturity: ₹${formatINR(topCalculation.maturityAmount)}`}
-              </span>
-            </div>
-
-            <div className="grid grid-cols-2 gap-3 pt-3 border-t border-slate-100 dark:border-slate-800 text-xs">
-              <div>
-                <span className="text-slate-500">Total Invested:</span>
-                <p className="font-bold text-slate-900 dark:text-white text-sm tabular-nums mt-0.5">
-                  ₹{formatINR(topCalculation.totalInvested)}
-                </p>
-              </div>
-              <div>
-                <span className="text-slate-500">
-                  {persona.compounding === 'maturity' ? 'Wealth Created:' : 'Total Interest Paid Out:'}
-                </span>
-                <p className="font-bold text-[#006c4a] dark:text-[#10b981] text-sm tabular-nums mt-0.5">
-                  +₹{formatINR(topCalculation.totalInterest)}
-                </p>
-              </div>
-            </div>
-
-            {/* DICGC Protection Badge */}
-            <div className="p-3 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800/60 flex items-center gap-2.5 text-xs text-[#00714e] dark:text-[#a7f3d0]">
-              <ShieldCheck className="w-5 h-5 shrink-0" />
-              <span>
-                <strong>100% Capital Protection:</strong> Up to ₹5 Lakhs principal + return insured by DICGC (RBI Subsidiary).
-              </span>
-            </div>
-
-            {/* Quick Action Button */}
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 text-xs self-start sm:self-auto">
             <button
               type="button"
-              onClick={() => onInvest(topBank)}
-              className="w-full py-3 rounded-xl bg-[#006c4a] hover:bg-[#005137] dark:bg-[#10b981] dark:text-slate-950 text-white font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-xs"
+              onClick={() => setActiveChartTab('trajectory')}
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeChartTab === 'trajectory' || activeChartTab === 'donut'
+                  ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
             >
-              <span>Book with Top Ranker ({topBank.name.split(' ')[0]})</span>
-              <ArrowRight className="w-4 h-4" />
+              <LineIcon className="w-3.5 h-3.5 text-emerald-500" />
+              <span>Compounding Trajectory</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setActiveChartTab('spread')}
+              className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 cursor-pointer ${
+                activeChartTab === 'spread'
+                  ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-xs'
+                  : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
+              }`}
+            >
+              <BarChart3 className="w-3.5 h-3.5 text-blue-500" />
+              <span>Sector Rate Spread</span>
             </button>
           </div>
         </div>
 
-        {/* Right Side: Tabbed Interactive Chart Engine */}
-        <div className="lg:col-span-8 p-6 rounded-2xl bg-white dark:bg-[#161b22] border border-slate-200/80 dark:border-slate-800 shadow-xs flex flex-col gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100 dark:border-slate-800">
-            <div>
-              <h2 className="text-sm font-bold text-slate-900 dark:text-white">
-                Interactive Wealth Growth & Spread Analytics
-              </h2>
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                Visualized based on your tenure, age category, and monthly contributions
-              </span>
-            </div>
-
-            <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 self-start sm:self-auto text-xs">
-              <button
-                type="button"
-                onClick={() => setActiveChartTab('donut')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeChartTab === 'donut'
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
+        <div className="w-full h-64 pt-4">
+          {activeChartTab === 'spread' ? (
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={spreadData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
+                <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
+                <YAxis stroke="#94a3b8" fontSize={11} domain={[5, 10]} tickFormatter={(v) => `${v}%`} />
+                <RechartsTooltip
+                  formatter={(val: any) => `${Number(val).toFixed(2)}% p.a.`}
+                  contentStyle={chartTooltipStyle.contentStyle}
+                  itemStyle={chartTooltipStyle.itemStyle}
+                  labelStyle={chartTooltipStyle.labelStyle}
+                />
+                <Bar dataKey="rate" name="Annual Interest Rate (%)" fill={isDark ? '#10b981' : '#006c4a'} radius={[6, 6, 0, 0]}>
+                  {spreadData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={entry.name === 'RBI Repo' ? '#94a3b8' : entry.name === 'Your Target' ? '#a855f7' : index === 0 ? '#10b981' : '#3b82f6'}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart
+                data={topCalculation.timelineData}
+                margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
               >
-                <PieIcon className="w-3.5 h-3.5" />
-                <span>Split</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveChartTab('trajectory')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeChartTab === 'trajectory'
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <LineIcon className="w-3.5 h-3.5" />
-                <span>Growth Curve</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setActiveChartTab('spread')}
-                className={`px-3 py-1.5 rounded-lg font-bold transition-all flex items-center gap-1.5 ${
-                  activeChartTab === 'spread'
-                    ? 'bg-white dark:bg-[#1c2128] text-slate-900 dark:text-white shadow-2xs'
-                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white'
-                }`}
-              >
-                <BarChart3 className="w-3.5 h-3.5" />
-                <span>Rate Spread</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Chart Rendering Area */}
-          <div className="w-full h-64 sm:h-72">
-            {activeChartTab === 'donut' && (
-              <div className="w-full h-full flex flex-col sm:flex-row items-center justify-around gap-4">
-                <div className="w-56 h-56 relative flex items-center justify-center">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <PieChart>
-                      <Pie
-                        data={donutData}
-                        cx="50%"
-                        cy="50%"
-                        innerRadius={60}
-                        outerRadius={85}
-                        paddingAngle={4}
-                        dataKey="value"
-                      >
-                        {donutData.map((entry, index) => (
-                          <Cell key={`cell-${index}`} fill={entry.color} />
-                        ))}
-                      </Pie>
-                      <RechartsTooltip
-                        formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
-                        contentStyle={chartTooltipStyle.contentStyle}
-                        itemStyle={chartTooltipStyle.itemStyle}
-                        labelStyle={chartTooltipStyle.labelStyle}
-                      />
-                    </PieChart>
-                  </ResponsiveContainer>
-                  <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none text-center">
-                    <span className="text-[10px] text-slate-400 font-bold uppercase">
-                      {persona.compounding === 'maturity' ? 'Net Maturity' : 'Total Delivered'}
-                    </span>
-                    <span className="text-sm font-extrabold text-slate-900 dark:text-white">
-                      ₹{formatLakhs(topCalculation.totalInvested + topCalculation.totalInterest)}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-3 text-xs w-full sm:w-auto">
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-blue-500 shrink-0" />
-                    <span className="text-slate-600 dark:text-slate-400">Total Invested:</span>
-                    <span className="font-bold text-slate-900 dark:text-white tabular-nums">
-                      ₹{formatINR(topCalculation.totalInvested)} (
-                      {(((topCalculation.totalInvested) / (topCalculation.totalInvested + topCalculation.totalInterest || 1)) * 100).toFixed(1)}%)
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span className="w-3 h-3 rounded-full bg-emerald-500 shrink-0" />
-                    <span className="text-slate-600 dark:text-slate-400">
-                      {persona.compounding === 'maturity' ? 'Wealth Created (Gain):' : 'Total Interest Paid Out:'}
-                    </span>
-                    <span className="font-bold text-[#006c4a] dark:text-[#10b981] tabular-nums">
-                      ₹{formatINR(topCalculation.totalInterest)} (
-                      {(((topCalculation.totalInterest) / (topCalculation.totalInvested + topCalculation.totalInterest || 1)) * 100).toFixed(1)}%)
-                    </span>
-                  </div>
-                  <div className="p-2.5 rounded-lg bg-slate-50 dark:bg-slate-900 text-slate-600 dark:text-slate-400 text-[11px]">
-                    {persona.compounding === 'maturity' ? (
-                      <>Wealth multiplier: <strong>{(topCalculation.maturityAmount / (topCalculation.totalInvested || 1)).toFixed(2)}x</strong> over {persona.tenureMonths} months.</>
-                    ) : (
-                      <>Total return delivered: <strong>₹{formatINR(topCalculation.totalInvested + topCalculation.totalInterest)}</strong> (Capital + Regular Income).</>
-                    )}
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {activeChartTab === 'trajectory' && (
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart
-                  data={topCalculation.timelineData}
-                  margin={{ top: 10, right: 10, left: 10, bottom: 0 }}
-                >
-                  <defs>
-                    <linearGradient id="balanceGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
-                      <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
-                    </linearGradient>
-                  </defs>
-                  <XAxis dataKey="period" stroke="#94a3b8" fontSize={11} />
-                  <YAxis
-                    stroke="#94a3b8"
-                    fontSize={11}
-                    tickFormatter={(val) => `₹${formatLakhs(val)}`}
-                  />
-                  <RechartsTooltip
-                    formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
-                    labelFormatter={(label) => `Timeline: ${label}`}
-                    contentStyle={chartTooltipStyle.contentStyle}
-                    itemStyle={chartTooltipStyle.itemStyle}
-                    labelStyle={chartTooltipStyle.labelStyle}
-                  />
-                  <Area
-                    type="monotone"
-                    dataKey="balance"
-                    name="Account Balance"
-                    stroke="#10b981"
-                    strokeWidth={2}
-                    fillOpacity={1}
-                    fill="url(#balanceGrad)"
-                  />
-                </AreaChart>
-              </ResponsiveContainer>
-            )}
-
-            {activeChartTab === 'spread' && (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={spreadData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
-                  <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} />
-                  <YAxis stroke="#94a3b8" fontSize={11} domain={[5, 10]} tickFormatter={(v) => `${v}%`} />
-                  <RechartsTooltip
-                    formatter={(val: any) => `${Number(val).toFixed(2)}% p.a.`}
-                    contentStyle={chartTooltipStyle.contentStyle}
-                    itemStyle={chartTooltipStyle.itemStyle}
-                    labelStyle={chartTooltipStyle.labelStyle}
-                  />
-                  <Bar dataKey="rate" name="Annual Interest Rate (%)" fill={isDark ? '#10b981' : '#006c4a'} radius={[6, 6, 0, 0]}>
-                    {spreadData.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={index === 0 ? '#10b981' : index === 3 ? '#94a3b8' : '#3b82f6'}
-                      />
-                    ))}
-                  </Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            )}
-          </div>
+                <defs>
+                  <linearGradient id="balanceGrad" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.4} />
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0.0} />
+                  </linearGradient>
+                </defs>
+                <XAxis dataKey="period" stroke="#94a3b8" fontSize={11} />
+                <YAxis
+                  stroke="#94a3b8"
+                  fontSize={11}
+                  tickFormatter={(val) => `₹${formatLakhs(val)}`}
+                />
+                <RechartsTooltip
+                  formatter={(val: any) => `₹${formatINR(Number(val) || 0)}`}
+                  labelFormatter={(label) => `Timeline: ${label}`}
+                  contentStyle={chartTooltipStyle.contentStyle}
+                  itemStyle={chartTooltipStyle.itemStyle}
+                  labelStyle={chartTooltipStyle.labelStyle}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="balance"
+                  name="Account Balance"
+                  stroke="#10b981"
+                  strokeWidth={2}
+                  fillOpacity={1}
+                  fill="url(#balanceGrad)"
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          )}
         </div>
       </section>
 
+
       {/* SECTION 3: LIVE REACTIVE BANK LEADERBOARD */}
-      <section className="w-full flex flex-col gap-6">
+      <section id="bank-leaderboard" className="w-full flex flex-col gap-6 scroll-mt-24">
         {/* Verification Status Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-emerald-50/60 dark:bg-emerald-950/20 p-3.5 sm:p-4 rounded-2xl border border-emerald-200/80 dark:border-emerald-900/40">
           <div className="flex items-center gap-2.5">
@@ -1578,7 +1362,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           ) : (
             <>
               {filteredAndRankedBanks.map((bank, index) => {
-            const effectiveRate = getEffectiveRate(bank, { ...persona, useCustomRate: false }, persona.tenureMonths, activeTenureDays);
+            const effectiveRate = getEffectiveRate(bank, persona, persona.tenureMonths, activeTenureDays);
             const calc = calculateYield(
               currentAmount,
               effectiveRate,
@@ -1633,6 +1417,21 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                           <span>{matchedScheme.name} ({matchedScheme.days}D @ {matchedScheme.rate}%)</span>
                         </span>
                       )}
+                      {/* Persona Dynamic Rate Breakdown Transparency Pills */}
+                      {persona.age >= 80 ? (
+                        <span className="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-950/80 text-purple-800 dark:text-purple-300 text-[10px] font-bold">
+                          +{bank.superSeniorBonus.toFixed(2)}% Super Senior (80+)
+                        </span>
+                      ) : persona.age >= 60 ? (
+                        <span className="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-950/80 text-blue-800 dark:text-blue-300 text-[10px] font-bold">
+                          +{bank.seniorBonus.toFixed(2)}% Senior Citizen (60+)
+                        </span>
+                      ) : null}
+                      {persona.gender === 'female' && bank.womenBonus && bank.womenBonus > 0 ? (
+                        <span className="px-2 py-0.5 rounded-full bg-pink-100 dark:bg-pink-950/80 text-pink-800 dark:text-pink-300 text-[10px] font-bold">
+                          +{bank.womenBonus.toFixed(2)}% Women Depositor
+                        </span>
+                      ) : null}
                       {bank.badge && (
                         <span className="px-2.5 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-950 text-[#00714e] dark:text-[#a7f3d0] text-[11px] font-bold">
                           {bank.badge}

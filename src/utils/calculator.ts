@@ -32,11 +32,6 @@ export function getEffectiveRate(
   tenureMonths?: number,
   tenureDays?: number
 ): number {
-  // If user entered a custom rate and enabled custom rate mode, respect that custom rate directly
-  if (persona.useCustomRate && persona.customRate !== undefined && persona.customRate > 0) {
-    return Number(persona.customRate.toFixed(2));
-  }
-
   const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
   let rate = bank.baseRate ?? 0;
   let matchedScheme: import('../types/bank').SpecialScheme | undefined;

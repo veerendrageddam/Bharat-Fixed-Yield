@@ -266,10 +266,18 @@ gantt
   - Implemented RBI discounted monthly interest formula and quarterly simple interest payout in `calculateFDYield()`.
   - Added "Interest Payout & Compounding Plan" selector in Yield Command Center with dynamic cashflow badges (`₹{amount}/mo` or `₹{amount}/quarter`), Capital Returned at Maturity indicators, and synchronized Modals and Inspection Screen.
   - 61 unit tests passing across 9 test suites.
+- [x] **Phase 24: v1 Pre-Release Architecture Hardening & Core Defect Remediation** `[COMPLETED]`
+  - Standardized age select `<option>` bindings (`"35"`, `"60"`, `"80"`) and aligned default `persona.age: 35` (General Citizen baseline).
+  - Expanded tenure schema to 7Y (`84M`) and 10Y (`120M`) across all 36 commercial banks in `rates.json` and `masterRegistry.ts`.
+  - Built Hybrid Smart Slider for Time Period (1Y–10Y with statutory snap points and verified odd-day promotional scheme chips `333D`, `399D`, `400D`, `444D`, `555D`, `666D`, `777D`, `1001D`).
+  - Hoisted persona controls into persistent Sticky Top Control Ribbon with Regional RRB filter toggle.
+  - Re-architected Section 1 into a 2-Column Minimalist Canvas (Groww pattern), collapsing vertical height to ~380px above the fold.
+  - Purged phantom 222D scheme, removed arbitrary `-0.35` fallback from tax-saver banks, decoupled custom simulation rate leakage from bank resolution, and synchronized `DicgcSafetyScreen` tenure parameters.
+  - 74 passing unit tests across 10 suites in 1.5s, 0 lint errors, clean 2.0s Vite build.
 
 ### Developer & Ingestion CLI Reference
 ```bash
-# 1. Run the 61-test Vitest unit test suite (executes in <1.5s)
+# 1. Run the 74-test Vitest unit test suite (executes in <1.6s)
 npm test
 
 # 2. Run the 38-Institution ALCO Rate & Gazette Audit Report

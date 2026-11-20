@@ -44,7 +44,7 @@ export const DicgcSafetyScreen: React.FC<DicgcSafetyScreenProps> = ({
     const allocatedPrincipal = isLast ? remaining : Math.min(remaining, maxSafePrincipalPerBank);
     remaining = Math.max(0, remaining - allocatedPrincipal);
 
-    const rate = getEffectiveRate(bank, persona);
+    const rate = getEffectiveRate(bank, persona, targetTenure);
     const calc = calculateYield(allocatedPrincipal, rate, targetTenure, persona.age, persona.form15HSubmitted);
     const isOverCap = calc.maturityAmount > 500000;
 
