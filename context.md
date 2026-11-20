@@ -293,8 +293,10 @@ npm run lint && npm run build
 flowchart TD
     P19["Phase 19: Domain Math & Banking Rules Precision (P0)"] --> P20["Phase 20: Codebase Hygiene & Dead Code Cleanup (P1)"]
     P20 --> P21["Phase 21: CI/CD Pipeline & Web Hosting Hardening (P1)"]
-    P21 --> P15["Phase 15: Public Pre-rendered Bank SEO Pages (P2)"]
     P21 --> P22["Phase 22: Non-Cumulative Payout Engine (P2)"]
+    P22 --> P23["Phase 23: Production v1 Hardening & Mock Login Disablement (P0)"]
+    P23 --> P24["Phase 24: v1 Pre-Release Architecture Hardening & Core Defect Remediation (P0 Urgent)"]
+    P24 --> P15["Phase 15: Public Pre-rendered Bank SEO Pages (v1.1)"]
 ```
 
 1. **Phase 19: Domain Math & Banking Rules Precision Hardening (P0 Immediate Priority)**
@@ -357,6 +359,118 @@ Following a full-system audit conducted against `/core-engineering` and `/full-s
 - **User Trust**: In a financial intelligence platform calculating statutory yields and DICGC insurance ceilings, presenting a fake login CTA undermines institutional credibility and violates user expectations.
 - **Governing Principle**: *Build the simplest production-quality solution that satisfies current requirements.* For v1, BFY is a **100% public, privacy-first, zero-friction client-side discovery engine**.
 - **Action**: **Disable and remove the mock "Sign In" button, user avatar, and `SignInModal` for the v1 production release.**
-- **v2 Roadmap Placement**: When real backend services (e.g., Supabase / Firebase / Postgres) are introduced in Phase 24, true authentication for saved portfolios, maturity alerts (SMS/Email), and personalized Form 15H vaulting will be engineered with end-to-end security.
+- **v2 Roadmap Placement**: When real backend services (e.g., Supabase / Firebase / Postgres) are introduced in future releases, true authentication for saved portfolios, maturity alerts (SMS/Email), and personalized Form 15H vaulting will be engineered with end-to-end security.
+
+---
+
+## 10. Pre-v1 Production Architecture Review & Core Defect Remediation (Phase 24)
+
+Following an architectural review adhering to `/core-engineering` and `/full-stack-engineering-standards`, five core defects were identified along with their root causes, trade-offs, and production remediation plans:
+
+### 10.1 Defect 1: Age (>60), Gender & Locality Selection Showing Same Rates
+* **Root Cause 1 (DOM `<select>` Binding Mismatch)**:
+  - In `YieldCommandCenter.tsx`, the age select evaluated `value={persona.age >= 80 ? '80' : persona.age >= 60 ? '60' : '35'}`, while child `<option>` tags were declared with `value="35"`, `value="65"`, and `value="82"`.
+  - Because `'60'` did not match any option, the DOM defaulted to rendering the first option (`value="35"`: General Citizen).
+  - Meanwhile, `App.tsx` initialized state with `age: 62`. The math engine was already adding the +0.50% senior citizen bonus.
+  - When the user selected "Senior Citizen (60–79 yrs)", `onChange` set `age: 65`. Because both 62 and 65 are $\ge 60$, `getEffectiveRate` produced the exact same rate. To the user, toggling age produced zero change.
+* **Root Cause 2 (Gender Bonus Opacity)**:
+  - Selecting `gender: 'female'` added `bank.womenBonus` (+0.10% to +0.25%), but bank cards displayed a hardcoded `bank.badge` (e.g. `Up to 8.90%`) and promotional badges with base rates (e.g. `444D @ 8.15%`).
+  - Without an explicit inline pill (`+0.15% Women Depositor`), users had no visibility into whether gender bonuses were applied.
+* **Root Cause 3 (Locality / State Filter Dominance)**:
+  - 22 out of 38 banks have `isPanIndia: true` or `operatingStates: ['ALL']`.
+  - Because Small Finance Banks offer 8.15%–8.90%, they occupy Ranks #1 through #5 regardless of which state is selected. Regional institutions (e.g., APGB, TGB, KaGB) appear lower in the list, making the top cards look identical across states.
+* **Remediation**:
+  1. Standardize `<option>` values to exact matches: `"35"`, `"60"`, `"80"`.
+  2. Set initial default in `App.tsx` to `age: 35` (General Citizen baseline) so changing to Senior Citizen produces an immediate +0.50% jump.
+  3. Render explicit inline breakdown badges on bank cards (`+0.50% Senior Citizen`, `+0.75% Super Senior`, `+0.15% Women Depositor`).
+  4. Provide a locality filter toggle: `All Available in State (incl. Pan-India)` vs `🏛️ Regional / State Banks Only (RRBs & Co-ops)`.
+
+---
+
+### 10.2 Defect 2: Tenure Horizon Capped at Max 5 Years
+* **Root Cause**:
+  - `rates.json` and `masterRegistry.ts` only stored keys `12`, `24`, `36`, `60`.
+  - The UI selector in `YieldCommandCenter.tsx` was hardcoded to 1Y, 2Y, 3Y, 5Y.
+  - Indian commercial banks legally offer term deposits up to **10 Years (120 Months)** under RBI Master Directions.
+  - `TenureInspectionScreen.tsx` hardcoded `"3-Year Compounding Acceleration"` and only had cards for FY1, FY2, FY3.
+* **Remediation**:
+  1. Expand `ratesByTenure` schema and dataset across all 38 banks to include 7-Year (`84M`) and 10-Year (`120M`) statutory tenures.
+  2. Add `84M (7 Years)` and `120M (10 Years - Max RBI Tenure)` buttons to `YieldCommandCenter.tsx`.
+  3. Refactor `TenureInspectionScreen.tsx` to dynamically render Fiscal Year summary cards based on `Math.ceil(calc.quarters.length / 4)` up to 10 years (40 quarters).
+
+---
+
+### 10.3 Defect 3: Information Architecture & Persona Controls Placement
+* **Root Cause**:
+  - Persona controls (Deposit Type, Age, Gender, Locality, Form 15H) were placed at line 1006 of `YieldCommandCenter.tsx`, beneath deposit sliders, tenure chips, custom target modeling, and compounding cards.
+  - Users landed on a Pan-India view showing all 38 banks without realizing persona controls existed below the fold.
+* **Remediation**:
+  1. Hoist persona controls into a persistent Header / Sticky Top Control Ribbon directly below the primary navbar.
+  2. The ribbon displays: Deposit Type toggle (`[FD] [RD]`), Depositor Age Category dropdown, Gender dropdown, Locality/State dropdown, and the Regional vs Pan-India scope toggle.
+  3. Controls remain visible and interactive above the fold on all screen sizes, instantly re-indexing all rates across the application.
+
+---
+
+### 10.4 Defect 4: Fallback Interest Rates Triggering in Edge Cases
+* **Root Cause 1 (Phantom "222 Days" Scheme)**:
+  - `YieldCommandCenter.tsx` displayed a quick chip for `222 Days`, but 0 banks in `rates.json` had a 222-day scheme.
+  - Selecting it caused `isTenureSupported` to return `false` for every bank in India, leaving `filteredAndRankedBanks` empty.
+  - The system then triggered a cascading fallback: `topBank` fell back to `banks[0]` (Unity SFB), `getEffectiveRate` fell back to the 3-year `baseRate`, and `spreadData` fell back to hardcoded floats (`8.15`, `7.75`, `7.40`, `7.10`).
+* **Root Cause 2 (TAX_SAVER_BANKS Arbitrary Fallback)**:
+  - `bankData.ts` computed `baseRate: b.ratesByTenure?.[60] ?? Number((b.baseRate - 0.35).toFixed(2))`.
+* **Root Cause 3 (Missing RD Matrices on Commercial Banks)**:
+  - 37 of 38 banks lacked `rdRatesByTenure` in `rates.json`, falling through to FD matrices silently.
+* **Remediation**:
+  1. Purge the phantom `222 Days` chip; replace with verified active promotional schemes: `333D`, `399D`, `400D`, `444D`, `555D`, `666D`, `777D`, `1001D`.
+  2. Remove hardcoded fallback floats from `spreadData` and handle empty states gracefully.
+  3. Codify exact 5-year Section 80C rates in `rates.json` instead of arbitrary `-0.35` subtractions.
+
+---
+
+### 10.5 Defect 5: Cross-Component Leaky State & Screen Synchronization
+* **Root Cause 1 (`useCustomRate` Leaking into Bank Modals)**:
+  - `getEffectiveRate()` in `calculator.ts` returned `persona.customRate` whenever `persona.useCustomRate` was active, overriding real bank rates in `CompareDrawer`, `TenureInspectionScreen`, and `BookingModal`.
+* **Root Cause 2 (`DicgcSafetyScreen` Target Tenure Parameter Sync)**:
+  - `DicgcSafetyScreen.tsx` called `getEffectiveRate(bank, persona)` without passing the screen's local `targetTenure` slider state.
+* **Remediation**:
+  1. Decouple `useCustomRate` from bank rate resolution in `calculator.ts`; custom rate simulation belongs strictly in top-level calculator models.
+  2. Pass `targetTenure` explicitly to `getEffectiveRate(bank, persona, targetTenure)` in `DicgcSafetyScreen.tsx`.
+
+---
+
+### 10.6 Minimalist 2-Column Calculator Canvas with Range Bar (Groww / Modern Fintech Pattern)
+* **The UX Problem in Current BDR**:
+  - Section 1 of `YieldCommandCenter.tsx` stacked 8 fragmented input blocks vertically (~1,400px of vertical scrolling) before reaching data visualizers or bank leaderboard cards.
+  - Tenure selection utilized bulky multi-column card grids that did not scale beyond 5 years and created heavy visual friction.
+* **The Solution: 2-Column Dual Canvas with Range Sliders**:
+  - Adopt the battle-tested fintech layout (used by Groww, Zerodha, and ET Money):
+    - **Left Column: 3 Standardized Slider Rows**:
+      1. **Total Investment**:
+         - Label: `Total investment` (FD) or `Monthly installment` (RD).
+         - Right Pill: Interactive, editable currency input (e.g., `₹ 5,00,000`).
+         - Range slider with quick chips (`₹1L`, `₹3L`, `₹5L (DICGC Max)`, `₹10L`) and contextual single-bank insurance warning.
+      2. **Time Period (Hybrid Smart Slider)**:
+         - Label: `Time period` with an inline unit selector dropdown (`Years ⌄` vs `Months ⌄`).
+         - Right Pill: Interactive value box (e.g., `3 Years` or `36 Months`).
+         - Range slider spanning `1 to 10 Years` (or `6 to 120 Months`), snapping cleanly to statutory bank slabs (`1Y`, `2Y`, `3Y (Peak)`, `5Y (80C)`, `7Y`, `10Y`).
+         - Promotional High-Yield Chip Row directly beneath: `[⚡ 400D (SBI 7.25%)]`, `[⚡ 444D (Canara 7.25%)]`, `[⚡ 1001D (Unity 8.40%)]`.
+      3. **Rate of Interest**:
+         - Label: `Rate of interest (p.a)` with dropdown selector (`Best Market Rate (8.65%) ⌄` vs `Custom Target %`).
+         - Right Pill: Interactive percentage input (e.g., `8.65 %`).
+         - Slider active when custom mode is enabled; pinned to live top market yield when auto-sync is active.
+      4. **Payout Plan**: Compact inline radio pills: `(•) Reinvest at Maturity  ( ) Monthly Payout  ( ) Quarterly Payout`.
+    - **Right Column: Visual Return Canvas**:
+      - Donut Chart (Recharts) displaying `Principal Invested` (Blue) vs `Total Returns / Gains` (Emerald Green).
+      - Core Summary Metrics:
+        - `Invested amount`: `₹5,00,000`
+        - `Est. returns`: `+₹1,43,892`
+        - `Total value (Net Maturity Corpus)`: `₹6,43,892`
+        - `Effective Annual Yield`: `9.59% p.a.`
+      - Direct Action CTA: `Compare 38 Scheduled Banks Below ↓`.
+* **Domain Engineering Trade-offs**:
+  - *Continuous vs Discrete Bank Slabs*: Pure continuous floating sliders fail in banking because rate cards are discrete. The "Hybrid Smart Slider" solves this by pairing a continuous visual slider track with milestone snapping ticks (1Y, 2Y, 3Y, 5Y, 7Y, 10Y) and 1-click odd-day promotional scheme chips.
+  - *Information Density*: Collapses the vertical footprint from ~1,400px to ~380px, fitting comfortably above the fold on mobile and desktop displays.
+
+
 
 

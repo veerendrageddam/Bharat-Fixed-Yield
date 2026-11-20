@@ -34,6 +34,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 21: Production CI/CD Pipeline & Web Hosting Deployment** | Automated PR/Push CI Gate (`ci.yml`), SPA Rewrites (`vercel.json`), Favicon, Robots, Security Headers | `COMPLETED` | 100% | Completed |
 | **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
 | **Phase 23: Production v1 Hardening & UI/UX Optimization** | Rebranding to Bharat Deposit Radar, Login Disablement, Sticky Compare, Dynamic Charts, a11y | `COMPLETED` | 100% | Completed |
+| **Phase 24: v1 Pre-Release Architecture Hardening & Core Defect Remediation** | Age Tier Select Fix, 10Y Hybrid Range Slider, 2-Column Minimalist Canvas, Sticky Header Persona Ribbon, Fallback Cleanup, Screen Sync | `IN_PROGRESS` | 20% | Immediate (v1 Release) |
 
 ---
 
@@ -594,6 +595,40 @@ Status: **Production Ready (Phase 1–5 Complete)**
   - Replaced external Google CDN dependency in [`Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx) and [`Footer.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Footer.tsx) with zero-latency inline SVG rendering.
   - Updated [`public/favicon.svg`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/public/favicon.svg) to the approved Radar Vault squircle; 61 tests passing.
 
+---
+
+### Phase 24: v1 Pre-Release Architecture Hardening & Core Defect Remediation
+*Target Files*: [`src/App.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/App.tsx), [`src/types/bank.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/types/bank.ts), [`src/utils/calculator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.ts), [`src/components/Header.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/Header.tsx), [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/components/TenureInspectionScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/TenureInspectionScreen.tsx), [`src/components/DicgcSafetyScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/DicgcSafetyScreen.tsx), [`src/components/CompareDrawer.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/CompareDrawer.tsx), [`src/components/BookingModal.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/BookingModal.tsx), [`src/data/rates.json`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/rates.json), [`src/data/bankData.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/data/bankData.ts), [`scripts/ingestion/masterRegistry.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/scripts/ingestion/masterRegistry.ts)
+
+- [ ] **24.1 Age & Gender Dynamic Rate Binding & Visual Transparency** `[PLANNED]`
+  - Fix HTML `<select id="persona-age-select">` value binding mismatch where evaluated values `'35'/'60'/'80'` clashed with `<option value="35">`, `<option value="65">`, `<option value="82">`, causing DOM select to fall back to General Citizen while calculating senior rates.
+  - Align initial default `persona.age: 35` (General Citizen baseline) in `App.tsx` and standardize option values to exact matches (`"35"`, `"60"`, `"80"`).
+  - Add explicit visual breakdown pills on bank leaderboard cards (`+0.50% Senior Citizen (60+)`, `+0.75% Super Senior (80+)`, `+0.15% Women Depositor`) so users immediately see why rates shifted.
+- [ ] **24.2 Tenure Horizon Expansion to 10 Years & Hybrid Range Slider (Groww Pattern)** `[PLANNED]`
+  - Expand multi-tenure rate schema and dataset across all 38 scheduled banks in `rates.json` and `masterRegistry.ts` to include 7-Year (`84M`) and 10-Year (`120M`) statutory brackets.
+  - Implement the **Hybrid Smart Slider for Time Period**:
+    - Label: `Time period` with an inline dropdown unit selector (`Years ⌄` vs `Months ⌄`).
+    - Value Pill: Soft-tinted interactive currency/value box (e.g. `3 Years` / `36 Months`).
+    - Range slider spanning `1 to 10 Years` (or `6 to 120 Months`), snapping to statutory milestone ticks (`1Y`, `2Y`, `3Y (Peak)`, `5Y (80C Tax Saver)`, `7Y`, `10Y`).
+    - Dedicated promotional scheme quick chips directly beneath: `[⚡ 400D (SBI / BoB 7.25%)]`, `[⚡ 444D (Canara 7.25%)]`, `[⚡ 1001D (Unity 8.40%)]`.
+  - Refactor `TenureInspectionScreen.tsx` to replace hardcoded `"3-Year Compounding Acceleration"` with dynamic tenure title and generate dynamic fiscal year summary cards for tenures extending up to 10 years (40 quarters).
+- [ ] **24.3 Information Architecture, Sticky Header Ribbon & 2-Column Minimalist Canvas** `[PLANNED]`
+  - Hoist persona controls (Deposit Type FD/RD, Depositor Age Category, Gender, Locality/State Jurisdiction) from line 1006 of `YieldCommandCenter.tsx` into a persistent, accessible Header / Sticky Top Control Ribbon.
+  - Provide an instant locality filter toggle: `All Available in State (incl. Pan-India)` vs `🏛️ Regional / State Banks Only (RRBs & Co-ops)` so local regional rural banks (e.g., APGB, TGB, KGB, KaGB, MGB) are not perpetually buried beneath Pan-India SFBs.
+  - Re-architect Section 1 of `YieldCommandCenter.tsx` into a sleek **2-Column Fintech Canvas** (Groww/Zerodha style):
+    - **Left Column**: 3 standardized slider rows (`Total Investment`, `Time Period`, `Rate of Interest`) + inline Payout Plan pills (`At Maturity`, `Monthly`, `Quarterly`).
+    - **Right Column**: Integrated Recharts Donut (`Invested` vs `Wealth Returns`) + Return Breakdown (`Invested`, `Est. returns`, `Net Maturity Corpus`, `Annual Yield`) + direct action CTA button (`Compare 38 Scheduled Banks Below ↓`).
+    - Reduces vertical whitespace footprint from ~1,400px down to ~380px, fitting comfortably above the fold.
+- [ ] **24.4 Elimination of Silent Fallbacks & Phantom Special Schemes** `[PLANNED]`
+  - Purge phantom `222 Days` promotional chip from `YieldCommandCenter.tsx` (which had 0 matching banks in the database and caused full bank list dropout), replacing it with verified active ALCO promotional tenures (`333D`, `399D`, `400D`, `444D`, `555D`, `666D`, `777D`, `1001D`).
+  - Eliminate hardcoded fallback floats (`8.15`, `7.75`, `7.40`, `7.10`) from `spreadData` in `YieldCommandCenter.tsx`.
+  - Eliminate arbitrary `-0.35` deduction fallback in `TAX_SAVER_BANKS` in `src/data/bankData.ts`.
+- [ ] **24.5 Cross-Component Leaky State & Screen Synchronization** `[PLANNED]`
+  - Remove leaky `persona.useCustomRate` override from `getEffectiveRate()` in `calculator.ts`; restrict target rate modeling strictly to simulation contexts so `CompareDrawer`, `TenureInspectionScreen`, and `BookingModal` always reflect genuine bank rates.
+  - Fix calculation desynchronization in `DicgcSafetyScreen.tsx` by passing the screen's local `targetTenure` to `getEffectiveRate(bank, persona, targetTenure)`.
+- [ ] **24.6 Test Suite Expansion & Pre-Ship Verification** `[PLANNED]`
+  - Update unit and integration tests across `calculator.test.ts`, `YieldCommandCenter.test.tsx`, and `Header.test.tsx` to cover 10-year tenure expansion, age tier bindings, women bonus badge rendering, and state scoping.
+  - Verify 0 regressions, clean TypeScript build, and sub-2s test execution.
 
 ---
 
@@ -626,6 +661,8 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-11-06** | Phase 22 | Advanced Yield Modeling: Non-Cumulative Payout Engine | Implemented RBI discounted monthly interest formula, quarterly simple interest payout, compounding frequency selector UI in Section 1, periodic cashflow badges across command center, cards, modals, and inspection screen; added 4 new unit tests (61 tests passing). |
 | **2026-11-07** | Phase 23 | Production v1 UI/UX Audit & Mock Login Disablement | Completed full UI/UX architectural audit; verified zero backend/DB usage; disabled cosmetic `SignInModal`, Sign In button, and user avatar; documented audit findings in `context.md`; all 61 tests passing; verified zero-error TypeScript build. |
 | **2026-11-08** | Phase 23.6 | Brand Logo Vector Architecture Integration | Approved Concept 1 ("The Radar Vault"); built standalone `BrandLogo.tsx`, replaced external Google CDN image URLs in `Header.tsx` & `Footer.tsx` with native vector rendering, updated `public/favicon.svg`; verified clean build (1.98s) and 61 tests passing. |
+| **2026-11-11** | Phase 24 Audit | Comprehensive Pre-v1 Architectural Review & Defect Root-Cause Diagnosis | Audited complete application against `/core-engineering` and `/full-stack-engineering-standards`; diagnosed Age Select binding mismatch, 10Y tenure gap, buried IA persona controls, phantom 222D fallback cascades, and screen synchronization gaps. Created Phase 24 roadmap for immediate v1 release execution. |
+| **2026-11-11** | Phase 24 Design | Minimalist 2-Column Range Slider Canvas Specification (Groww Pattern) | Specified 2-column minimalist calculator canvas, collapsing 1,400px vertical block into ~380px above the fold; designed Hybrid Smart Slider for Time Period (1–10 Years / 6–120 Months with Years/Months unit dropdown, statutory tick marks, and 1-click odd-day promotional scheme chips). Updated context.md and tracker. |
 
 
 
