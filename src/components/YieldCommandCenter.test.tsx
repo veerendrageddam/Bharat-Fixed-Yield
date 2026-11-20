@@ -145,5 +145,33 @@ describe('YieldCommandCenter Component UI, Accessibility & Search Interactions',
     expect(screen.getByText('10Y')).toBeInTheDocument();
     expect(screen.getByText('Max RBI')).toBeInTheDocument();
   });
+
+  it('allows dragging tenure slider to intermediate years without forced tick snapping', () => {
+    const setPersonaMock = vi.fn();
+    render(<YieldCommandCenter {...defaultProps} setPersona={setPersonaMock} />);
+
+    const slider = screen.getByLabelText(/Time period slider/i);
+    expect(slider).toBeInTheDocument();
+
+    // Drag to 4 Years (value = 4)
+    fireEvent.change(slider, { target: { value: '4' } });
+    expect(setPersonaMock).toHaveBeenCalledWith(expect.any(Function));
+
+    // Verify the state updater produces 48 months (4 * 12) rather than snapping to 3 or 5
+    const updater = setPersonaMock.mock.calls[0][0];
+    const updatedState = updater(mockPersona);
+    expect(updatedState.tenureMonths).toBe(48);
+    expect(updatedState.tenureUnit).toBe('months');
+  });
+
+  it('renders custom rate of interest input with non-overlapping percentage indicator', () => {
+    render(<YieldCommandCenter {...defaultProps} />);
+
+    // Check rate of interest section and input
+    const rateInput = screen.getByLabelText(/Custom target rate of interest/i);
+    expect(rateInput).toBeInTheDocument();
+    // Percentage sign should be cleanly rendered adjacent to input
+    expect(screen.getByText('%')).toBeInTheDocument();
+  });
 });
 

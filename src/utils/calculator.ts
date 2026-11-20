@@ -60,8 +60,20 @@ export function getEffectiveRate(
       }
     }
   } else {
-    if (ratesMatrix && ratesMatrix[targetTenure] !== undefined) {
-      rate = ratesMatrix[targetTenure];
+    if (ratesMatrix && Object.keys(ratesMatrix).length > 0) {
+      if (ratesMatrix[targetTenure] !== undefined) {
+        rate = ratesMatrix[targetTenure];
+      } else {
+        // Fall back to the applicable statutory slab (highest defined slab <= targetTenure, or lowest slab if targetTenure < lowest)
+        const slabs = Object.keys(ratesMatrix)
+          .map(Number)
+          .filter((n) => !isNaN(n))
+          .sort((a, b) => b - a);
+        const matchedSlab = slabs.find((s) => targetTenure >= s) ?? slabs[slabs.length - 1];
+        if (matchedSlab !== undefined && ratesMatrix[matchedSlab] !== undefined) {
+          rate = ratesMatrix[matchedSlab];
+        }
+      }
     }
     // Also check if any special scheme matches this standard tenure (e.g. 24M matches ~730 days)
     if (persona.depositType !== 'RD' && bank.specialSchemes && bank.specialSchemes.length > 0) {
@@ -117,19 +129,32 @@ export function isTenureSupported(
   tenureMonths?: number,
   tenureDays?: number
 ): boolean {
+  const isPostOffice = bank.category === 'post_office' || bank.id.toLowerCase().includes('post');
+  const targetTenure = tenureMonths ?? persona.tenureMonths;
+
   if (persona.depositType === 'RD') {
     if (bank.rdSupported === false) return false;
     // Odd-day promotional schemes are strictly for Term Deposits (FDs)
     const effectiveDays = tenureDays ?? (persona.tenureUnit === 'days' ? persona.tenureDays : undefined);
     if (effectiveDays) return false;
 
-    const targetTenure = tenureMonths ?? persona.tenureMonths;
+    // Post Office Recurring Deposit (PORD) strictly offers only 60 months (5 years)
+    if (isPostOffice) {
+      return targetTenure === 60;
+    }
+
+    // Standard commercial / SFB / RRB recurring deposit tenures: 6 months to 120 months
+    if (targetTenure < 6 || targetTenure > 120) return false;
+
     const ratesMatrix = (bank.rdRatesByTenure && Object.keys(bank.rdRatesByTenure).length > 0)
       ? bank.rdRatesByTenure
       : bank.ratesByTenure;
 
     if (ratesMatrix && Object.keys(ratesMatrix).length > 0) {
-      return ratesMatrix[targetTenure] !== undefined;
+      const slabs = Object.keys(ratesMatrix).map(Number).filter((n) => !isNaN(n));
+      const minSlab = Math.min(...slabs);
+      const maxSlab = Math.max(...slabs);
+      return targetTenure >= minSlab && targetTenure <= maxSlab;
     }
     return bank.tenureMonths === targetTenure;
   }
@@ -149,9 +174,19 @@ export function isTenureSupported(
     return false;
   }
 
-  const targetTenure = tenureMonths ?? persona.tenureMonths;
+  // Post Office Time Deposit (POTD) only offers statutory terms: 1Y (12M), 2Y (24M), 3Y (36M), 5Y (60M)
+  if (isPostOffice) {
+    return [12, 24, 36, 60].includes(targetTenure);
+  }
+
+  // Standard commercial / SFB / RRB fixed deposit tenures: 1 month to 120 months (10 years)
+  if (targetTenure < 1 || targetTenure > 120) return false;
+
   if (bank.ratesByTenure && Object.keys(bank.ratesByTenure).length > 0) {
-    return bank.ratesByTenure[targetTenure] !== undefined;
+    const slabs = Object.keys(bank.ratesByTenure).map(Number).filter((n) => !isNaN(n));
+    const minSlab = Math.min(...slabs);
+    const maxSlab = Math.max(...slabs);
+    return targetTenure >= minSlab && targetTenure <= maxSlab;
   }
   return bank.tenureMonths === targetTenure;
 }

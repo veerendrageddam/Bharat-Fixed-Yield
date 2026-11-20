@@ -35,6 +35,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **Phase 22: Non-Cumulative Yield Engine (Monthly & Quarterly Payouts)** | Pensioner Monthly/Quarterly Payout Formulas, Compounding Selector UI, TDS Schedule Sync | `COMPLETED` | 100% | Completed |
 | **Phase 23: Production v1 Hardening & UI/UX Optimization** | Rebranding to Bharat Deposit Radar, Login Disablement, Sticky Compare, Dynamic Charts, a11y | `COMPLETED` | 100% | Completed |
 | **Phase 24: v1 Pre-Release Architecture Hardening & Core Defect Remediation** | Age Tier Select Fix, 10Y Hybrid Range Slider, 2-Column Minimalist Canvas, Sticky Header Persona Ribbon, Fallback Cleanup, Screen Sync | `COMPLETED` | 100% | Completed |
+| **Phase 25: Production UI/UX Polish & Expert Component Optimization** | Smooth Dragging Slider for All 1Y–10Y & 6M–120M, Rate Input % Alignment, Statutory Slab Tenure Fallback, Recharts min-w-0 Stability, DICGC 7Y/10Y | `COMPLETED` | 100% | Completed |
 
 ---
 
@@ -632,6 +633,31 @@ Status: **Production Ready (Phase 1–5 Complete)**
 
 ---
 
+### Phase 25: Production UI/UX Polish & Expert Component Optimization
+*Target Files*: [`src/components/YieldCommandCenter.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.tsx), [`src/utils/calculator.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.ts), [`src/components/DicgcSafetyScreen.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/DicgcSafetyScreen.tsx), [`src/utils/calculator.test.ts`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/utils/calculator.test.ts), [`src/components/YieldCommandCenter.test.tsx`](file:///Users/gveerendra/PersonalApps/Bharat-Fixed-Yield/src/components/YieldCommandCenter.test.tsx)
+
+- [x] **25.1 Free-Dragging Time Period Slider Across All 1Y–10Y and 6M–120M** `[COMPLETED]`
+  - Eliminated forced tick snapping `[1, 2, 3, 5, 7, 10].reduce(...)` on the range slider, allowing smooth user dragging to any tenure (e.g. 4Y, 6Y, 8Y, 9Y, or intermediate months).
+  - Dynamically switches slider scale: `min=1, max=10, step=1` when in Years mode; `min=6, max=120, step=6` when in Months mode.
+  - Retained the 6 statutory preset buttons (1Y, 2Y, 3Y, 5Y, 7Y, 10Y) as instant 1-click shortcuts below the slider.
+- [x] **25.2 Statutory Slab Rate Fallback & Support in `calculator.ts`** `[COMPLETED]`
+  - Updated `isTenureSupported` and `getEffectiveRate` to support arbitrary tenures $\le 120$M by resolving the appropriate statutory rate slab (`[120, 84, 60, 36, 24, 12].find(s => targetTenure >= s)`).
+  - Resolved the bug where dragging to 4Y, 6Y, 8Y, or 9Y caused all 38 banks to disappear.
+  - Strictly enforced Post Office POTD max 60M and PORD strictly 60M exclusivity.
+- [x] **25.3 Rate of Interest `%` Pill Container Redesign** `[COMPLETED]`
+  - Replaced the brittle absolute-positioned `%` indicator (`absolute right-7`) with an integrated flex pill container (`flex items-center h-8.5 px-2.5 rounded-lg border`).
+  - Added webkit spin-button suppression (`[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none`).
+  - Converted the `%` sign into an intrinsic flex sibling with `ml-1`, eliminating digit/symbol overlap across all viewport widths, devices, and zoom levels.
+- [x] **25.4 Chart Container Layout Stabilization (`min-w-0`)** `[COMPLETED]`
+  - Added `min-w-0` to all Recharts parent containers (Donut chart and Compounding Trajectory / Rate Spread analytics) to eliminate flex shrinkage overflow and zero-width resize warnings.
+- [x] **25.5 DICGC Safety Screen Long-Term Tenures (7Y & 10Y)** `[COMPLETED]`
+  - Added 84 Months (7 Years) and 120 Months (10 Years) options to the DICGC investment horizon selector in `DicgcSafetyScreen.tsx`.
+- [x] **25.6 Mobile Sticky Ribbon & Accessibility Optimization** `[COMPLETED]`
+  - Compacted sticky persona ribbon padding (`p-2.5 sm:p-4`) and added `role="status"` with `aria-live="polite"` to the amalgamation banner.
+  - Expanded Vitest test suite to 78 tests covering intermediate tenures, slider dragging, and rate input formatting.
+
+---
+
 ## 📝 Execution Log & Updates
 
 | Date & Time | Step | Action Taken | Result / Notes |
@@ -664,6 +690,7 @@ Status: **Production Ready (Phase 1–5 Complete)**
 | **2026-11-11** | Phase 24 Audit | Comprehensive Pre-v1 Architectural Review & Defect Root-Cause Diagnosis | Audited complete application against `/core-engineering` and `/full-stack-engineering-standards`; diagnosed Age Select binding mismatch, 10Y tenure gap, buried IA persona controls, phantom 222D fallback cascades, and screen synchronization gaps. Created Phase 24 roadmap for immediate v1 release execution. |
 | **2026-11-11** | Phase 24 Design | Minimalist 2-Column Range Slider Canvas Specification (Groww Pattern) | Specified 2-column minimalist calculator canvas, collapsing 1,400px vertical block into ~380px above the fold; designed Hybrid Smart Slider for Time Period (1–10 Years / 6–120 Months with Years/Months unit dropdown, statutory tick marks, and 1-click odd-day promotional scheme chips). Updated context.md and tracker. |
 | **2026-11-20** | Phase 24 Execution | Full v1 Production Architecture Hardening & Groww Canvas Delivery | Implemented Sticky Top Persona Control Ribbon, 2-column minimalist canvas, hybrid smart slider (1Y–10Y with snap ticks and odd-day chips), age tier binding fixes, women bonus transparency badges, regional RRB filter toggle, purged 222D and arbitrary fallbacks, decoupled custom rate leakage from bank resolution, and expanded test suite (74 tests passing in 1.5s, 0 lint errors, clean 2s build). |
+| **2026-11-20** | Phase 25 Execution | Production UI/UX Polish & Expert Component Optimization | Eliminated slider tick snapping, fixed intermediate tenure resolution (4Y, 6Y, 8Y, 9Y) via statutory slab fallback, redesigned rate of interest box to flex pill container resolving % overlap, stabilized Recharts min-w-0 containers, added 7Y & 10Y to DICGC screen; verified 78 Vitest tests passing, 0 lint errors, clean 1.97s build. |
 
 
 

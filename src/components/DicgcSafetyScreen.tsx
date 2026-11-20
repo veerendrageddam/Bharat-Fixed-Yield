@@ -147,6 +147,8 @@ export const DicgcSafetyScreen: React.FC<DicgcSafetyScreenProps> = ({
                 <option value="24">24 Months (2 Years)</option>
                 <option value="36">36 Months (3 Years)</option>
                 <option value="60">60 Months (5 Years)</option>
+                <option value="84">84 Months (7 Years)</option>
+                <option value="120">120 Months (10 Years)</option>
               </select>
               <ChevronDown className="w-4 h-4 text-slate-400 dark:text-slate-500 absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             </div>

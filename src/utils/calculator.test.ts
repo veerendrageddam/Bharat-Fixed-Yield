@@ -181,6 +181,17 @@ describe('Calculator Core Engineering & Math Engine', () => {
       expect(getEffectiveRate(mockBank, { ...basePersona, age: 65 }, 120)).toBe(7.6);
     });
 
+    it('resolves intermediate non-benchmark tenures (4Y, 6Y, 8Y, 9Y) to appropriate statutory slab rates', () => {
+      // Slabs in mockBank: 12M: 7.0%, 24M: 7.3%, 36M: 7.5%, 60M: 7.2%, 84M: 7.1%, 120M: 7.1%
+      // 48M (4Y) falls in 36M-59M slab -> 7.5%
+      expect(getEffectiveRate(mockBank, basePersona, 48)).toBe(7.5);
+      // 72M (6Y) falls in 60M-83M slab -> 7.2%
+      expect(getEffectiveRate(mockBank, basePersona, 72)).toBe(7.2);
+      // 96M (8Y) and 108M (9Y) fall in 84M-119M slab -> 7.1%
+      expect(getEffectiveRate(mockBank, basePersona, 96)).toBe(7.1);
+      expect(getEffectiveRate(mockBank, basePersona, 108)).toBe(7.1);
+    });
+
     it('does not resolve special odd-day schemes when depositType is RD', () => {
       const rdPersona: UserPersona = {
         ...basePersona,
@@ -254,11 +265,45 @@ describe('Calculator Core Engineering & Math Engine', () => {
         24: 7.2,
         36: 7.5,
         60: 7.1,
+        84: 7.1,
+        120: 7.1,
       },
       specialSchemes: [
         { days: 444, name: 'Special 444D', rate: 7.8 },
       ],
     };
+
+    const testFdPersona: UserPersona = {
+      depositType: 'FD',
+      principal: 100000,
+      tenureMonths: 36,
+      compounding: 'quarterly',
+      age: 40,
+      gender: 'male',
+      state: 'ALL',
+      residency: 'resident',
+      panLinked: true,
+      form15HSubmitted: false,
+    };
+
+    it('supports arbitrary intermediate tenures (4Y, 6Y, 8Y, 9Y) in isTenureSupported for commercial banks', () => {
+      // 4Y (48M), 6Y (72M), 8Y (96M), 9Y (108M) are all valid commercial bank tenures
+      expect(isTenureSupported(regularBank, testFdPersona, 48)).toBe(true);
+      expect(isTenureSupported(regularBank, testFdPersona, 72)).toBe(true);
+      expect(isTenureSupported(regularBank, testFdPersona, 96)).toBe(true);
+      expect(isTenureSupported(regularBank, testFdPersona, 108)).toBe(true);
+
+      // India Post POTD only allows 12, 24, 36, 60 (max 5Y)
+      const postOfficeBank: BankData = {
+        ...regularBank,
+        id: 'india-post-potd',
+        category: 'post_office',
+      };
+      expect(isTenureSupported(postOfficeBank, testFdPersona, 48)).toBe(false);
+      expect(isTenureSupported(postOfficeBank, testFdPersona, 72)).toBe(false);
+      expect(isTenureSupported(postOfficeBank, testFdPersona, 36)).toBe(true);
+      expect(isTenureSupported(postOfficeBank, testFdPersona, 60)).toBe(true);
+    });
 
     it('enforces 60M exclusivity for Post Office PORD', () => {
       const rdPersona: UserPersona = {

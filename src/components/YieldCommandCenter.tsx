@@ -438,8 +438,8 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
       </div>
 
       {/* PERSISTENT STICKY CONTROL RIBBON (PERSONA & JURISDICTION) */}
-      <div className="sticky top-20 z-30 bg-white/95 dark:bg-[#161b22]/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl p-3 sm:p-4 shadow-sm transition-colors">
-        <div className="flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="sticky top-20 z-30 bg-white/95 dark:bg-[#161b22]/95 backdrop-blur-md border border-slate-200/80 dark:border-slate-800 rounded-2xl p-2.5 sm:p-4 shadow-sm transition-colors">
+        <div className="flex flex-wrap items-center justify-between gap-2.5 text-xs">
           {/* Deposit Type Toggle */}
           <div className="flex items-center gap-1 p-1 rounded-xl bg-slate-100 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shrink-0">
             <button
@@ -693,22 +693,24 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                 </div>
               </div>
 
-              {/* Slider (1 to 10 Years, snap to statutory milestones) */}
+              {/* Slider (1 to 10 Years when in years mode, or 6 to 120 Months when in months mode) */}
               <input
                 type="range"
-                min={1}
-                max={10}
-                step={1}
-                value={Math.min(10, Math.max(1, Math.round(persona.tenureMonths / 12)))}
+                min={tenureDisplayUnit === 'years' ? 1 : 6}
+                max={tenureDisplayUnit === 'years' ? 10 : 120}
+                step={tenureDisplayUnit === 'years' ? 1 : 6}
+                value={
+                  tenureDisplayUnit === 'years'
+                    ? Math.min(10, Math.max(1, Math.round(persona.tenureMonths / 12)))
+                    : Math.min(120, Math.max(6, persona.tenureMonths))
+                }
                 onChange={(e) => {
-                  const y = Number(e.target.value);
-                  const validYear = [1, 2, 3, 5, 7, 10].reduce((prev, curr) =>
-                    Math.abs(curr - y) < Math.abs(prev - y) ? curr : prev
-                  );
+                  const val = Number(e.target.value);
+                  const newMonths = tenureDisplayUnit === 'years' ? val * 12 : val;
                   setPersona((prev) => ({
                     ...prev,
                     tenureUnit: 'months',
-                    tenureMonths: validYear * 12,
+                    tenureMonths: newMonths,
                     tenureDays: undefined,
                   }));
                 }}
@@ -824,7 +826,13 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   </div>
                 </div>
 
-                <div className="relative">
+                <div
+                  className={`flex items-center h-8.5 px-2.5 rounded-lg border font-extrabold text-sm transition-all ${
+                    persona.useCustomRate
+                      ? 'bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800 focus-within:ring-2 focus-within:ring-purple-500'
+                      : 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800'
+                  }`}
+                >
                   <input
                     type="number"
                     step={0.05}
@@ -842,13 +850,20 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                         }));
                       }
                     }}
-                    className={`w-24 h-8 px-2 rounded-lg border font-extrabold text-sm text-right focus:outline-hidden ${
+                    className={`w-14 bg-transparent text-right font-extrabold text-sm focus:outline-hidden [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none ${
                       persona.useCustomRate
-                        ? 'bg-purple-50 dark:bg-purple-950/60 border-purple-300 dark:border-purple-800 text-purple-900 dark:text-purple-200 focus:ring-2 focus:ring-purple-500'
-                        : 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 dark:border-emerald-800 text-[#006c4a] dark:text-[#10b981]'
+                        ? 'text-purple-900 dark:text-purple-200'
+                        : 'text-[#006c4a] dark:text-[#10b981]'
                     }`}
+                    aria-label="Custom target rate of interest"
                   />
-                  <span className="absolute right-7 top-1/2 -translate-y-1/2 text-xs font-bold pointer-events-none opacity-60">
+                  <span
+                    className={`ml-1 text-xs font-bold select-none ${
+                      persona.useCustomRate
+                        ? 'text-purple-700 dark:text-purple-300'
+                        : 'text-[#006c4a] dark:text-[#10b981]'
+                    }`}
+                  >
                     %
                   </span>
                 </div>
@@ -866,10 +881,10 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
                   const val = parseFloat(e.target.value);
                   setPersona((prev) => ({ ...prev, useCustomRate: true, customRate: val }));
                 }}
-                className={`w-full h-2 rounded-lg appearance-none cursor-pointer ${
+                className={`w-full h-2 rounded-lg appearance-none transition-all ${
                   persona.useCustomRate
-                    ? 'bg-purple-200 dark:bg-purple-950 accent-purple-600'
-                    : 'bg-slate-200 dark:bg-slate-700 accent-[#006c4a] opacity-80'
+                    ? 'bg-purple-200 dark:bg-purple-950 accent-purple-600 cursor-pointer'
+                    : 'bg-slate-200 dark:bg-slate-700 accent-[#006c4a] opacity-80 cursor-not-allowed'
                 }`}
                 aria-label="Rate of interest slider"
               />
@@ -963,7 +978,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
               </div>
 
               {/* Integrated Recharts Donut */}
-              <div className="relative w-full h-44 my-2 flex items-center justify-center">
+              <div className="relative w-full min-w-0 h-44 my-2 flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
@@ -1094,7 +1109,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
           </div>
         </div>
 
-        <div className="w-full h-64 pt-4">
+        <div className="w-full min-w-0 h-64 pt-4">
           {activeChartTab === 'spread' ? (
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={spreadData} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
@@ -1208,7 +1223,7 @@ export const YieldCommandCenter: React.FC<YieldCommandCenterProps> = ({
 
           {/* Smart Amalgamation / Merger Guidance Banner */}
           {activeMergerNotice && (
-            <div className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-xl p-4 flex items-start gap-3 transition-all">
+            <div role="status" aria-live="polite" className="bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800/60 rounded-xl p-4 flex items-start gap-3 transition-all">
               <Info className="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
               <div className="flex flex-col gap-1.5 text-xs sm:text-sm">
                 <div className="flex items-center gap-2 flex-wrap">
