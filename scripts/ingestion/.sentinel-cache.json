@@ -2,7 +2,7 @@
   "unity-sfb": {
     "bankId": "unity-sfb",
     "sourceUrl": "https://www.unitybank.co.in/",
-    "lastChecked": "2026-11-19T12:42:49.852Z",
+    "lastChecked": "2026-11-24T14:41:47.732Z",
     "contentHash": "c12559563d3adc62",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -10,31 +10,31 @@
   "utkarsh-sfb": {
     "bankId": "utkarsh-sfb",
     "sourceUrl": "https://www.utkarsh.bank/",
-    "lastChecked": "2026-11-19T12:42:56.697Z",
+    "lastChecked": "2026-11-24T14:41:54.653Z",
     "contentHash": "1b94ee3628be94dd",
-    "status": "modified",
+    "status": "unchanged",
     "consecutiveFailures": 0
   },
   "equitas-sfb": {
     "bankId": "equitas-sfb",
     "sourceUrl": "https://www.equitasbank.com/",
-    "lastChecked": "2026-11-19T12:42:59.661Z",
-    "contentHash": "cb45c061692ad129",
-    "status": "unchanged",
+    "lastChecked": "2026-11-24T14:41:57.924Z",
+    "contentHash": "69b0bba7bc227e02",
+    "status": "modified",
     "consecutiveFailures": 0
   },
   "ujjivan-sfb": {
     "bankId": "ujjivan-sfb",
     "sourceUrl": "https://www.ujjivansfb.in/",
-    "lastChecked": "2026-11-19T12:43:21.143Z",
+    "lastChecked": "2026-11-24T14:42:19.403Z",
     "contentHash": "609c88655c94e6a6",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "hdfc-bank": {
     "bankId": "hdfc-bank",
     "sourceUrl": "https://netbanking.hdfcbank.com/",
-    "lastChecked": "2026-11-19T12:43:23.658Z",
+    "lastChecked": "2026-11-24T14:42:22.168Z",
     "contentHash": "9347b74d813c9819",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -42,23 +42,23 @@
   "icici-bank": {
     "bankId": "icici-bank",
     "sourceUrl": "https://www.icicibank.com/",
-    "lastChecked": "2026-11-19T12:43:23.995Z",
-    "contentHash": "f731b0490dac5ada",
+    "lastChecked": "2026-11-24T14:42:22.524Z",
+    "contentHash": "cd486a370f4992a1",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "axis-bank": {
     "bankId": "axis-bank",
     "sourceUrl": "https://www.axisbank.com/",
-    "lastChecked": "2026-11-19T12:43:24.384Z",
-    "contentHash": "f6e73c0dc205062f",
+    "lastChecked": "2026-11-24T14:42:22.902Z",
+    "contentHash": "14058e86e8d67ccf",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "kotak-bank": {
     "bankId": "kotak-bank",
     "sourceUrl": "https://www.kotak.com/",
-    "lastChecked": "2026-11-19T12:43:25.387Z",
+    "lastChecked": "2026-11-24T14:42:23.800Z",
     "contentHash": "54021f0489138d5a",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -66,23 +66,23 @@
   "idfc-first-bank": {
     "bankId": "idfc-first-bank",
     "sourceUrl": "https://www.idfcfirstbank.com/",
-    "lastChecked": "2026-11-19T12:43:27.404Z",
-    "contentHash": "cd551b6e20410002",
-    "status": "unchanged",
+    "lastChecked": "2026-11-24T14:42:25.826Z",
+    "contentHash": "bccb8ee1c5e4d660",
+    "status": "modified",
     "consecutiveFailures": 0
   },
   "indusind-bank": {
     "bankId": "indusind-bank",
     "sourceUrl": "https://www.indusind.com/",
-    "lastChecked": "2026-11-19T12:43:29.690Z",
-    "contentHash": "513dc90d957c5d26",
-    "status": "unchanged",
+    "lastChecked": "2026-11-24T14:42:28.088Z",
+    "contentHash": "1731debda763a7e6",
+    "status": "modified",
     "consecutiveFailures": 0
   },
   "yes-bank": {
     "bankId": "yes-bank",
     "sourceUrl": "https://www.yesbank.in/",
-    "lastChecked": "2026-11-19T12:43:29.840Z",
+    "lastChecked": "2026-11-24T14:42:29.079Z",
     "contentHash": "e3b0c44298fc1c14",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -90,15 +90,15 @@
   "federal-bank": {
     "bankId": "federal-bank",
     "sourceUrl": "https://www.federalbank.co.in/",
-    "lastChecked": "2026-11-19T12:43:32.963Z",
-    "contentHash": "df30ea890e2ad5a9",
+    "lastChecked": "2026-11-24T14:42:31.828Z",
+    "contentHash": "690e26b087d094be",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "sbi-bank": {
     "bankId": "sbi-bank",
     "sourceUrl": "https://www.onlinesbi.sbi/",
-    "lastChecked": "2026-11-19T12:43:34.819Z",
+    "lastChecked": "2026-11-24T14:42:33.935Z",
     "contentHash": "c5bb1050b8209f4a",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -106,79 +106,79 @@
   "bank-of-baroda": {
     "bankId": "bank-of-baroda",
     "sourceUrl": "https://www.bankofbaroda.in/",
-    "lastChecked": "2026-11-19T12:43:48.084Z",
-    "contentHash": "a28da17eaf0637da",
+    "lastChecked": "2026-11-24T14:42:48.391Z",
+    "contentHash": "faf80b451062bee4",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "pnb-bank": {
     "bankId": "pnb-bank",
     "sourceUrl": "https://www.pnbindia.in/",
-    "lastChecked": "2026-11-19T12:43:53.385Z",
-    "contentHash": "93cf01a41fc6306e",
+    "lastChecked": "2026-11-24T14:42:52.195Z",
+    "contentHash": "4084a3236ea0c120",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "canara-bank": {
     "bankId": "canara-bank",
     "sourceUrl": "https://canarabank.com/",
-    "lastChecked": "2026-11-19T12:44:45.793Z",
+    "lastChecked": "2026-11-24T14:43:37.767Z",
     "contentHash": "875079a3f5d493c9",
-    "status": "modified",
+    "status": "unchanged",
     "consecutiveFailures": 0
   },
   "saraswat-bank": {
     "bankId": "saraswat-bank",
     "sourceUrl": "https://www.saraswatbank.com/",
-    "lastChecked": "2026-11-19T12:44:49.369Z",
-    "contentHash": "8582c04742c57f78",
+    "lastChecked": "2026-11-24T14:43:41.341Z",
+    "contentHash": "b1ede1a29da81cad",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "post-office-potd": {
     "bankId": "post-office-potd",
     "sourceUrl": "https://www.indiapost.gov.in/",
-    "lastChecked": "2026-11-19T12:44:51.100Z",
-    "contentHash": "1585dc342f836fba",
+    "lastChecked": "2026-11-24T14:43:43.271Z",
+    "contentHash": "732d288f950575c3",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "post-office-pord": {
     "bankId": "post-office-pord",
     "sourceUrl": "https://www.indiapost.gov.in/",
-    "lastChecked": "2026-11-19T12:44:51.110Z",
-    "contentHash": "1585dc342f836fba",
+    "lastChecked": "2026-11-24T14:43:43.279Z",
+    "contentHash": "732d288f950575c3",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "apgb-bank": {
     "bankId": "apgb-bank",
     "sourceUrl": "https://apgb.bank.in/banking-products/deposits/deposit-interest-rates",
-    "lastChecked": "2026-11-19T12:44:53.260Z",
-    "contentHash": "a0f34bb947753356",
+    "lastChecked": "2026-11-24T14:43:45.393Z",
+    "contentHash": "aa55fa11d23ca8ba",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "kgb-bank": {
     "bankId": "kgb-bank",
     "sourceUrl": "https://kgb.bank.in/",
-    "lastChecked": "2026-11-19T12:44:57.304Z",
+    "lastChecked": "2026-11-24T14:44:11.610Z",
     "contentHash": "8cf06d91599052d1",
-    "status": "unchanged",
-    "consecutiveFailures": 0
+    "status": "unreachable",
+    "consecutiveFailures": 1
   },
   "kagb-bank": {
     "bankId": "kagb-bank",
     "sourceUrl": "https://karnatakagb.bank.in/",
-    "lastChecked": "2026-11-19T12:44:58.874Z",
-    "contentHash": "621372c3e90cbcb8",
-    "status": "unchanged",
+    "lastChecked": "2026-11-24T14:44:13.237Z",
+    "contentHash": "87740f9887e405d9",
+    "status": "modified",
     "consecutiveFailures": 0
   },
   "bggb-bank": {
     "bankId": "bggb-bank",
     "sourceUrl": "https://ggb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:23.691Z",
+    "lastChecked": "2026-11-24T14:44:38.202Z",
     "contentHash": "ddc13f5f0d1cce09",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -186,31 +186,31 @@
   "aryavart-bank": {
     "bankId": "aryavart-bank",
     "sourceUrl": "https://upgb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:24.460Z",
+    "lastChecked": "2026-11-24T14:44:38.970Z",
     "contentHash": "d0036ea5abeb9bef",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "jkgb-bank": {
     "bankId": "jkgb-bank",
     "sourceUrl": "https://www.jkgrameen.bank.in/",
-    "lastChecked": "2026-11-19T12:45:25.970Z",
-    "contentHash": "0abd3d32e17742ec",
+    "lastChecked": "2026-11-24T14:44:40.219Z",
+    "contentHash": "f341d3a709cbcb8e",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "dbgb-bank": {
     "bankId": "dbgb-bank",
     "sourceUrl": "https://bgb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:27.169Z",
-    "contentHash": "9f93093d11d617a7",
-    "status": "unchanged",
+    "lastChecked": "2026-11-24T14:44:41.405Z",
+    "contentHash": "4ba116d4495cae2d",
+    "status": "modified",
     "consecutiveFailures": 0
   },
   "rmgb-bank": {
     "bankId": "rmgb-bank",
     "sourceUrl": "https://www.rgb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:33.677Z",
+    "lastChecked": "2026-11-24T14:44:47.756Z",
     "contentHash": "a89137ea1d54ee78",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -218,7 +218,7 @@
   "bgvb-bank": {
     "bankId": "bgvb-bank",
     "sourceUrl": "https://www.wbgb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:35.840Z",
+    "lastChecked": "2026-11-24T14:44:57.043Z",
     "contentHash": "7db3ce8d63cc25a1",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -226,7 +226,7 @@
   "agvb-bank": {
     "bankId": "agvb-bank",
     "sourceUrl": "https://agvb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:37.370Z",
+    "lastChecked": "2026-11-24T14:44:58.588Z",
     "contentHash": "00966fade17dc449",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -234,7 +234,7 @@
   "tngb-bank": {
     "bankId": "tngb-bank",
     "sourceUrl": "https://tngb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:39.221Z",
+    "lastChecked": "2026-11-24T14:45:00.327Z",
     "contentHash": "6b71d5999d2108cb",
     "status": "unchanged",
     "consecutiveFailures": 0
@@ -242,60 +242,60 @@
   "mgb-mp-bank": {
     "bankId": "mgb-mp-bank",
     "sourceUrl": "https://mpgb.bank.in/",
-    "lastChecked": "2026-11-19T12:45:40.455Z",
-    "contentHash": "3820d6ea41e48798",
+    "lastChecked": "2026-11-24T14:45:00.812Z",
+    "contentHash": "f8e82ed4d78c387c",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "suryoday-sfb": {
     "bankId": "suryoday-sfb",
     "sourceUrl": "https://suryoday.bank.in/p/fixed-deposit",
-    "lastChecked": "2026-11-19T12:42:53.487Z",
-    "contentHash": "8e9338d958679125",
+    "lastChecked": "2026-11-24T14:41:51.358Z",
+    "contentHash": "1e6aa6e1da0fe41d",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "au-sfb": {
     "bankId": "au-sfb",
     "sourceUrl": "https://www.aubank.in/interest-rates/fixed-deposit",
-    "lastChecked": "2026-11-19T12:42:59.874Z",
+    "lastChecked": "2026-11-24T14:41:58.152Z",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "union-bank": {
     "bankId": "union-bank",
     "sourceUrl": "https://www.unionbankofindia.co.in/english/interest-rates.aspx",
-    "lastChecked": "2026-11-19T12:44:36.025Z",
+    "lastChecked": "2026-11-24T14:43:34.985Z",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "bank-of-india": {
     "bankId": "bank-of-india",
     "sourceUrl": "https://bankofindia.co.in/interest-rates/deposit-rates",
-    "lastChecked": "2026-11-19T12:44:45.914Z",
+    "lastChecked": "2026-11-24T14:43:37.871Z",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "tgb-bank": {
     "bankId": "tgb-bank",
     "sourceUrl": "https://tgb.bank.in/deposit-interest-rates",
-    "lastChecked": "2026-11-19T12:44:54.965Z",
-    "contentHash": "df5bd0422e4408ac",
+    "lastChecked": "2026-11-24T14:43:47.107Z",
+    "contentHash": "9ec9b2268ef91cdf",
     "status": "modified",
     "consecutiveFailures": 0
   },
   "mgb-bank": {
     "bankId": "mgb-bank",
     "sourceUrl": "https://mahagramin.bank.in/",
-    "lastChecked": "2026-11-19T12:45:21.942Z",
+    "lastChecked": "2026-11-24T14:44:36.440Z",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   },
   "ogb-bank": {
     "bankId": "ogb-bank",
     "sourceUrl": "https://odishabank.in/",
-    "lastChecked": "2026-11-19T12:45:29.329Z",
+    "lastChecked": "2026-11-24T14:44:43.530Z",
     "status": "unreachable",
-    "consecutiveFailures": 5
+    "consecutiveFailures": 6
   }
 }
